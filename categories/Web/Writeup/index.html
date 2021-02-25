@@ -3,14 +3,14 @@
 <html class="use-big-shadow article-header-style-2">
 <head>
 	
-	<title>归档 - 聆听,低语者的诉求 - wh1sper&#39;s Blog</title>
+	<title>分类 : Writeup - 聆听,低语者的诉求 - wh1sper&#39;s Blog</title>
 	<meta charset="utf-8">
 	
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	
 	<meta property="og:type" content="website">
 <meta property="og:title" content="聆听,低语者的诉求 - wh1sper&#39;s Blog">
-<meta property="og:url" content="http://example.com/archives/index.html">
+<meta property="og:url" content="http://example.com/categories/Web/Writeup/index.html">
 <meta property="og:site_name" content="聆听,低语者的诉求 - wh1sper&#39;s Blog">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="wh1sper">
@@ -439,6 +439,19 @@
 
 <div class="page-information-card-container">
 	
+		
+<div class="page-information-card card bg-gradient-secondary shadow-lg border-0">
+	<div class="card-body">
+		<h3 class="text-black">分类 : Writeup </h3>
+		
+			<p class="text-black mt-3 mb-0 opacity-8">
+				<i class="fa fa-file-o mr-1"></i>
+				1 篇文章
+			</p>
+		
+	</div>
+</div>
+	
 </div>
 
 <div id="sidebar_mask"></div>
@@ -460,7 +473,7 @@
 			
 			
 				<ul id='leftbar_part1_menu' class='leftbar-menu'>
-					<li class='leftbar-menu-item'><a href='/'>Home</a></li><li class='leftbar-menu-item current'><a href='/archives'>About</a></li><li class='leftbar-menu-item leftbar-menu-item-haschildren'><a no-pjax onclick='return false;'>二级菜单</a><ul class='leftbar-menu-item leftbar-menu-subitem shadow-sm'><li class='leftbar-menu-item leftbar-menu-item-haschildren'><a no-pjax onclick='return false;'>三级菜单</a><ul class='leftbar-menu-item leftbar-menu-subitem shadow-sm'><li class='leftbar-menu-item'><a href='/'>首页</a></li></ul></li></ul></li>
+					<li class='leftbar-menu-item'><a href='/'>Home</a></li><li class='leftbar-menu-item'><a href='/archives'>About</a></li><li class='leftbar-menu-item leftbar-menu-item-haschildren'><a no-pjax onclick='return false;'>二级菜单</a><ul class='leftbar-menu-item leftbar-menu-subitem shadow-sm'><li class='leftbar-menu-item leftbar-menu-item-haschildren'><a no-pjax onclick='return false;'>三级菜单</a><ul class='leftbar-menu-item leftbar-menu-subitem shadow-sm'><li class='leftbar-menu-item'><a href='/'>首页</a></li></ul></li></ul></li>
 				</ul>
 			
 			<div class="card-body text-center leftbar-search-button">
@@ -585,45 +598,86 @@
 		
 		
 		
-				<article class="post post-full card bg-white shadow-sm border-0">
+		
+		
+			
+	<article class="post card bg-white shadow-sm border-0 ">
 	<header class="post-header text-center">
-		<a class="post-title" href="/archives/">归档</a>
+		
+		<a class="post-title" href="/2021/02/20/HGAME%202021%20week3-web/">HGAME</a>
+		<div class="post-meta">
+			
+						
+						<div class="post-meta-detail post-meta-detail-time">
+							<i class="fa fa-clock-o" aria-hidden="true"></i>
+							<time title="发布于 2021-2-20 20:00:00 | 编辑于 2021-2-25 18:19:59">2021-2-20 20:00
+							</time>
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-categories">
+							<i class="fa fa-bookmark-o" aria-hidden="true"></i>
+							<a class="post-meta-detail-catagory-link" href="/categories/Web/">Web</a> , <a class="post-meta-detail-catagory-link" href="/categories/Web/Writeup/">Writeup</a>
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-words">
+							<i class="fa fa-book" aria-hidden="true"></i>
+							<span id="busuanzi_container_page_pv">
+								阅读<span id="busuanzi_value_page_pv"></span>次
+							</span>
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-words">
+							<i class="fa fa-file-word-o" aria-hidden="true"></i>
+							2.2k 字
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-readingtime">
+							<i class="fa fa-hourglass-end" aria-hidden="true"></i>
+							9 分钟
+						</div>
+					
+		</div>
+		
 	</header>
 
-	<div class="post-content" id="post_content">
-		<div class='argon-timeline'>
+	<div class="post-content">
+		
 			
-						<div class='argon-timeline-node'>
-							<div class='argon-timeline-time archive-timeline-year'>2021</div>
-							<div class='argon-timeline-card card bg-gradient-secondary archive-timeline-title'></div>
-						</div>
-						
-					<div class='argon-timeline-node'>
-						<div class='argon-timeline-time'>2-25</div>
-						<div class='argon-timeline-card card bg-gradient-secondary archive-timeline-title'>
-							<a href="/2021/02/25/NCTF2019_Fakexml/"></a>
-						</div>
-					</div>
+				Level - Week3Forgetful考点：简单python-SSTI
+
+题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
+
+最为常规的payload：
+&#123;&#123;[].__class__.__mro__[1].__subclasses__()&#125;&#125;
+&#123;&#123;...
 			
-					<div class='argon-timeline-node'>
-						<div class='argon-timeline-time'>2-25</div>
-						<div class='argon-timeline-card card bg-gradient-secondary archive-timeline-title'>
-							<a href="/2021/02/25/hello-world/">Hello World</a>
-						</div>
-					</div>
-			
-					<div class='argon-timeline-node'>
-						<div class='argon-timeline-time'>2-20</div>
-						<div class='argon-timeline-card card bg-gradient-secondary archive-timeline-title'>
-							<a href="/2021/02/20/HGAME%202021%20week3-web/">HGAME</a>
-						</div>
-					</div>
-			
-		</div>
+		
 	</div>
+
+	
+		<div class="post-tags">
+			<i class="fa fa-tags" aria-hidden="true"></i>
+			<a class="tag badge badge-secondary post-meta-detail-tag -none-link" href="/tags/SQLi/" rel="tag">SQLi</a><a class="tag badge badge-secondary post-meta-detail-tag -none-link" href="/tags/XSS/" rel="tag">XSS</a>
+		</div>
+	
 </article>
-		
-		
+
+
+
+
+
 		
 
 					<footer id="footer" class="site-footer card shadow-sm border-0">

@@ -495,13 +495,13 @@
 								</div>
 								<div class="site-state-item site-state-categories">
 									<a data-toggle="modal" data-target="#blog_categories">
-										<span class="site-state-item-count">0</span>
+										<span class="site-state-item-count">2</span>
 										<span class="site-state-item-name">分类</span>
 									</a>
 								</div>      
 								<div class="site-state-item site-state-tags">
 									<a data-toggle="modal" data-target="#blog_tags">
-										<span class="site-state-item-count">0</span>
+										<span class="site-state-item-count">2</span>
 										<span class="site-state-item-name">标签</span>
 									</a>
 								</div>
@@ -559,7 +559,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				
+				<a class="badge badge-secondary tag" href="/categories/Web/" rel="tag">Web <span class="tag-num">1</span></a><a class="badge badge-secondary tag" href="/categories/Web/Writeup/" rel="tag">Writeup <span class="tag-num">1</span></a>
 			</div>
 		</div>
 	</div>
@@ -574,7 +574,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				
+				<a class="badge badge-secondary tag" href="/tags/SQLi/" rel="tag">SQLi <span class="tag-num">1</span></a><a class="badge badge-secondary tag" href="/tags/XSS/" rel="tag">XSS <span class="tag-num">1</span></a>
 			</div>
 		</div>
 	</div>
@@ -584,67 +584,6 @@
 	<main id="main" class="site-main" role="main">
 		
 			
-	<article class="post card bg-white shadow-sm border-0 ">
-	<header class="post-header text-center">
-		
-		<a class="post-title" href="/2021/02/25/HGAME%202021%20week3-web/">HGAME</a>
-		<div class="post-meta">
-			
-						
-						<div class="post-meta-detail post-meta-detail-time">
-							<i class="fa fa-clock-o" aria-hidden="true"></i>
-							<time title="发布于 2021-2-25 15:49:04 | 编辑于 2021-2-25 16:20:47">2021-2-25 15:49
-							</time>
-						</div>
-					
-						
-							<div class="post-meta-devide">|</div>
-						
-						<div class="post-meta-detail post-meta-detail-words">
-							<i class="fa fa-book" aria-hidden="true"></i>
-							<span id="busuanzi_container_page_pv">
-								阅读<span id="busuanzi_value_page_pv"></span>次
-							</span>
-						</div>
-					
-						
-							<div class="post-meta-devide">|</div>
-						
-						<div class="post-meta-detail post-meta-detail-words">
-							<i class="fa fa-file-word-o" aria-hidden="true"></i>
-							2.2k 字
-						</div>
-					
-						
-							<div class="post-meta-devide">|</div>
-						
-						<div class="post-meta-detail post-meta-detail-readingtime">
-							<i class="fa fa-hourglass-end" aria-hidden="true"></i>
-							9 分钟
-						</div>
-					
-		</div>
-		
-	</header>
-
-	<div class="post-content">
-		
-			
-				Level - Week3Forgetful考点：简单python-SSTI
-
-题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
-
-最为常规的payload：
-&#123;&#123;[].__class__.__mro__[1].__subclasses__()&#125;&#125;
-&#123;&#123;...
-			
-		
-	</div>
-
-	
-</article>
-
-
 	<article class="post card bg-white shadow-sm border-0 ">
 	<header class="post-header text-center">
 		
@@ -754,6 +693,80 @@ By:0xfxxker_wh1sper
 		
 	</div>
 
+	
+</article>
+
+
+	<article class="post card bg-white shadow-sm border-0 ">
+	<header class="post-header text-center">
+		
+		<a class="post-title" href="/2021/02/20/HGAME%202021%20week3-web/">HGAME</a>
+		<div class="post-meta">
+			
+						
+						<div class="post-meta-detail post-meta-detail-time">
+							<i class="fa fa-clock-o" aria-hidden="true"></i>
+							<time title="发布于 2021-2-20 20:00:00 | 编辑于 2021-2-25 18:19:59">2021-2-20 20:00
+							</time>
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-categories">
+							<i class="fa fa-bookmark-o" aria-hidden="true"></i>
+							<a class="post-meta-detail-catagory-link" href="/categories/Web/">Web</a> , <a class="post-meta-detail-catagory-link" href="/categories/Web/Writeup/">Writeup</a>
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-words">
+							<i class="fa fa-book" aria-hidden="true"></i>
+							<span id="busuanzi_container_page_pv">
+								阅读<span id="busuanzi_value_page_pv"></span>次
+							</span>
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-words">
+							<i class="fa fa-file-word-o" aria-hidden="true"></i>
+							2.2k 字
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-readingtime">
+							<i class="fa fa-hourglass-end" aria-hidden="true"></i>
+							9 分钟
+						</div>
+					
+		</div>
+		
+	</header>
+
+	<div class="post-content">
+		
+			
+				Level - Week3Forgetful考点：简单python-SSTI
+
+题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
+
+最为常规的payload：
+&#123;&#123;[].__class__.__mro__[1].__subclasses__()&#125;&#125;
+&#123;&#123;...
+			
+		
+	</div>
+
+	
+		<div class="post-tags">
+			<i class="fa fa-tags" aria-hidden="true"></i>
+			<a class="tag badge badge-secondary post-meta-detail-tag -none-link" href="/tags/SQLi/" rel="tag">SQLi</a><a class="tag badge badge-secondary post-meta-detail-tag -none-link" href="/tags/XSS/" rel="tag">XSS</a>
+		</div>
 	
 </article>
 

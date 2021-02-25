@@ -11,7 +11,7 @@
 	<meta name="description" content="Level - Week3Forgetful考点：简单python-SSTI  题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：  最为常规的payload： &amp;#123;&amp;#123;[].__class__.__mro__[1].__subclasses__()&amp;#125;&amp;#125; &amp;#123;&amp;#123;[].__class__.__mro__[1]._">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HGAME">
-<meta property="og:url" content="http://example.com/2021/02/25/HGAME%202021%20week3-web/index.html">
+<meta property="og:url" content="http://example.com/2021/02/20/HGAME%202021%20week3-web/index.html">
 <meta property="og:site_name" content="聆听,低语者的诉求 - wh1sper&#39;s Blog">
 <meta property="og:description" content="Level - Week3Forgetful考点：简单python-SSTI  题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：  最为常规的payload： &amp;#123;&amp;#123;[].__class__.__mro__[1].__subclasses__()&amp;#125;&amp;#125; &amp;#123;&amp;#123;[].__class__.__mro__[1]._">
 <meta property="og:locale" content="en_US">
@@ -36,10 +36,11 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175431.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175441.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175445.png">
-<meta property="article:published_time" content="2021-02-25T07:49:04.477Z">
-<meta property="article:modified_time" content="2021-02-25T08:20:47.988Z">
+<meta property="article:published_time" content="2021-02-20T12:00:00.000Z">
+<meta property="article:modified_time" content="2021-02-25T10:19:59.015Z">
 <meta property="article:author" content="wh1sper">
-<meta property="article:tag" content="wh1sper,CTF,web">
+<meta property="article:tag" content="XSS">
+<meta property="article:tag" content="SQLi">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210214230828.png">
 
@@ -552,13 +553,13 @@
 								</div>
 								<div class="site-state-item site-state-categories">
 									<a data-toggle="modal" data-target="#blog_categories">
-										<span class="site-state-item-count">0</span>
+										<span class="site-state-item-count">2</span>
 										<span class="site-state-item-name">分类</span>
 									</a>
 								</div>      
 								<div class="site-state-item site-state-tags">
 									<a data-toggle="modal" data-target="#blog_tags">
-										<span class="site-state-item-count">0</span>
+										<span class="site-state-item-count">2</span>
 										<span class="site-state-item-name">标签</span>
 									</a>
 								</div>
@@ -616,7 +617,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				
+				<a class="badge badge-secondary tag" href="/categories/Web/" rel="tag">Web <span class="tag-num">1</span></a><a class="badge badge-secondary tag" href="/categories/Web/Writeup/" rel="tag">Writeup <span class="tag-num">1</span></a>
 			</div>
 		</div>
 	</div>
@@ -631,7 +632,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				
+				<a class="badge badge-secondary tag" href="/tags/SQLi/" rel="tag">SQLi <span class="tag-num">1</span></a><a class="badge badge-secondary tag" href="/tags/XSS/" rel="tag">XSS <span class="tag-num">1</span></a>
 			</div>
 		</div>
 	</div>
@@ -645,14 +646,22 @@
 	<article class="post post-full card bg-white shadow-sm border-0 ">
 	<header class="post-header text-center">
 		
-		<a class="post-title" href="/2021/02/25/HGAME%202021%20week3-web/">HGAME</a>
+		<a class="post-title" href="/2021/02/20/HGAME%202021%20week3-web/">HGAME</a>
 		<div class="post-meta">
 			
 						
 						<div class="post-meta-detail post-meta-detail-time">
 							<i class="fa fa-clock-o" aria-hidden="true"></i>
-							<time title="发布于 2021-2-25 15:49:04 | 编辑于 2021-2-25 16:20:47">2021-2-25 15:49
+							<time title="发布于 2021-2-20 20:00:00 | 编辑于 2021-2-25 18:19:59">2021-2-20 20:00
 							</time>
+						</div>
+					
+						
+							<div class="post-meta-devide">|</div>
+						
+						<div class="post-meta-detail post-meta-detail-categories">
+							<i class="fa fa-bookmark-o" aria-hidden="true"></i>
+							<a class="post-meta-detail-catagory-link" href="/categories/Web/">Web</a> , <a class="post-meta-detail-catagory-link" href="/categories/Web/Writeup/">Writeup</a>
 						</div>
 					
 						
@@ -978,6 +987,11 @@ xmlhttp.send(&#39;&#39;);
 	
 
 	
+		<div class="post-tags">
+			<i class="fa fa-tags" aria-hidden="true"></i>
+			<a class="tag badge badge-secondary post-meta-detail-tag -none-link" href="/tags/SQLi/" rel="tag">SQLi</a><a class="tag badge badge-secondary post-meta-detail-tag -none-link" href="/tags/XSS/" rel="tag">XSS</a>
+		</div>
+	
 </article>
 
 	<div id="share_container">
@@ -1017,7 +1031,7 @@ xmlhttp.send(&#39;&#39;);
 				<span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
 			</button>
 		</a>
-		<a target="_blank" class="no-pjax icon-telegram" href="https://telegram.me/share/url?url=http://example.com/2021/02/25/HGAME%202021%20week3-web/&text=HGAME" tooltip="分享到 Telegram">
+		<a target="_blank" class="no-pjax icon-telegram" href="https://telegram.me/share/url?url=http://example.com/2021/02/20/HGAME%202021%20week3-web/&text=HGAME" tooltip="分享到 Telegram">
 			<button class="btn btn-icon btn-primary" style="background: #42a5f5;border: none;">
 				<span class="btn-inner--icon"><i class="fa fa-telegram"></i></span>
 			</button>
@@ -1040,7 +1054,7 @@ xmlhttp.send(&#39;&#39;);
 题目是一个记事本，添...',
 	    wechatQrcodeTitle : "分享到微信",
 	    wechatQrcodeHelper : '微信扫描二维码',
-	    source : 'http://example.com/2021/02/25/HGAME%202021%20week3-web/'
+	    source : 'http://example.com/2021/02/20/HGAME%202021%20week3-web/'
 	});
 	$("#share_show")[0].onclick = function(){
 		$("#share_container").addClass("opened");
@@ -1104,7 +1118,7 @@ xmlhttp.send(&#39;&#39;);
 </div>
 
 
-<div class="post-navigation card shadow-sm"><div class="post-navigation-item post-navigation-pre"></div><div class="post-navigation-item post-navigation-next"><span class="page-navigation-extra-text">下一篇 <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></span><a href="/2021/02/25/NCTF2019_Fakexml/" rel="next"> </a></div></div>
+<div class="post-navigation card shadow-sm"><div class="post-navigation-item post-navigation-pre"><span class="page-navigation-extra-text"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>上一篇</span><a href="/2021/02/25/hello-world/" rel="prev"> Hello World</a></div><div class="post-navigation-item post-navigation-next"></div></div>
 
 
 
