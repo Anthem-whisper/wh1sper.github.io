@@ -3,16 +3,16 @@
 <html class="use-big-shadow article-header-style-2">
 <head>
 	
-	<title>Hexo</title>
+	<title>聆听,低语者的诉求 - wh1sper&#39;s Blog</title>
 	<meta charset="utf-8">
 	
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	
 	<meta name="description" content="NCTF2019web1:fake xml cookbook_writeup By:0xfxxker_wh1sper 解题思路： 这道题名字是XML，关于XML我知道的只有两种手段，一是普通XML注入，通过闭合各种标签然后植入恶意代码运行脚本，但是一般这种手段实在攻击者能够掌握password字段并且能够保存到服务器当中去才能够添加一个新的admin账户（当时也在这里卡了很久），还有一种就是XXE">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/2021/02/25/NCTF2019_Fakexml/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:title" content="聆听,低语者的诉求 - wh1sper&#39;s Blog">
+<meta property="og:url" content="http://example.com/NCTF2019_Fakexml/index.html">
+<meta property="og:site_name" content="聆听,低语者的诉求 - wh1sper&#39;s Blog">
 <meta property="og:description" content="NCTF2019web1:fake xml cookbook_writeup By:0xfxxker_wh1sper 解题思路： 这道题名字是XML，关于XML我知道的只有两种手段，一是普通XML注入，通过闭合各种标签然后植入恶意代码运行脚本，但是一般这种手段实在攻击者能够掌握password字段并且能够保存到服务器当中去才能够添加一个新的admin账户（当时也在这里卡了很久），还有一种就是XXE">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164837.png">
@@ -21,7 +21,8 @@
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164914.png">
 <meta property="article:published_time" content="2021-02-25T07:08:45.455Z">
 <meta property="article:modified_time" content="2021-02-25T07:14:25.788Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="wh1sper">
+<meta property="article:tag" content="wh1sper,CTF,web">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164837.png">
 
@@ -193,7 +194,7 @@
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>
-				<a class="navbar-brand" href="/">Hexo</a>
+				<a class="navbar-brand" href="/">聆听，低语者的诉求</a>
 				<div class="navbar-collapse collapse" id="navbar_global">
 					<div class="navbar-collapse-header">
 						<div class="row">
@@ -455,7 +456,7 @@
 			<div id="leftbar_announcement" class="card bg-white shadow-sm border-0">
 				<div class="leftbar-announcement-body">
 					<div class="leftbar-announcement-title text-white">公告</div>
-					<div class="leftbar-announcement-content text-white">搭建了hexo博客</div>
+					<div class="leftbar-announcement-content text-white">搭建了hexo博客，以后会进行更新</div>
 				</div>
 			</div>
 		
@@ -510,11 +511,21 @@
 									})
 								</script>
 								
+									<style>
+										#leftbar_catalog ul {
+											counter-reset: blog_catalog_number;
+										}
+										#leftbar_catalog li.index-item > a:before {
+											content: counters(blog_catalog_number, '.') " ";
+											counter-increment: blog_catalog_number;
+										}
+									</style>
+								
 							</div>
 						
 						<div class="tab-pane fade text-center" id="leftbar_tab_overview" role="tabpanel" aria-labelledby="leftbar_tab_overview_btn">
 							<img id="leftbar_overview_author_image" src="https://q1.qlogo.cn/g?b=qq&amp;s=640&amp;nk=1643239341" class="img-fluid rounded-circle shadow-sm" style="width: 100px;" alt="avatar">
-							<h6 id="leftbar_overview_author_name">Hexo</h6>
+							<h6 id="leftbar_overview_author_name">wh1sper</h6>
 							<nav class="site-state">
 								<div class="site-state-item site-state-posts">
 									<a href="/archives">
@@ -617,7 +628,7 @@
 	<article class="post post-full card bg-white shadow-sm border-0 ">
 	<header class="post-header text-center">
 		
-		<a class="post-title" href="/2021/02/25/NCTF2019_Fakexml/"></a>
+		<a class="post-title" href="/NCTF2019_Fakexml/"></a>
 		<div class="post-meta">
 			
 						
@@ -725,7 +736,7 @@
 				<span class="btn-inner--icon"><i class="fa fa-twitter"></i></span>
 			</button>
 		</a>
-		<a target="_blank" class="no-pjax icon-telegram" href="https://telegram.me/share/url?url=http://example.com/2021/02/25/NCTF2019_Fakexml/&text=" tooltip="分享到 Telegram">
+		<a target="_blank" class="no-pjax icon-telegram" href="https://telegram.me/share/url?url=http://example.com/NCTF2019_Fakexml/&text=" tooltip="分享到 Telegram">
 			<button class="btn btn-icon btn-primary" style="background: #42a5f5;border: none;">
 				<span class="btn-inner--icon"><i class="fa fa-telegram"></i></span>
 			</button>
@@ -747,7 +758,7 @@
 By:0xfxxker...',
 	    wechatQrcodeTitle : "分享到微信",
 	    wechatQrcodeHelper : '微信扫描二维码',
-	    source : 'http://example.com/2021/02/25/NCTF2019_Fakexml/'
+	    source : 'http://example.com/NCTF2019_Fakexml/'
 	});
 	$("#share_show")[0].onclick = function(){
 		$("#share_container").addClass("opened");
@@ -811,7 +822,7 @@ By:0xfxxker...',
 </div>
 
 
-<div class="post-navigation card shadow-sm"><div class="post-navigation-item post-navigation-pre"><span class="page-navigation-extra-text"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>上一篇</span><a href="/2021/02/25/HGAME%202021%20week3-web/" rel="prev"> HGAME</a></div><div class="post-navigation-item post-navigation-next"><span class="page-navigation-extra-text">下一篇 <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></span><a href="/2021/02/25/hello-world/" rel="next"> Hello World</a></div></div>
+<div class="post-navigation card shadow-sm"><div class="post-navigation-item post-navigation-pre"><span class="page-navigation-extra-text"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>上一篇</span><a href="/HGAME%202021%20week3-web/" rel="prev"> HGAME</a></div><div class="post-navigation-item post-navigation-next"><span class="page-navigation-extra-text">下一篇 <i class="fa fa-arrow-circle-o-right" aria-hidden="true"></i></span><a href="/hello-world/" rel="next"> Hello World</a></div></div>
 
 
 
