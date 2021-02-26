@@ -2,11 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://anthem-whisper.github.io/tags/</loc>
-    <lastmod>2021-02-26T21:47:27+08:00</lastmod>
+    <loc>https://anthem-whisper.github.io/archives/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://anthem-whisper.github.io/about/</loc>
-    <lastmod>2021-02-26T21:25:48+08:00</lastmod>
+    <loc>https://anthem-whisper.github.io/page/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://anthem-whisper.github.io/</loc>
+    <lastmod>2019-05-28T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://anthem-whisper.github.io/p/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/</loc>
   </url><url>
@@ -70,13 +73,13 @@
   </url><url>
     <loc>https://anthem-whisper.github.io/p/roarctf-2020/</loc>
   </url><url>
+    <loc>https://anthem-whisper.github.io/search/</loc>
+  </url><url>
     <loc>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</loc>
   </url><url>
     <loc>https://anthem-whisper.github.io/tags/</loc>
   </url><url>
     <loc>https://anthem-whisper.github.io/p/wmctf2020/</loc>
-  </url><url>
-    <loc>https://anthem-whisper.github.io/</loc>
   </url><url>
     <loc>https://anthem-whisper.github.io/p/whuctf2020/</loc>
   </url><url>
