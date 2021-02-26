@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='转自：https://www.cnblogs.com/zery/p/3438845.html
+教程：https://www.runoob.com/regexp/regexp-tutorial.html
+一 、前言 　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。
+其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。
+0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。
+1.1 什么是正则表达式
+正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。
+1.2 常用的正则匹配工具
+在线匹配工具：
+　1 http://www.regexpal.com/
+2 http://rubular.com/
+二 、正则字符简单介绍 2.1 元字符介绍
+&amp;quot;^&amp;quot; ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。
+&amp;quot;$&amp;quot; ：$会匹配行或字符串的结尾
+如图
+​ 而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符
+&amp;quot;\b&amp;quot; :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&amp;quot;This is Regex&amp;quot;匹配单独的单词 &amp;ldquo;is&amp;rdquo; 正则就要写成 &amp;ldquo;\bis\b&amp;rdquo;
+　\b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界
+&amp;quot;\d&amp;quot;: 匹配数字，
+　例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123 正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&amp;quot;\d&amp;quot;字符，实际上有更好的写法会在 下面介绍。
+&amp;quot;\w&amp;quot;：匹配字母，数字，下划线.
+　例如我要匹配&amp;quot;a2345BCD__TTz&amp;quot; 正则：&amp;quot;\w&#43;&amp;quot; 这里的&amp;quot;&#43;&amp;ldquo;字符为一个量词指重复的次数，稍后会详细介绍。
+&amp;quot;\s&amp;rdquo;：匹配空格
+　例如字符 &amp;ldquo;a b c&amp;rdquo; 正则：&amp;quot;\w\s\w\s\w&amp;quot; 一个字符后跟一个空格，如有字符间有多个空格直接把&amp;quot;\s&amp;quot; 写成 &amp;ldquo;\s&#43;&amp;rdquo; 让空格重复
+&amp;quot;.&amp;quot;：匹配除了换行符以外的任何字符
+　这个算是&amp;quot;\w&amp;quot;的加强版了&amp;quot;\w&amp;quot;不能匹配 空格 如果把字符串加上空格用&amp;quot;\w&amp;quot;就受限了，看下用 &amp;ldquo;.'><title>正则表达式学习笔记</title>
+
+<link rel='canonical' href='https://example.com/p/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='正则表达式学习笔记'>
+<meta property='og:description' content='转自：https://www.cnblogs.com/zery/p/3438845.html
+教程：https://www.runoob.com/regexp/regexp-tutorial.html
+一 、前言 　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。
+其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。
+0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。
+1.1 什么是正则表达式
+正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。
+1.2 常用的正则匹配工具
+在线匹配工具：
+　1 http://www.regexpal.com/
+2 http://rubular.com/
+二 、正则字符简单介绍 2.1 元字符介绍
+&amp;quot;^&amp;quot; ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。
+&amp;quot;$&amp;quot; ：$会匹配行或字符串的结尾
+如图
+​ 而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符
+&amp;quot;\b&amp;quot; :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&amp;quot;This is Regex&amp;quot;匹配单独的单词 &amp;ldquo;is&amp;rdquo; 正则就要写成 &amp;ldquo;\bis\b&amp;rdquo;
+　\b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界
+&amp;quot;\d&amp;quot;: 匹配数字，
+　例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123 正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&amp;quot;\d&amp;quot;字符，实际上有更好的写法会在 下面介绍。
+&amp;quot;\w&amp;quot;：匹配字母，数字，下划线.
+　例如我要匹配&amp;quot;a2345BCD__TTz&amp;quot; 正则：&amp;quot;\w&#43;&amp;quot; 这里的&amp;quot;&#43;&amp;ldquo;字符为一个量词指重复的次数，稍后会详细介绍。
+&amp;quot;\s&amp;rdquo;：匹配空格
+　例如字符 &amp;ldquo;a b c&amp;rdquo; 正则：&amp;quot;\w\s\w\s\w&amp;quot; 一个字符后跟一个空格，如有字符间有多个空格直接把&amp;quot;\s&amp;quot; 写成 &amp;ldquo;\s&#43;&amp;rdquo; 让空格重复
+&amp;quot;.&amp;quot;：匹配除了换行符以外的任何字符
+　这个算是&amp;quot;\w&amp;quot;的加强版了&amp;quot;\w&amp;quot;不能匹配 空格 如果把字符串加上空格用&amp;quot;\w&amp;quot;就受限了，看下用 &amp;ldquo;.'>
+<meta property='og:url' content='https://example.com/p/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="正则表达式学习笔记">
+<meta name="twitter:description" content="转自：https://www.cnblogs.com/zery/p/3438845.html
+教程：https://www.runoob.com/regexp/regexp-tutorial.html
+一 、前言 　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。
+其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。
+0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。
+1.1 什么是正则表达式
+正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。
+1.2 常用的正则匹配工具
+在线匹配工具：
+　1 http://www.regexpal.com/
+2 http://rubular.com/
+二 、正则字符简单介绍 2.1 元字符介绍
+&amp;quot;^&amp;quot; ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。
+&amp;quot;$&amp;quot; ：$会匹配行或字符串的结尾
+如图
+​ 而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符
+&amp;quot;\b&amp;quot; :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&amp;quot;This is Regex&amp;quot;匹配单独的单词 &amp;ldquo;is&amp;rdquo; 正则就要写成 &amp;ldquo;\bis\b&amp;rdquo;
+　\b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界
+&amp;quot;\d&amp;quot;: 匹配数字，
+　例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123 正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&amp;quot;\d&amp;quot;字符，实际上有更好的写法会在 下面介绍。
+&amp;quot;\w&amp;quot;：匹配字母，数字，下划线.
+　例如我要匹配&amp;quot;a2345BCD__TTz&amp;quot; 正则：&amp;quot;\w&#43;&amp;quot; 这里的&amp;quot;&#43;&amp;ldquo;字符为一个量词指重复的次数，稍后会详细介绍。
+&amp;quot;\s&amp;rdquo;：匹配空格
+　例如字符 &amp;ldquo;a b c&amp;rdquo; 正则：&amp;quot;\w\s\w\s\w&amp;quot; 一个字符后跟一个空格，如有字符间有多个空格直接把&amp;quot;\s&amp;quot; 写成 &amp;ldquo;\s&#43;&amp;rdquo; 让空格重复
+&amp;quot;.&amp;quot;：匹配除了换行符以外的任何字符
+　这个算是&amp;quot;\w&amp;quot;的加强版了&amp;quot;\w&amp;quot;不能匹配 空格 如果把字符串加上空格用&amp;quot;\w&amp;quot;就受限了，看下用 &amp;ldquo;.">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://example.com" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">正则表达式学习笔记</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <p>转自：https://www.cnblogs.com/zery/p/3438845.html</p>
+<p>教程：https://www.runoob.com/regexp/regexp-tutorial.html</p>
+<h3 id="一-前言">一 、前言</h3>
+<p>　　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。</p>
+<p>其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。</p>
+<p>0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。</p>
+<p><strong>1.1 什么是正则表达式</strong></p>
+<p>正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。</p>
+<p><strong>1.2 常用的正则匹配工具</strong></p>
+<p>在线匹配工具：</p>
+<p>　 1 <a href="http://www.regexpal.com/">http://www.regexpal.com/</a></p>
+<p>2 <a href="http://rubular.com/">http://rubular.com/</a></p>
+<h3 id="二-正则字符简单介绍">二 、正则字符简单介绍</h3>
+<p><strong>2.1 元字符介绍</strong></p>
+<p><strong>&quot;^&quot;</strong> ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。</p>
+<p><strong>&quot;$&quot;</strong> ：$会匹配行或字符串的结尾</p>
+<p>如图</p>
+<p>​     而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符</p>
+<p><img src="data:image/svg&#43;xml;base64,PCEtLUFyZ29uTG9hZGluZy0tPgo8c3ZnIHdpZHRoPSIxIiBoZWlnaHQ9IjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgc3Ryb2tlPSIjZmZmZmZmMDAiPjxnPjwvZz4KPC9zdmc&#43;" alt="img"  /><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAANSURBVBhXYzh8&#43;PB/AAffA0nNPuCLAAAAAElFTkSuQmCC" alt="img"  /></p>
+<p><strong>&quot;\b&quot;</strong> :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&quot;This is Regex&quot;匹配单独的单词 &ldquo;is&rdquo; 正则就要写成 &ldquo;\bis\b&rdquo;</p>
+<p>　　  \b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界</p>
+<p><strong>&quot;\d&quot;</strong>: 匹配数字，</p>
+<p>　　  例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123  正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&quot;\d&quot;字符，实际上有更好的写法会在   下面介绍。</p>
+<p><strong>&quot;\w&quot;</strong>：匹配字母，数字，下划线.</p>
+<p>　　  例如我要匹配&quot;a2345BCD__TTz&quot; 正则：&quot;\w+&quot;  这里的&quot;+&ldquo;字符为一个量词指重复的次数，稍后会详细介绍。</p>
+<p><strong>&quot;\s&rdquo;</strong>：匹配空格</p>
+<p>　　  例如字符 &ldquo;a b c&rdquo; 正则：&quot;\w\s\w\s\w&quot;  一个字符后跟一个空格，如有字符间有多个空格直接把&quot;\s&quot; 写成 &ldquo;\s+&rdquo; 让空格重复</p>
+<p><strong>&quot;.&quot;</strong>：匹配除了换行符以外的任何字符</p>
+<p>　　  这个算是&quot;\w&quot;的加强版了&quot;\w&quot;不能匹配 空格 如果把字符串加上空格用&quot;\w&quot;就受限了，看下用 &ldquo;.&ldquo;是如何匹配字符&quot;a23 4 5 B C D__TTz&rdquo;  正则：&rdquo;.+&quot;</p>
+<p><strong>&quot;[abc]&quot;</strong>: 字符组  匹配包含括号内元素的字符</p>
+<p>​    这个比较简单了只匹配括号内存在的字符，还可以写成[a-z]匹配a至z的所以字母就等于可以用来控制只能输入英文了，</p>
+<p><strong>2.2 几种反义</strong></p>
+<p>　　写法很简单改成大写就行了，意思与原来的相反，这里就不举例子了</p>
+<p><strong>&quot;****\W&quot;</strong>  匹配任意不是字母，数字，下划线 的字符</p>
+<p><strong>&quot;\S&quot;</strong>  匹配任意不是空白符的字符</p>
+<p>　<strong>&quot;\D&quot;</strong> 匹配任意非数字的字符</p>
+<p><strong>&quot;\B&quot;</strong> 匹配不是单词开头或结束的位置</p>
+<p><strong>&quot;[^abc]&quot;</strong> 匹配除了abc以外的任意字符</p>
+<p><strong>2.3  量词</strong></p>
+<p>　　先解释关于量词所涉及到的重要的三个概念</p>
+<p>贪婪(贪心) 如&quot;*&ldquo;字符 贪婪量词会首先匹配整个字符串，尝试匹配时，它会选定尽可能多的内容，如果 失败则回退一个字符，然后再次尝试回退的过程就叫做回溯，它会每次回退一个字符，直到找到匹配的内容或者没有字符可以回退。相比下面两种贪婪量词对资源的消耗是最大的，</p>
+<p>懒惰(勉强) 如 &ldquo;?&rdquo;  懒惰量词使用另一种方式匹配，它从目标的起始位置开始尝试匹配，每次检查一个字符，并寻找它要匹配的内容，如此循环直到字符结尾处。</p>
+<p>占有  如&rdquo;+&quot; 占有量词会覆盖事个目标字符串，然后尝试寻找匹配内容 ，但它只尝试一次，不会回溯，就好比先抓一把石头，然后从石头中挑出黄金</p>
+<p><strong>&quot;*&quot;(贪婪)</strong>  重复零次或更多</p>
+<p>　　　  例如&quot;aaaaaaaa&quot; 匹配字符串中所有的a  正则： &ldquo;a*&rdquo;  会出到所有的字符&quot;a&quot;</p>
+<p><strong>&quot;+&quot;(懒惰)</strong>  重复一次或更多次</p>
+<p>　　   例如&quot;aaaaaaaa&quot; 匹配字符串中所有的a  正则： &ldquo;a+&rdquo;  会取到字符中所有的a字符，  &ldquo;a+&ldquo;与&quot;a*&ldquo;不同在于&rdquo;+&ldquo;至少是一次而&rdquo;*&rdquo; 可以是0次，</p>
+<p>　　   稍后会与&rdquo;?&ldquo;字符结合来体现这种区别</p>
+<p><strong>&rdquo;?&quot;(占有)</strong>  重复零次或一次</p>
+<p>　　   例如&quot;aaaaaaaa&quot; 匹配字符串中的a 正则 ： &ldquo;a?&rdquo; 只会匹配一次，也就是结果只是单个字符a</p>
+<p>　  <strong>&quot;{n}&quot;</strong> 重复n次</p>
+<p>　　   例如从&quot;aaaaaaaa&quot; 匹配字符串的a 并重复3次 正则：  &ldquo;a{3}&rdquo;  结果就是取到3个a字符  &ldquo;aaa&rdquo;;</p>
+<p>　  <strong>&quot;{n,m}&quot;</strong> 重复n到m次</p>
+<p>　　   例如正则 &ldquo;a{3,4}&rdquo; 将a重复匹配3次或者4次 所以供匹配的字符可以是三个&quot;aaa&quot;也可以是四个&quot;aaaa&quot; 正则都可以匹配到</p>
+<p><strong>&quot;{n,}&quot;</strong> 重复n次或更多次</p>
+<p>　   与{n,m}不同之处就在于匹配的次数将没有上限，但至少要重复n次 如 正则&quot;a{3,}&quot; a至少要重复3次</p>
+<p>把量词了解了之后之前匹配电话号码的正则现在就可以改得简单点了^0\d\d\d-\d\d\d\d\d\d\d$ 可以改为&quot;^0\d+-\d{7}$&quot;。</p>
+<p>这样写还不够完美如果因为前面的区号没有做限定，以至于可以输入很多们，而通常只能是3位或者4位，</p>
+<p>现在再改一下 &ldquo;^0\d{2,3}-\d{7}&ldquo;如此一来区号部分就可以匹配3位或者4位的了</p>
+<p><strong>2.4 懒惰限定符</strong></p>
+<p>　　<strong>&quot;*?&quot;</strong>  重复任意次，但尽可能少重复</p>
+<p>　　   如 &ldquo;acbacb&rdquo;  正则  &ldquo;a.*?b&rdquo; 只会取到第一个&quot;acb&rdquo; 原本可以全部取到但加了限定符后，只会匹配尽可能少的字符 ，而&quot;acbacb&quot;最少字符的结果就是&quot;acb&rdquo;</p>
+<p>　　<strong>&quot;+?&quot;</strong> 重复1次或更多次，但尽可能少重复</p>
+<p>　　  与上面一样，只是至少要重复1次</p>
+<p>　　<strong>&quot;??&quot;</strong> 重复0次或1次，但尽可能少重复</p>
+<p>　　   如 &ldquo;aaacb&rdquo; 正则 &ldquo;a.??b&rdquo; 只会取到最后的三个字符&quot;acb&quot;</p>
+<p>　　<strong>&quot;{n,m}?&quot;</strong> 重复n到m次，但尽可能少重复</p>
+<p>​     如 &ldquo;aaaaaaaa&rdquo;  正则 &ldquo;a{0,m}&rdquo; 因为最少是0次所以取到结果为空</p>
+<p>　　<strong>&quot;{n,}?&quot;</strong>   重复n次以上，但尽可能少重复</p>
+<p>​     如 &ldquo;aaaaaaa&rdquo;  正则 &ldquo;a{1,}&rdquo; 最少是1次所以取到结果为 &ldquo;a&rdquo;</p>
+<p><strong>修饰符：</strong>
+i ：如果在修饰符中加上&quot;i&quot;，则正则将会取消大小写敏感性，即&quot;a&quot;和&quot;A&quot; 是一样的。
+m：默认的正则开始&quot;^&ldquo;和结束&rdquo;$&ldquo;只是对于正则字符串如果在修饰符中加上&quot;m&rdquo;，那么开始和结束将会指字符串的每一行：每一行的开头就是&quot;^&quot;，结尾就是&quot;$&quot;。
+s：如果在修饰符中加入&quot;s&quot;，那么默认的&quot;.&ldquo;代表除了换行符以外的任何字符将会变成任意字符，也就是包括换行符！
+x：如果加上该修饰符，表达式中的空白字符将会被忽略，除非它已经被转义。
+e：本修饰符仅仅对于replacement有用，代表在replacement中作为PHP代码。
+A：如果使用这个修饰符，那么表达式必须是匹配的字符串中的开头部分。比如说&rdquo;/a/A&quot;匹配&quot;abcd&quot;。
+E：与&quot;m&quot;相反，如果使用这个修饰符，那么&quot;$&ldquo;将匹配绝对字符串的结尾，而不是换行符前面，默认就打开了这个模式。
+U：和问号的作用差不多，用于设置&quot;贪婪模式&rdquo;。</p>
+<p>正则表达式中常用的模式修正符有i、g、m、s、x、e等。它们之间可以组合搭配使用。</p>
+<p>它们的作用如下：</p>
+<p><strong>//修正符:i 不区分大小写的匹配;</strong></p>
+<p>//如:&quot;/abc/i&quot;可以与abc或aBC或ABc等匹配;</p>
+<p><strong>//修正符：g表示全局匹配</strong></p>
+<p><strong>//修正符:m 将字符串视为多行,不管是那行都能匹配;</strong></p>
+<p>例://模式为:$mode=&quot;/abc/m&quot;;
+//要匹配的字符串为:$str=&ldquo;bcefg5e\nabcdfe&rdquo;
+//注意其中\n,换行了;abc换到了下一行;
+//$str和$mode仍可以匹配,修正符m使得多行也可匹配;
+<strong>//修正符:s 将字符串视为单行,换行符作为普通字符;</strong></p>
+<p>例://模式为:$mode=&quot;/pr.y/&quot;;
+//要匹配字符串为:$str=&ldquo;pr\ny&rdquo;;
+//两者不可匹配; . 是除了换行以外的字符可匹配;
+//修改下模式为:$mode=&quot;/pr.y/s&quot;;
+//其中修正符s将\n视为普通字符,即不是换行;
+//最后两者可以匹配;
+<strong>//修正符:x 将模式中的空白忽略;</strong>
+<strong>//修正符:A 强制从目标字符串开头匹配;</strong></p>
+<p>例://$mode=&quot;/abc/A&quot;;
+//可以与$str=&ldquo;abcsdfi&quot;匹配,
+//不可以与$str2=&ldquo;sdsdabc&quot;匹配;
+//因为$str2不是以abc开头;
+<strong>//修正符:D 如果使用$限制结尾字符,则不允许结尾有换行;</strong></p>
+<p>例://模式为:$mode=&quot;/abc$/&quot;;
+//可以与最后有换行的$str=&ldquo;adshabc\n&quot;匹配;
+//元子符$会忽略最后的换行\n;
+//如果模式为:$mode=&quot;/abc/D&rdquo;,
+//则不能与$str=&ldquo;adshabc\n&quot;匹配,
+<strong>//修正符D限制其不可有换行;必需以abc结尾;</strong>
+<strong>//修正符:U 只匹配最近的一个字符串;不重复匹配;</strong></p>
+<p>例:
+如模式为:
+$mode=&quot;/a.*c/&quot;;
+$str=&ldquo;abcabbbcabbbbbc&rdquo; ;
+preg_match($mode,$str,$content);
+echo $content[0]; //输出:abcabbbcabbbbbc;</p>
+<p>//如果$mode=&quot;/a.*c/&quot;;变成$mode=&quot;/a.*c/U&rdquo;;
+// 则只匹配最近一个字符串,输出:abc;</p>
+<p><strong>//修正符:e 配合函数preg_replace()使用,</strong>
+可以把匹配来的字符串当作正则表达式执行;</p>
+<h3 id="三--正则进阶">三 、 正则进阶</h3>
+<p><strong>3.1 捕获分组</strong></p>
+<p>　　先了解在正则中捕获分组的概念，其实就是一个括号内的内容 如 &ldquo;(\d)\d&rdquo; 而&rdquo;(\d)&rdquo; 这就是一个捕获分组，可以对捕获分组进行 后向引用 (如果后而有相同的内容则可以直接引用前面定义的捕获组，以简化表达式) 如(\d)\d\1 这里的&quot;\1&quot;就是对&quot;(\d)&ldquo;的后向引用</p>
+<p>那捕获分组有什么用呢看个例子就知道了</p>
+<p>如  &ldquo;zery zery&rdquo; 正则 \b(\w+)\b\s\1\b 所以这里的&rdquo;\1&quot;所捕获到的字符也是 与(\w+)一样的&quot;zery&quot;，为了让组名更有意义，组名是可以自定义名字的</p>
+<p>&ldquo;\b(?<!-- raw HTML omitted -->\w+)\b\s\k<!-- raw HTML omitted -->\b&rdquo; 用&quot;?<!-- raw HTML omitted -->&ldquo;就可以自定义组名了而要后向引用组时要记得写成 &ldquo;\k<!-- raw HTML omitted -->&quot;;自定义组名后,捕获组中匹配到的值就会保存在定义的组名里</p>
+<p>下面列出捕获分组常有的用法</p>
+<p><strong>&quot;(exp)&quot;</strong>   匹配exp,并捕获文本到自动命名的组里</p>
+<p><strong>&quot;(?<!-- raw HTML omitted -->exp)&quot;</strong>  匹配exp,并捕获文本到名称为name的组里</p>
+<p><strong>&quot;(?:exp)&quot;</strong> 匹配exp,不捕获匹配的文本，也不给此分组分配组号</p>
+<p>以下为零宽断言</p>
+<p><strong>&quot;(?=exp)&quot;</strong> 匹配exp前面的位置</p>
+<p>　　如 &ldquo;How are you doing&rdquo; 正则&rdquo;(?<!-- raw HTML omitted -->.+(?=ing))&rdquo; 这里取ing前所有的字符，并定义了一个捕获分组名字为 &ldquo;txt&rdquo; 而&quot;txt&quot;这个组里的值为&quot;How are you do&quot;;</p>
+<p><strong>&quot;(?&lt;=exp)&quot;</strong> 匹配exp后面的位置</p>
+<p>　　如 &ldquo;How are you doing&rdquo; 正则&quot;(?<!-- raw HTML omitted -->(?&lt;=How).+)&quot; 这里取&quot;How&quot;之后所有的字符，并定义了一个捕获分组名字为 &ldquo;txt&rdquo; 而&quot;txt&quot;这个组里的值为&quot; are you doing&quot;;</p>
+<p><strong>&quot;(?!exp)&quot;</strong> 匹配后面跟的不是exp的位置</p>
+<p>　　如 &ldquo;123abc&rdquo; 正则 &ldquo;\d{3}(?!\d)&ldquo;匹配3位数字后非数字的结果</p>
+<p><strong>&quot;(?&lt;!exp)&quot;</strong> 匹配前面不是exp的位置</p>
+<p>　　如 &ldquo;abc123 &quot; 正则 &ldquo;(?&lt;![0-9])123&rdquo; 匹配&quot;123&quot;前面是非数字的结果也可写成&rdquo;(?!&lt;\d)123&rdquo;</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

