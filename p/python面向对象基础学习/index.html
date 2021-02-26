@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='说了暑假学开发，绝对不咕咕咕（0%）
+ 面向过程 假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它
+可以看到过程非常的繁琐，你将面对所有的步骤
+ 面向对象 假如你现在有个对象，她拥有两个技能：
+1.做饭 2.洗碗
+那么你只需要面向你的对象，然后你的对象去处理其他所有过程
+那如果你的对象再拥有两个对象：
+1.炒菜机 2.洗碗机
+那么她只需要每次都做三个动作，不必一次面向所有步骤
+ 很妙！对不对？
+你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，你既看不到具体的过程，你也不需要知道具体的过程
+你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤
+这个就叫做封装。
+把搅拌、翻炒、监测火候封装成自动炒菜机 把倒洗洁精、刷碗、擦干水封装成自动洗碗机 再把剩下的封装成你的女朋友
+ 两者的对比  面向对象本身是对面向过程的封装 面向过程什么最重要？  按步骤划分 把每个任务，分解成具体的每个步骤   面向对象什么最重要？  按功能就行划分 找到对象，确定对象的属性、行为   如何从面向过程思想转化为面向对象思想？  和面向过程一样，先找到所有步骤 试图分离功能代码块 将这些功能代码块，划分到某对象中 根据对象行为，抽象出 “类”   对象和类的关系  对象-&amp;gt;抽象-&amp;gt;类-&amp;gt;实例化-&amp;gt;对象     对象和类 对象和类里面有两个东西：
+ 属性 方法  属性是静态的、用来描述这个类或者对象本身的变量
+比如，张三这个对象，他的属性有年龄、性别、身高、体重 人这个类属性也有年龄、性别、身高、体重
+张三能执行吃饭这个动作，这就是他的一个方法
+现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：
+# python3class Person:passzhangsan = Person()#实例化为对象zhangsan.'><title>python面向对象基础学习</title>
+
+<link rel='canonical' href='https://example.com/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='python面向对象基础学习'>
+<meta property='og:description' content='说了暑假学开发，绝对不咕咕咕（0%）
+ 面向过程 假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它
+可以看到过程非常的繁琐，你将面对所有的步骤
+ 面向对象 假如你现在有个对象，她拥有两个技能：
+1.做饭 2.洗碗
+那么你只需要面向你的对象，然后你的对象去处理其他所有过程
+那如果你的对象再拥有两个对象：
+1.炒菜机 2.洗碗机
+那么她只需要每次都做三个动作，不必一次面向所有步骤
+ 很妙！对不对？
+你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，你既看不到具体的过程，你也不需要知道具体的过程
+你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤
+这个就叫做封装。
+把搅拌、翻炒、监测火候封装成自动炒菜机 把倒洗洁精、刷碗、擦干水封装成自动洗碗机 再把剩下的封装成你的女朋友
+ 两者的对比  面向对象本身是对面向过程的封装 面向过程什么最重要？  按步骤划分 把每个任务，分解成具体的每个步骤   面向对象什么最重要？  按功能就行划分 找到对象，确定对象的属性、行为   如何从面向过程思想转化为面向对象思想？  和面向过程一样，先找到所有步骤 试图分离功能代码块 将这些功能代码块，划分到某对象中 根据对象行为，抽象出 “类”   对象和类的关系  对象-&amp;gt;抽象-&amp;gt;类-&amp;gt;实例化-&amp;gt;对象     对象和类 对象和类里面有两个东西：
+ 属性 方法  属性是静态的、用来描述这个类或者对象本身的变量
+比如，张三这个对象，他的属性有年龄、性别、身高、体重 人这个类属性也有年龄、性别、身高、体重
+张三能执行吃饭这个动作，这就是他的一个方法
+现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：
+# python3class Person:passzhangsan = Person()#实例化为对象zhangsan.'>
+<meta property='og:url' content='https://example.com/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="python面向对象基础学习">
+<meta name="twitter:description" content="说了暑假学开发，绝对不咕咕咕（0%）
+ 面向过程 假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它
+可以看到过程非常的繁琐，你将面对所有的步骤
+ 面向对象 假如你现在有个对象，她拥有两个技能：
+1.做饭 2.洗碗
+那么你只需要面向你的对象，然后你的对象去处理其他所有过程
+那如果你的对象再拥有两个对象：
+1.炒菜机 2.洗碗机
+那么她只需要每次都做三个动作，不必一次面向所有步骤
+ 很妙！对不对？
+你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，你既看不到具体的过程，你也不需要知道具体的过程
+你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤
+这个就叫做封装。
+把搅拌、翻炒、监测火候封装成自动炒菜机 把倒洗洁精、刷碗、擦干水封装成自动洗碗机 再把剩下的封装成你的女朋友
+ 两者的对比  面向对象本身是对面向过程的封装 面向过程什么最重要？  按步骤划分 把每个任务，分解成具体的每个步骤   面向对象什么最重要？  按功能就行划分 找到对象，确定对象的属性、行为   如何从面向过程思想转化为面向对象思想？  和面向过程一样，先找到所有步骤 试图分离功能代码块 将这些功能代码块，划分到某对象中 根据对象行为，抽象出 “类”   对象和类的关系  对象-&amp;gt;抽象-&amp;gt;类-&amp;gt;实例化-&amp;gt;对象     对象和类 对象和类里面有两个东西：
+ 属性 方法  属性是静态的、用来描述这个类或者对象本身的变量
+比如，张三这个对象，他的属性有年龄、性别、身高、体重 人这个类属性也有年龄、性别、身高、体重
+张三能执行吃饭这个动作，这就是他的一个方法
+现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：
+# python3class Person:passzhangsan = Person()#实例化为对象zhangsan.">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://example.com" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">python面向对象基础学习</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <p>说了暑假学开发，绝对不咕咕咕（0%）</p>
+<hr>
+<h3 id="面向过程">面向过程</h3>
+<p><!-- raw HTML omitted --></p>
+<p>假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它</p>
+<p>可以看到过程非常的繁琐，你将面对所有的步骤</p>
+<hr>
+<h3 id="面向对象">面向对象</h3>
+<p><!-- raw HTML omitted --></p>
+<p>假如你现在有个对象，她拥有两个技能：</p>
+<p>1.做饭
+2.洗碗</p>
+<p>那么你只需要面向你的对象，然后你的对象去处理其他所有过程</p>
+<p><!-- raw HTML omitted --></p>
+<p>那如果你的对象再拥有两个对象：</p>
+<p>1.炒菜机
+2.洗碗机</p>
+<p>那么她只需要每次都做三个动作，不必一次面向所有步骤</p>
+<hr>
+<p>很妙！对不对？</p>
+<p>你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，<strong>你既看不到具体的过程，你也不需要知道具体的过程</strong></p>
+<p>你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤</p>
+<p>这个就叫做<strong>封装</strong>。</p>
+<p>把搅拌、翻炒、监测火候封装成自动炒菜机
+把倒洗洁精、刷碗、擦干水封装成自动洗碗机
+再把剩下的封装成你的女朋友</p>
+<hr>
+<h3 id="两者的对比">两者的对比</h3>
+<ul>
+<li>面向对象本身是对面向过程的<strong>封装</strong></li>
+<li>面向过程什么最重要？
+<ul>
+<li>按步骤划分</li>
+<li>把每个任务，分解成具体的每个步骤</li>
+</ul>
+</li>
+<li>面向对象什么最重要？
+<ul>
+<li>按功能就行划分</li>
+<li>找到对象，确定对象的属性、行为</li>
+</ul>
+</li>
+<li>如何从面向过程思想转化为面向对象思想？
+<ol>
+<li>和面向过程一样，先找到所有步骤</li>
+<li>试图分离功能代码块</li>
+<li>将这些功能代码块，划分到某对象中</li>
+<li>根据对象行为，抽象出 “类”</li>
+</ol>
+</li>
+<li>对象和类的关系
+<ul>
+<li>对象-&gt;抽象-&gt;类-&gt;实例化-&gt;对象</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="对象和类">对象和类</h3>
+<p>对象和类里面有两个东西：</p>
+<ol>
+<li>属性</li>
+<li>方法</li>
+</ol>
+<p>属性是静态的、用来描述这个类或者对象本身的变量</p>
+<p>比如，张三这个对象，他的属性有年龄、性别、身高、体重
+人这个类属性也有年龄、性别、身高、体重</p>
+<p>张三能执行吃饭这个动作，这就是他的一个<strong>方法</strong></p>
+<p>现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：</p>
+<pre><code># python3
+class Person:
+    pass
+ 
+zhangsan = Person()#实例化为对象
+ 
+zhangsan.age = 19#给zhangsan对象添加一个属性age并且赋值为19
+zhangsan.height = 190#给zhangsan对象添加一个属性height并且赋值为190
+ 
+print(zhangsan.age)#测试能否访问这个属性
+print(zhangsan.__dict__)#输出zhangsan所有属性
+print(zhangsan.__class__)#输出zhangsan的类
+print(zhangsan.__class__.__name__)#输出zhangsan的类的名称
+ 
+运行输出：
+19
+{'age': 19, 'height': 190}
+&lt;class '__main__.Person'&gt;
+Person
+</code></pre><p>下面是这段程序在内存中的状态：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171758.png" alt="img"  /></p>
+<p>其实在python中，万物皆为对象，包括int，float，str这些数据类型也都来自对象。</p>
+<p>比如：在python的命令行里面执行：</p>
+<pre><code>Python 3.8.1 (tags/v3.8.1:1b293b6, Dec 18 2019, 23:11:46) [MSC v.1916 64 bit (AMD64)] on win32
+Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.
+&gt;&gt;&gt; ''.__class__
+&lt;class 'str'&gt;
+&gt;&gt;&gt; ''.__class__.__class__
+&lt;class 'type'&gt;
+&gt;&gt;&gt;
+</code></pre><p>我们可以看到，str类型其实是来自一个叫做str的类，然后这个str的类来自type对象。实际上这个<code>class 'str'</code>也是一个对象，也就是说，我们定义一个类的时候，这个类本身也是一个对象。</p>
+<p>为了方便区别，我们也把我们自己定义的那个类叫做“类”，把他实例化得到的对象称作“实例”</p>
+<hr>
+<h3 id="属性和方法">属性和方法</h3>
+<h4 id="属性">属性</h4>
+<p>1.属性分为<strong>类属性</strong>和<strong>实例属性</strong>。</p>
+<p>下面我们来操作一下：</p>
+<pre><code>#python3
+class Person:
+    age = 18
+ 
+zhangsan = Person()
+zhangsan.sex = 'man'
+ 
+print(zhangsan.sex)
+print(Person.age)
+ 
+运行得到：
+man
+18
+</code></pre><p>可见，我们是可以通过<code>类名.属性名</code>来访问一个类属性，前面我们说过，这个Person类其实也是一个对象，Person这个变量指向了这个类（对象）存放的内存地址，当然也就可以Person.age访问一个类属性</p>
+<p>2.<strong>类属性</strong>为所有实例共享</p>
+<p>显而易见，但你修改或者定义了Person类的一个属性，比如age，那么这个类的所有实例都可以拥有这个属性；</p>
+<p>当你访问一个实例的属性时，具体步骤为：</p>
+<ol>
+<li>在当前实例里面（<strong>dict</strong>）查找这个属性</li>
+<li>如果没有，则在上级查找这个属性（.<strong>class</strong>.<strong>dict</strong>）</li>
+<li>如此反复，直到基类，没有则报错</li>
+</ol>
+<p>3.类属性和实例属性的增删改查</p>
+<p>增添：</p>
+<ul>
+<li>实例名.属性名=xxx</li>
+<li>实例名.<strong>class</strong>.属性名=xxx</li>
+<li>类名.属性名=xxx</li>
+<li>可以通过在类里面定义一个 <code>类名.__slots__={&quot;aaa&quot;}</code> 来限制此类的实例只能添加aaa属性</li>
+</ul>
+<p>删除：</p>
+<ul>
+<li>del 实例名.属性名</li>
+<li>del 类名.属性名</li>
+<li>只能删当前类，不能向上一级删除</li>
+</ul>
+<h4 id="方法">方法</h4>
+<p>同理，分为<strong>实例方法</strong>、<strong>类方法</strong>和<strong>静态方法</strong></p>
+<p>1.方法声明和储存都在<strong>类对象</strong>里面</p>
+<p>不管是类方法还是实例方法，都必须在类里面进行声明，然后方法名称储存在类里面，指向这个方法本身的内存地址</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171808.jpeg" alt="img"  /></p>
+<p>2.实例方法接受的第一个参数必须是一个实例，但是通过实例调用的时候不必填写第一个参数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171820.gif" alt="img"  /></p>
+<p>我们在创建一个实例方法的时候编辑器自动给我们补全了第一个参数self</p>
+<p>这里个self只是一个形式参数，可以写成其他名字，不过self更好</p>
+<p>3.类方法接受的第一个参数必须是一个类对象，但是通过实例调用时候不必填写第一个参数</p>
+<p>如上同理，形式参数为cls，不过在声明的时候需要在方法前面加上@classmethod装饰器</p>
+<p><!-- raw HTML omitted --></p>
+<p>4.静态方法没有必须接受的参数</p>
+<p>定义静态方法的时候需要在上一行加入装饰器<code>@staticmethod</code></p>
+<p>5.实例方法的几种调用方式</p>
+<ul>
+<li>通过实例调用方法</li>
+</ul>
+<p>调用的时候不必我们传入第一个参数，python自动把p对象传给了第一个参数</p>
+<p><!-- raw HTML omitted --></p>
+<ul>
+<li>通过类调用</li>
+</ul>
+<p>我们需要手动传递第一个参数，不然就会报错，本质上是直接找到内存中这个方法的地址进行调用</p>
+<p><!-- raw HTML omitted --></p>
+<p>6.类方法或者实例方法，都可以通过实例或者类调用而不必手动传入第一个参数，而直接调用的时候需要手动传入第一个参数</p>
+<p>比如我们下面一段代码：</p>
+<pre><code>#python3
+aaa = 'a,aa,aaa'
+a = aaa.split(',')#split是class str的里面的一个实例方法，相当于我们传入的第一个参数是aaa这个实例
+print(a)
+</code></pre><hr>
+<h3 id="属性的访问权限">属性的访问权限</h3>
+<p>python不像其他语言可以通过private、protect这些关键词来修饰属性，python只能通过在属性名称前面添加一个或者两个下划线来声明一个伪私有的属性。</p>
+<p>不说了，开局一张图：</p>
+<p>单下划线开头变量：</p>
+<p><!-- raw HTML omitted --></p>
+<p>双下划线开头变量：</p>
+<p><!-- raw HTML omitted --></p>
+<p>感叹号表示会发出警告，×表示不能访问</p>
+<p>但是我们还是可以通过 <code>_类名__属性名</code> 来访问这个属性：</p>
+<p><!-- raw HTML omitted --></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

