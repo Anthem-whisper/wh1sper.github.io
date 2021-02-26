@@ -6,14 +6,14 @@
 这是源码：
 &amp;lt;?phphighlight_file(__FILE__);class ip {public $ip;public function waf($info){}public function __construct() {if(isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])){$this-&amp;gt;ip = $this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]);}else{$this-&amp;gt;ip =$_SERVER[&amp;quot;REMOTE_ADDR&amp;quot;];}}public function __toString(){$con=mysqli_connect(&amp;quot;localhost&amp;quot;,&amp;quot;root&amp;quot;,&amp;quot;********&amp;quot;,&amp;quot;n1ctf_websign&amp;quot;);$sqlquery=sprintf(&amp;quot;INSERT into n1ip(`ip`,`time`) VALUES (&#39;%s&#39;,&#39;%s&#39;)&amp;quot;,$this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]),time());if(!mysqli_query($con,$sqlquery)){return mysqli_error($con);}else{return &amp;quot;your ip looks ok!&amp;quot;;}mysqli_close($con);}}class flag {public $ip;public $check;public function __construct($ip) {$this-&amp;gt;ip = $ip;}public function getflag(){if(md5($this-&amp;gt;check)===md5(&amp;quot;key****************&amp;quot;)){readfile(&#39;/flag&#39;);}return $this-&amp;gt;ip;}public function __wakeup(){if(stristr($this-&amp;gt;ip, &amp;quot;n1ctf&amp;quot;)!'><title>N1CTF2020</title>
 
-<link rel='canonical' href='https://example.com/p/n1ctf2020/'>
+<link rel='canonical' href='https://anthem-whisper.github.io/p/n1ctf2020/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='N1CTF2020'>
 <meta property='og:description' content='N1CTF打不过根本打不过，就做了个签到
  SignIn 考点：反序列化，布尔盲注，报错注入
 这是源码：
 &amp;lt;?phphighlight_file(__FILE__);class ip {public $ip;public function waf($info){}public function __construct() {if(isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])){$this-&amp;gt;ip = $this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]);}else{$this-&amp;gt;ip =$_SERVER[&amp;quot;REMOTE_ADDR&amp;quot;];}}public function __toString(){$con=mysqli_connect(&amp;quot;localhost&amp;quot;,&amp;quot;root&amp;quot;,&amp;quot;********&amp;quot;,&amp;quot;n1ctf_websign&amp;quot;);$sqlquery=sprintf(&amp;quot;INSERT into n1ip(`ip`,`time`) VALUES (&#39;%s&#39;,&#39;%s&#39;)&amp;quot;,$this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]),time());if(!mysqli_query($con,$sqlquery)){return mysqli_error($con);}else{return &amp;quot;your ip looks ok!&amp;quot;;}mysqli_close($con);}}class flag {public $ip;public $check;public function __construct($ip) {$this-&amp;gt;ip = $ip;}public function getflag(){if(md5($this-&amp;gt;check)===md5(&amp;quot;key****************&amp;quot;)){readfile(&#39;/flag&#39;);}return $this-&amp;gt;ip;}public function __wakeup(){if(stristr($this-&amp;gt;ip, &amp;quot;n1ctf&amp;quot;)!'>
-<meta property='og:url' content='https://example.com/p/n1ctf2020/'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/n1ctf2020/'>
 <meta property='og:site_name' content='wh1sper'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="N1CTF2020">
@@ -70,8 +70,8 @@
                 
             </figure>
         
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -178,7 +178,7 @@
 
             <main class="main full-width">
     <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />

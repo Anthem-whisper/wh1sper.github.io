@@ -12,7 +12,7 @@
 开题送码：
 &amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?'><title>DozerCTF2020_web</title>
 
-<link rel='canonical' href='https://example.com/p/dozerctf2020_web/'>
+<link rel='canonical' href='https://anthem-whisper.github.io/p/dozerctf2020_web/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='DozerCTF2020_web'>
 <meta property='og:description' content='又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
@@ -25,7 +25,7 @@
 白给的反序列化 考点：PHP反序列化
 开题送码：
 &amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?'>
-<meta property='og:url' content='https://example.com/p/dozerctf2020_web/'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/dozerctf2020_web/'>
 <meta property='og:site_name' content='wh1sper'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="DozerCTF2020_web">
@@ -88,8 +88,8 @@
                 
             </figure>
         
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -196,7 +196,7 @@
 
             <main class="main full-width">
     <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />

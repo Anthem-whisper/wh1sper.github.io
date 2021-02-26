@@ -18,7 +18,7 @@ union没有被过滤的话，那么就尝试union注入吧：
 利用join绕过逗号过滤：
 union select * from ((select 1)A join (select 2)B join (select 3)C)#//union select * from ((select 1)A join (select 2)B join (select 3)C)#查询成功，列数为3，2和3分别为username和password的回显位置，就可以替换为子查询，但是最致命的是or被过滤了，造成了information_schema背锅，所以我们需要bypass information_schema'><title>2020 X1cT34m Web第一次考核</title>
 
-<link rel='canonical' href='https://example.com/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/'>
+<link rel='canonical' href='https://anthem-whisper.github.io/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='2020 X1cT34m Web第一次考核'>
 <meta property='og:description' content='0x00前言 终于等到来的太突然的考核，感觉自己表现不是太好，本来入门时间也不短了，是因为不够努力才这么菜
@@ -37,7 +37,7 @@ union没有被过滤的话，那么就尝试union注入吧：
 查询列数： {&amp;quot;username&amp;quot;:&amp;quot;1\\&amp;quot;,&amp;quot;password&amp;quot;:&amp;quot;union/**/select/**/1,2,3#&amp;quot;}回显是“WAF！！！”因为逗号被过滤了
 利用join绕过逗号过滤：
 union select * from ((select 1)A join (select 2)B join (select 3)C)#//union select * from ((select 1)A join (select 2)B join (select 3)C)#查询成功，列数为3，2和3分别为username和password的回显位置，就可以替换为子查询，但是最致命的是or被过滤了，造成了information_schema背锅，所以我们需要bypass information_schema'>
-<meta property='og:url' content='https://example.com/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/'>
 <meta property='og:site_name' content='wh1sper'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="2020 X1cT34m Web第一次考核">
@@ -106,8 +106,8 @@ union select * from ((select 1)A join (select 2)B join (select 3)C)#//union sel
                 
             </figure>
         
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -214,7 +214,7 @@ union select * from ((select 1)A join (select 2)B join (select 3)C)#//union sel
 
             <main class="main full-width">
     <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />

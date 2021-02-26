@@ -7,7 +7,7 @@
 &amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 5) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);四字版本：
 &amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 4) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);预备知识 在cmd长度小于5（4）个字符的时候用 exec 函数执行系统命令，不过 exec 函数是默认没有回显的，这里我们就只能盲打。'><title>绕过4-5个字符限制getshell</title>
 
-<link rel='canonical' href='https://example.com/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/'>
+<link rel='canonical' href='https://anthem-whisper.github.io/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='绕过4-5个字符限制getshell'>
 <meta property='og:description' content='这个东西起源于HITCON CTF 2017的一道题，高校战疫Hack Me也曾经出现过，最近突然做到了来说一下
@@ -15,7 +15,7 @@
  源码 五字版本
 &amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 5) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);四字版本：
 &amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 4) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);预备知识 在cmd长度小于5（4）个字符的时候用 exec 函数执行系统命令，不过 exec 函数是默认没有回显的，这里我们就只能盲打。'>
-<meta property='og:url' content='https://example.com/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/'>
 <meta property='og:site_name' content='wh1sper'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="绕过4-5个字符限制getshell">
@@ -73,8 +73,8 @@
                 
             </figure>
         
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -181,7 +181,7 @@
 
             <main class="main full-width">
     <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />

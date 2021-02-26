@@ -9,7 +9,7 @@ phar反序列化 我们可以看到class.php里面有很多的类，可以想到
 class.php
 &amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.'><title>2020“巅峰极客”</title>
 
-<link rel='canonical' href='https://example.com/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/'>
+<link rel='canonical' href='https://anthem-whisper.github.io/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='2020“巅峰极客”'>
 <meta property='og:description' content='babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
@@ -19,7 +19,7 @@ Paper：https://paper.seebug.org/680/
 phar反序列化 我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。
 class.php
 &amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.'>
-<meta property='og:url' content='https://example.com/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/'>
 <meta property='og:site_name' content='wh1sper'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="2020“巅峰极客”">
@@ -79,8 +79,8 @@ class.php
                 
             </figure>
         
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -187,7 +187,7 @@ class.php
 
             <main class="main full-width">
     <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />

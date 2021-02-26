@@ -11,7 +11,7 @@ php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时�
 题目源码：
 &amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!'><title>CG-CTF_wp</title>
 
-<link rel='canonical' href='https://example.com/p/cg-ctf_wp/'>
+<link rel='canonical' href='https://anthem-whisper.github.io/p/cg-ctf_wp/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='CG-CTF_wp'>
 <meta property='og:description' content='cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
@@ -23,7 +23,7 @@ view-source:if (isset ($_GET[&#39;nctf&#39;])) {if (@ereg (&amp;quot;^[1-9]&#4
 php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时也会被存储
 题目源码：
 &amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!'>
-<meta property='og:url' content='https://example.com/p/cg-ctf_wp/'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/cg-ctf_wp/'>
 <meta property='og:site_name' content='wh1sper'>
 <meta property='og:type' content='article'><meta property='article:section' content='Post' />
 <meta name="twitter:title" content="CG-CTF_wp">
@@ -85,8 +85,8 @@ php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时�
                 
             </figure>
         
-        <h1 class="site-name"><a href="https://example.com">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全</h2>
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -193,7 +193,7 @@ php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时�
 
             <main class="main full-width">
     <div id="article-toolbar">
-        <a href="https://example.com" class="back-home">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path stroke="none" d="M0 0h24v24H0z"/>
   <polyline points="15 6 9 12 15 18" />
