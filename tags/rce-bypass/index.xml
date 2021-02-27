@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RCE bypass on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/rce-bypass/</link>
+    <description>Recent content in RCE bypass on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 02 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/rce-bypass/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>绕过4-5个字符限制getshell</title>
+      <link>https://anthem-whisper.github.io/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/</link>
+      <pubDate>Tue, 02 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/</guid>
+      <description>这个东西起源于HITCON CTF 2017的一道题，高校战疫Hack Me也曾经出现过，最近突然做到了来说一下
+参考：https://www.anquanke.com/post/id/87203
+ 源码 五字版本
+&amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 5) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);四字版本：
+&amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 4) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);预备知识 在cmd长度小于5（4）个字符的时候用 exec 函数执行系统命令，不过 exec 函数是默认没有回显的，这里我们就只能盲打。</description>
+    </item>
+    
+  </channel>
+</rss>

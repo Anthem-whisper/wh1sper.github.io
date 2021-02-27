@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='前言 在西工大举办的NPUCTF2020上面做到一道webcrypto的题，以前从来没接触过密码安全方向，这次正好学一下入个门
+正文 参考
+Padding Oracle Attack：
+《白帽子讲web安全》P239
+&amp;raquo;一叶飘零师傅
+CBC翻转攻击：
+&amp;raquo;某师傅
+&amp;raquo;某某师傅
+先来讲一讲CBC模式加密原理：
+ 首先将明文（Plaintext）分组(常见的以16或8字节为一组)，位数不足的使用特殊字符填充。 生成一个随机的初始化向量(IV)和一个密钥。 将IV和第一组明文异或（xor运算）。 用密钥对3中xor后产生的密文加密。 用4中产生的密文对第二组明文进行xor操作。 用密钥对5中产生的密文加密。 重复4-7，到最后一组明文。 将IV和加密后的密文拼接在一起，得到最终的密文  解密过程：
+ 先从密文中取出IV，然后对剩下的密文分组（16或8字节为一组） 使用秘钥解密第一组密文，将解密结果与IV做异或运算，得到明文1 然后使用秘钥解第二组密文，将解密的结果与上一组密文进行异或运算，得出明文2 重复2-3，直至所有密文解密完毕  以上就是CBC模式的加密解密过程，接下来讲两种手段：
+Padding Oracle Attack 直译为 “填充Oracle攻击” ，这里主要关注一下解密过程：
+密文cipher首先进行一系列处理，如图中的Block Cipher Decryption 我们将处理后的值称为 middle 中间值 然后 middle 与我们输入的iv进行异或操作 得到的即为明文 但这里有一个规则叫做Padding填充： 因为加密是按照16位一组分组进行的 而如果不足16位，就需要进行填充
+有几个空，就要填充几个“几”
+比如明文为admin，那么需要填充的就是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b （11个\x0b）
+如果我们输入一个错误的iv，依旧是可以解密的，但是 middle 和我们输入的iv经过异或后得到的填充值可能出现错误
+比如本来应该是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b 而我们错误的得到 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x3b\x2c
+这样解密程序往往会抛出异常(Padding Error)
+应用在web里的时候，往往是302或是500报错 而正常解密的时候是200 所以这时，我们可以根据服务器的反应来判断我们输入的iv
+看例子：
+我们假设middle中间值为：
+0x39 0x73 0x23 0x22 0x07 0x6a 0x26 0x3d正确的解密iv应该为'><title>Padding Oracle Attack&amp;CBC字节翻转攻击</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/tmp/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='Padding Oracle Attack&amp;CBC字节翻转攻击'>
+<meta property='og:description' content='前言 在西工大举办的NPUCTF2020上面做到一道webcrypto的题，以前从来没接触过密码安全方向，这次正好学一下入个门
+正文 参考
+Padding Oracle Attack：
+《白帽子讲web安全》P239
+&amp;raquo;一叶飘零师傅
+CBC翻转攻击：
+&amp;raquo;某师傅
+&amp;raquo;某某师傅
+先来讲一讲CBC模式加密原理：
+ 首先将明文（Plaintext）分组(常见的以16或8字节为一组)，位数不足的使用特殊字符填充。 生成一个随机的初始化向量(IV)和一个密钥。 将IV和第一组明文异或（xor运算）。 用密钥对3中xor后产生的密文加密。 用4中产生的密文对第二组明文进行xor操作。 用密钥对5中产生的密文加密。 重复4-7，到最后一组明文。 将IV和加密后的密文拼接在一起，得到最终的密文  解密过程：
+ 先从密文中取出IV，然后对剩下的密文分组（16或8字节为一组） 使用秘钥解密第一组密文，将解密结果与IV做异或运算，得到明文1 然后使用秘钥解第二组密文，将解密的结果与上一组密文进行异或运算，得出明文2 重复2-3，直至所有密文解密完毕  以上就是CBC模式的加密解密过程，接下来讲两种手段：
+Padding Oracle Attack 直译为 “填充Oracle攻击” ，这里主要关注一下解密过程：
+密文cipher首先进行一系列处理，如图中的Block Cipher Decryption 我们将处理后的值称为 middle 中间值 然后 middle 与我们输入的iv进行异或操作 得到的即为明文 但这里有一个规则叫做Padding填充： 因为加密是按照16位一组分组进行的 而如果不足16位，就需要进行填充
+有几个空，就要填充几个“几”
+比如明文为admin，那么需要填充的就是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b （11个\x0b）
+如果我们输入一个错误的iv，依旧是可以解密的，但是 middle 和我们输入的iv经过异或后得到的填充值可能出现错误
+比如本来应该是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b 而我们错误的得到 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x3b\x2c
+这样解密程序往往会抛出异常(Padding Error)
+应用在web里的时候，往往是302或是500报错 而正常解密的时候是200 所以这时，我们可以根据服务器的反应来判断我们输入的iv
+看例子：
+我们假设middle中间值为：
+0x39 0x73 0x23 0x22 0x07 0x6a 0x26 0x3d正确的解密iv应该为'>
+<meta property='og:url' content='https://anthem-whisper.github.io/tmp/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Tmp' />
+<meta name="twitter:title" content="Padding Oracle Attack&amp;CBC字节翻转攻击">
+<meta name="twitter:description" content="前言 在西工大举办的NPUCTF2020上面做到一道webcrypto的题，以前从来没接触过密码安全方向，这次正好学一下入个门
+正文 参考
+Padding Oracle Attack：
+《白帽子讲web安全》P239
+&amp;raquo;一叶飘零师傅
+CBC翻转攻击：
+&amp;raquo;某师傅
+&amp;raquo;某某师傅
+先来讲一讲CBC模式加密原理：
+ 首先将明文（Plaintext）分组(常见的以16或8字节为一组)，位数不足的使用特殊字符填充。 生成一个随机的初始化向量(IV)和一个密钥。 将IV和第一组明文异或（xor运算）。 用密钥对3中xor后产生的密文加密。 用4中产生的密文对第二组明文进行xor操作。 用密钥对5中产生的密文加密。 重复4-7，到最后一组明文。 将IV和加密后的密文拼接在一起，得到最终的密文  解密过程：
+ 先从密文中取出IV，然后对剩下的密文分组（16或8字节为一组） 使用秘钥解密第一组密文，将解密结果与IV做异或运算，得到明文1 然后使用秘钥解第二组密文，将解密的结果与上一组密文进行异或运算，得出明文2 重复2-3，直至所有密文解密完毕  以上就是CBC模式的加密解密过程，接下来讲两种手段：
+Padding Oracle Attack 直译为 “填充Oracle攻击” ，这里主要关注一下解密过程：
+密文cipher首先进行一系列处理，如图中的Block Cipher Decryption 我们将处理后的值称为 middle 中间值 然后 middle 与我们输入的iv进行异或操作 得到的即为明文 但这里有一个规则叫做Padding填充： 因为加密是按照16位一组分组进行的 而如果不足16位，就需要进行填充
+有几个空，就要填充几个“几”
+比如明文为admin，那么需要填充的就是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b （11个\x0b）
+如果我们输入一个错误的iv，依旧是可以解密的，但是 middle 和我们输入的iv经过异或后得到的填充值可能出现错误
+比如本来应该是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b 而我们错误的得到 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x3b\x2c
+这样解密程序往往会抛出异常(Padding Error)
+应用在web里的时候，往往是302或是500报错 而正常解密的时候是200 所以这时，我们可以根据服务器的反应来判断我们输入的iv
+看例子：
+我们假设middle中间值为：
+0x39 0x73 0x23 0x22 0x07 0x6a 0x26 0x3d正确的解密iv应该为">
+    </head>
+    <body class="article-page keep-sidebar">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended ">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/tmp/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/">Padding Oracle Attack&amp;CBC字节翻转攻击</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <h3 id="前言"><strong>前言</strong></h3>
+<p>在西工大举办的NPUCTF2020上面做到一道webcrypto的题，以前从来没接触过密码安全方向，这次正好学一下入个门</p>
+<h3 id="正文"><strong>正文</strong></h3>
+<p>参考</p>
+<p>Padding Oracle Attack：</p>
+<p>《白帽子讲web安全》P239</p>
+<p><a class="link" href="https://skysec.top/2017/12/13/padding-oracle%e5%92%8ccbc%e7%bf%bb%e8%bd%ac%e6%94%bb%e5%87%bb/"  target="_blank" rel="noopener"
+    >&raquo;一叶飘零师傅</a></p>
+<p>CBC翻转攻击：</p>
+<p><a class="link" href="https://www.jianshu.com/p/7f171477a603"  target="_blank" rel="noopener"
+    >&raquo;某师傅</a></p>
+<p><a class="link" href="https://blog.csdn.net/include_heqile/article/details/79942993"  target="_blank" rel="noopener"
+    >&raquo;某某师傅</a></p>
+<p>先来讲一讲CBC模式加密原理：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170001.png" alt="img"  /></p>
+<ol>
+<li>首先将明文（Plaintext）分组(常见的以16或8字节为一组)，位数不足的使用特殊字符填充。</li>
+<li>生成一个随机的初始化向量(IV)和一个密钥。</li>
+<li>将IV和第一组明文异或（xor运算）。</li>
+<li>用密钥对3中xor后产生的密文加密。</li>
+<li>用4中产生的密文对第二组明文进行xor操作。</li>
+<li>用密钥对5中产生的密文加密。</li>
+<li>重复4-7，到最后一组明文。</li>
+<li>将IV和加密后的密文拼接在一起，得到最终的密文</li>
+</ol>
+<p>解密过程：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170010.png" alt="img"  /></p>
+<ol>
+<li>先从密文中取出IV，然后对剩下的密文分组（16或8字节为一组）</li>
+<li>使用秘钥解密第一组密文，将解密结果与IV做异或运算，得到明文1</li>
+<li>然后使用秘钥解第二组密文，将解密的结果与上一组密文进行异或运算，得出明文2</li>
+<li>重复2-3，直至所有密文解密完毕</li>
+</ol>
+<p>以上就是CBC模式的加密解密过程，接下来讲两种手段：</p>
+<h4 id="padding-oracle-attack"><strong>Padding Oracle Attack</strong></h4>
+<p>直译为 “填充Oracle攻击” ，这里主要关注一下解密过程：</p>
+<p>密文cipher首先进行一系列处理，如图中的Block Cipher Decryption
+我们将处理后的值称为 <code>middle</code> 中间值
+然后 <code>middle</code> 与我们输入的iv进行异或操作
+得到的即为明文
+但这里有一个规则叫做Padding填充：
+因为加密是按照16位一组分组进行的
+而如果不足16位，就需要进行填充</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170017.png" alt="img"  /></p>
+<p>有几个空，就要填充几个“几”</p>
+<p>比如明文为admin，那么需要填充的就是 <code>admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b</code> （11个\x0b）</p>
+<p>如果我们输入一个错误的iv，依旧是可以解密的，但是 <code>middle</code> 和我们输入的iv经过异或后得到的填充值可能出现错误</p>
+<p>比如本来应该是 <code>admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b</code>
+而我们错误的得到 <code>admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x3b\x2c</code></p>
+<p>这样解密程序往往会抛出异常(Padding Error)</p>
+<p>应用在web里的时候，往往是302或是500报错
+而正常解密的时候是200
+所以这时，我们可以根据服务器的反应来判断我们输入的iv</p>
+<p>看例子：</p>
+<p>我们假设middle中间值为：</p>
+<pre><code>0x39 0x73 0x23 0x22 0x07 0x6a 0x26 0x3d
+</code></pre><p>正确的解密iv应该为</p>
+<pre><code>0x6d 0x36 0x70 0x76 0x03 0x6e 0x22 0x39
+</code></pre><p>解密后正确的明文为：</p>
+<pre><code>T E S T 0x04 0x04 0x04 0x04
+</code></pre><p>但是关键点在于，我们可以知道iv的值，却不能得到中间值和解密后明文的值
+而我们的目标是<strong>只根据我们输入的iv值和服务器的状态去判断出解密后明文的值</strong>
+这里的攻击即叫做 <code>Padding Oracle Attack</code> 攻击
+这时候我们选择进行爆破攻击</p>
+<p>如果我们构造一个iv为：</p>
+<pre><code>0x00 0x00 0x00 0x00 0x00 0x00 0x00 0x00
+</code></pre><p>那么 <code>middle</code> 的值和这个iv异或将会得到原封不动的 <code>middle</code> 的值</p>
+<pre><code>0x39 0x73 0x23 0x22 0x07 0x6a 0x26 0x3d
+</code></pre><p>现在这个解密结果是不对的</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170100.png" alt="img"  /></p>
+<p>正确的 <code>padding</code> 值只可能是：</p>
+<ul>
+<li>1个字节的padding为0x01</li>
+<li>2个字节的padding为0x02，0x02</li>
+<li>3个字节的padding为0x03，0x03，0x03</li>
+<li>4个字节的padding为0x04，0x04，0x04，0x04</li>
+<li>……</li>
+</ul>
+<p>因此我们希望慢慢调整iv的值，并且希望解密后最后一个值为正确的 <code>padding</code> 比如一个0x01，我们于是遍历最后一位iv：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170112.png" alt="img"  /></p>
+<p>那么最后一位中间密文就是： <code>0x01^0x3C=0x3D</code> （这个一定成立，看图）,原来的明文就是 <code>0x3D^0x0F=0x32</code>（中间密文^原来的iv）</p>
+<p>知道了最后一位的中间密文，就可以遍历倒数第二位iv了，这个时候应该为 <code>0x02</code> 而非 <code>0x01</code> 了。看图就懂：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170121.png" alt="img"  /></p>
+<p>以此类推，我们可以就能推算所有中间密文，再用 <code>中间密文^原来的iv</code> 就能算出明文了</p>
+<h4 id="cbc字节翻转攻击"><strong>CBC字节翻转攻击</strong></h4>
+<p>有了上面的CBC加密解密过程的基础，这个手段其实很容易理解；</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170128.png" alt="img"  /></p>
+<p>由解密算法可知：</p>
+<pre><code>A=B^C
+</code></pre><p>由 <code>^</code> 运算的性质我们可以知道：</p>
+<pre><code>A=B^C、B=A^C、C=A^B
+</code></pre><p>这是最关键的一点，我们可以推导出三者做异或运算的结果是0</p>
+<pre><code>C=A^B
+C^C=A^B^C=0
+</code></pre><p>我们修改了B的值，就一定会影响到A</p>
+<pre><code>B^X^C=A^X
+</code></pre><p>也就是说，我们只要给B异或了X，A的值也会改变为他之前的值异或X的结果</p>
+<h4 id="一-道ctf的例子"><strong>一 道CTF的例子</strong></h4>
+<p>NPUCTF2020_web🐕</p>
+<pre><code>我摊牌了，就是懒得写前端
+&lt;?php 
+error_reporting(0);
+include('config.php');   # $key,********$file1*********
+define(&quot;METHOD&quot;, &quot;aes-128-cbc&quot;);  //定义加密方式
+define(&quot;SECRET_KEY&quot;, $key);    //定义密钥
+define(&quot;IV&quot;,&quot;6666666666666666&quot;);    //定义初始向量 16个6
+define(&quot;BR&quot;,'&lt;br&gt;');
+if(!isset($_GET['source']))header('location:./index.php?source=1');
+
+
+#var_dump($GLOBALS);   //听说你想看这个？
+function aes_encrypt($iv,$data)
+{
+    echo &quot;--------encrypt---------&quot;.BR;
+    echo 'IV:'.$iv.BR;
+    return base64_encode(openssl_encrypt($data, METHOD, SECRET_KEY, OPENSSL_RAW_DATA, $iv)).BR;
+}
+function aes_decrypt($iv,$data)
+{
+    return openssl_decrypt(base64_decode($data),METHOD,SECRET_KEY,OPENSSL_RAW_DATA,$iv) or die('False');  #不返回密文，解密成功返回1，解密失败返回False
+}
+if($_GET['method']=='encrypt')
+{
+    $iv = IV;
+    $data = $file1;    
+    echo aes_encrypt($iv,$data);
+} else if($_GET['method']==&quot;decrypt&quot;)
+{
+    $iv = @$_POST['iv'];
+    $data = @$_POST['data'];
+    echo aes_decrypt($iv,$data);
+}
+echo &quot;我摊牌了，就是懒得写前端&quot;.BR;
+
+if($_GET['source']==1)highlight_file(__FILE__);
+?&gt;
+</code></pre><p>padding Oracle Attack</p>
+<p>exp：</p>
+<pre><code># coding:utf-8
+import requests
+import base64
+
+# b'\x97.\xda\xb8\xa5P\t\x95\xae\x9b\xf5\xbf\xe2\x8b.&lt;'
+CYPHERTEXT = base64.b64decode(&quot;ly7auKVQCZWum/W/4osuPA==&quot;)
+# initialization vector
+IV = &quot;6666666666666666&quot;
+# PKCS7 16个字节为1组
+N = 16
+# intermediaryValue ^ IV = plainText
+inermediaryValue = &quot;&quot;
+plainText = &quot;&quot;
+# 爆破时不断需要更改的iv
+iv = &quot;&quot;
+URL = &quot;http://webdog.popscat.top/index.php?method=decrypt&amp;source=1&quot;
+
+
+def xor(a, b):
+    &quot;&quot;&quot;
+    用于输出两个字符串对位异或的结果
+    &quot;&quot;&quot;
+    return &quot;&quot;.join([chr(ord(a[i]) ^ ord(b[i])) for i in range(len(a))])
+
+
+for step in range(1, N + 1):
+    padding = chr(step) * (step - 1)
+    print(step,end=&quot;,&quot;)
+    for i in range(0, 256):
+        print(i)
+        &quot;&quot;&quot;
+        iv由三部分组成：
+            待爆破位置 chr(0)*(N-step) 
+            正在爆破位置 chr(i) 
+            使 iv[N-step+1:] ^ inermediaryValue = padding 的 xor(padding,inermediaryValue)
+        &quot;&quot;&quot;
+        iv = chr(0)*(N-step)+chr(i)+xor(padding,inermediaryValue)
+        data = {
+            &quot;data&quot;: &quot;ly7auKVQCZWum/W/4osuPA==&quot;,
+            &quot;iv&quot;: iv
+        }
+        r = requests.post(URL,data = data)
+        if r.text !=&quot;False&quot;:
+            inermediaryValue = xor(chr(i),chr(step)) + inermediaryValue
+            print(inermediaryValue)
+            break
+plainText = xor(inermediaryValue,IV)
+print(plainText)
+</code></pre><p>运行，得到 <code>FlagIsHere.php</code> 访问之，得到如下源码：</p>
+<pre><code>F7LMTk/3nKSVUoSQuOS/dA==
+&lt;?php 
+#error_reporting(0);
+include('config.php');    //**************$file2********last step!!
+define(&quot;METHOD&quot;, &quot;aes-128-cbc&quot;);
+define(&quot;SECRET_KEY&quot;, &quot;6666666&quot;);
+session_start();
+
+function get_iv(){    //生成随机初始向量IV
+    $random_iv='';
+    for($i=0;$i&lt;16;$i++){
+        $random_iv.=chr(rand(1,255));
+    }
+    return $random_iv;
+}
+
+$lalala = 'piapiapiapia';
+
+if(!isset($_SESSION['Identity'])){
+    $_SESSION['iv'] = get_iv();
+
+    $_SESSION['Identity'] = base64_encode(openssl_encrypt($lalala, METHOD, SECRET_KEY, OPENSSL_RAW_DATA, $_SESSION['iv']));
+}
+echo base64_encode($_SESSION['iv']).&quot;&lt;br&gt;&quot;;
+
+if(isset($_POST['iv'])){
+    $tmp_id = openssl_decrypt(base64_decode($_SESSION['Identity']), METHOD, SECRET_KEY, OPENSSL_RAW_DATA, base64_decode($_POST['iv']));
+    echo $tmp_id.&quot;&lt;br&gt;&quot;;
+    if($tmp_id ==='weber')die($file2);
+}
+
+highlight_file(__FILE__);
+?&gt;
+</code></pre><p>整理一下已知信息：</p>
+<pre><code>iv=
+F7LMTk/3nKSVUoSQuOS/dA==
+\x17 \xb2 \xcc \x4e \x4f \xf7 \x9c \xa4 \x95 \x52 \x84 \x90 \xb8 \xe4 \xbf \x74 
+加密后：
+$Identity='MLvuYeH07rhiAa5NJ1p75A=='
+$Identity='\x30 \xbb \xee \x61 \xe1 \xf4 \xee \xb8 \x62 \x01 \xae \x4d \x27 \x5a \x7b \xe4 '
+</code></pre><p>目的就是传入新的iv对identity进行解密，如果解密结果为&rsquo;weber&rsquo;那么就爽歪歪，这里考察的就是CBC字节翻转攻击</p>
+<p>和Padding Oracle Attack不一样，这里不需要推测中间密文，根据我上面说的</p>
+<pre><code>B^X^C=A^X
+</code></pre><p>本来是 <code>piapiapiapia\x04\x04\x04\x04</code> 现在我们需要改为 <code>weber\x0B\x0B\x0B\x0B\x0B\x0B\x0B\x0B\x0B\x0B\x0B</code> ，就拿第一位来说：</p>
+<p>我们想要把 <code>p</code> 改为 <code>w</code> ，那么我就要找出 <code>X</code> 的值， <code>'p'^X='w'</code> 很容易算出 <code>X='p'^'w'</code> 那么我们只需要在将B异或一个 <code>('p'^'w')</code> ，就可以达到目的。</p>
+<p>不过当时比赛的时候平台被D了，我是在出题人的学生机上面跑，脚本应该没问题，但是跑不出来，换了正常环境iv又不一样懒得重写，所以用了学长的脚本：</p>
+<pre><code>import base64
+def bxor(b1, b2): # use xor for bytes
+    parts = []
+    for b1, b2 in zip(b1, b2):
+        parts.append(bytes([b1 ^ b2]))
+    return b''.join(parts)
+iv = base64.b64decode(&quot;h34HL5RbMPw8oTaQ+P58nw==&quot;)
+text = b&quot;piapiapiapia\x04\x04\x04\x04&quot;
+result = b&quot;weber\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b&quot;
+middle = bxor(iv,text)
+iv = bxor(middle,result)
+print(base64.b64encode(iv))
+</code></pre><p>跑出来POST一个iv过去得到一个网址： <code>https://c-t.work/s/034d3b3bf3fb48||verification code:2q2hwm</code></p>
+<p>好像是有个附件，下载来是一个xxx.class文件考的Java反编译。。。不过百度能搜到，用工具 <code>jd-gui-1.4.0</code> 一下就跑出来。</p>
+<p>得到数组，就是flag的ASCII码</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170140.png" alt="img"  /></p>
+<pre><code>q = [102, 108, 97, 103, 123, 119, 101, 54, 95, 52, 111, 103, 
+     95, 49, 115, 95, 101, 52, 115, 121, 103, 48, 105, 110, 103, 125]
+for i in q:
+    print(chr(i), end='')
+</code></pre><p>flag{we6_4og_1s_e4syg0ing}</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+     
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+
+    
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

