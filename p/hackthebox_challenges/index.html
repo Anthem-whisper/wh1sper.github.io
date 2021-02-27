@@ -1,447 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Emdee five for life 考点：python正则，request模块
-打开页面，给你一个字符串，md5加密后提交，太慢或者错了就会Too slow：
-&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;emdee five for life&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body style=&amp;quot;background-color:powderblue;&amp;quot;&amp;gt;&amp;lt;h1 align=&#39;center&#39;&amp;gt;MD5 encrypt this string&amp;lt;/h1&amp;gt;&amp;lt;h3 align=&#39;center&#39;&amp;gt;LWod6afkxEjJV8KZeLRO&amp;lt;/h3&amp;gt;&amp;lt;center&amp;gt;&amp;lt;form action=&amp;quot;&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;hash&amp;quot; placeholder=&amp;quot;MD5&amp;quot; align=&#39;center&#39;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/br&amp;gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/form&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;当然是脚本：
-#!/usr/bin/env python3import requestsimport reimport hashlibwhile 1:host = &amp;quot;http://docker.hackthebox.eu:32046/&amp;quot;req = requests.session()r = req.get(url=host)#print(r.text)pattern = re.compile(r&amp;quot;&amp;lt;h3 align=&#39;center&#39;&amp;gt;(\S&#43;)&amp;lt;/h3&amp;gt;&amp;quot;)h3 = pattern.findall(r.text)md5 = hashlib.md5(h3[0].encode(&#39;utf-8&#39;)).hexdigest()#print(h3[0],md5)data={&#39;hash&#39;:md5}s = req.'><title>HackTheBox_challenges</title>
-
-<link rel='canonical' href='https://anthem-whisper.github.io/p/hackthebox_challenges/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HackTheBox_challenges'>
-<meta property='og:description' content='Emdee five for life 考点：python正则，request模块
-打开页面，给你一个字符串，md5加密后提交，太慢或者错了就会Too slow：
-&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;emdee five for life&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body style=&amp;quot;background-color:powderblue;&amp;quot;&amp;gt;&amp;lt;h1 align=&#39;center&#39;&amp;gt;MD5 encrypt this string&amp;lt;/h1&amp;gt;&amp;lt;h3 align=&#39;center&#39;&amp;gt;LWod6afkxEjJV8KZeLRO&amp;lt;/h3&amp;gt;&amp;lt;center&amp;gt;&amp;lt;form action=&amp;quot;&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;hash&amp;quot; placeholder=&amp;quot;MD5&amp;quot; align=&#39;center&#39;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/br&amp;gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/form&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;当然是脚本：
-#!/usr/bin/env python3import requestsimport reimport hashlibwhile 1:host = &amp;quot;http://docker.hackthebox.eu:32046/&amp;quot;req = requests.session()r = req.get(url=host)#print(r.text)pattern = re.compile(r&amp;quot;&amp;lt;h3 align=&#39;center&#39;&amp;gt;(\S&#43;)&amp;lt;/h3&amp;gt;&amp;quot;)h3 = pattern.findall(r.text)md5 = hashlib.md5(h3[0].encode(&#39;utf-8&#39;)).hexdigest()#print(h3[0],md5)data={&#39;hash&#39;:md5}s = req.'>
-<meta property='og:url' content='https://anthem-whisper.github.io/p/hackthebox_challenges/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
-<meta name="twitter:title" content="HackTheBox_challenges">
-<meta name="twitter:description" content="Emdee five for life 考点：python正则，request模块
-打开页面，给你一个字符串，md5加密后提交，太慢或者错了就会Too slow：
-&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;emdee five for life&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body style=&amp;quot;background-color:powderblue;&amp;quot;&amp;gt;&amp;lt;h1 align=&#39;center&#39;&amp;gt;MD5 encrypt this string&amp;lt;/h1&amp;gt;&amp;lt;h3 align=&#39;center&#39;&amp;gt;LWod6afkxEjJV8KZeLRO&amp;lt;/h3&amp;gt;&amp;lt;center&amp;gt;&amp;lt;form action=&amp;quot;&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;hash&amp;quot; placeholder=&amp;quot;MD5&amp;quot; align=&#39;center&#39;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/br&amp;gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/form&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;当然是脚本：
-#!/usr/bin/env python3import requestsimport reimport hashlibwhile 1:host = &amp;quot;http://docker.hackthebox.eu:32046/&amp;quot;req = requests.session()r = req.get(url=host)#print(r.text)pattern = re.compile(r&amp;quot;&amp;lt;h3 align=&#39;center&#39;&amp;gt;(\S&#43;)&amp;lt;/h3&amp;gt;&amp;quot;)h3 = pattern.findall(r.text)md5 = hashlib.md5(h3[0].encode(&#39;utf-8&#39;)).hexdigest()#print(h3[0],md5)data={&#39;hash&#39;:md5}s = req.">
-    </head>
-    <body class="">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>暗色模式</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <div id="article-toolbar">
-        <a href="https://anthem-whisper.github.io/" class="back-home">
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="15 6 9 12 15 18" />
-</svg>
-
-
-
-            <span>Back</span>
-        </a>
-    </div>
-
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/p/hackthebox_challenges/">HackTheBox_challenges</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181059.jpeg" alt=""  /></p>
-<h3 id="emdee-five-for-life">Emdee five for life</h3>
-<p>考点：python正则，request模块</p>
-<p>打开页面，给你一个字符串，md5加密后提交，太慢或者错了就会Too slow：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181105.png" alt="img"  /></p>
-<pre><code>&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;emdee five for life&lt;/title&gt;
-&lt;/head&gt;
-&lt;body style=&quot;background-color:powderblue;&quot;&gt;
-&lt;h1 align='center'&gt;MD5 encrypt this string&lt;/h1&gt;&lt;h3 align='center'&gt;LWod6afkxEjJV8KZeLRO&lt;/h3&gt;&lt;center&gt;&lt;form action=&quot;&quot; method=&quot;post&quot;&gt;
-&lt;input type=&quot;text&quot; name=&quot;hash&quot; placeholder=&quot;MD5&quot; align='center'&gt;&lt;/input&gt;
-&lt;/br&gt;
-&lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;&lt;/input&gt;
-&lt;/form&gt;&lt;/center&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre><p>当然是脚本：</p>
-<pre><code>#!/usr/bin/env python3
-import requests
-import re
-import hashlib
- 
-while 1:
-    host = &quot;http://docker.hackthebox.eu:32046/&quot;
-    req = requests.session()
-    r = req.get(url=host)
-    #print(r.text)
-    pattern = re.compile(r&quot;&lt;h3 align='center'&gt;(\S+)&lt;/h3&gt;&quot;)
-    h3 = pattern.findall(r.text)
-    md5 = hashlib.md5(h3[0].encode('utf-8')).hexdigest()
-    #print(h3[0],md5)
-    data={'hash':md5}
-    s = req.post(url=host, data=data)
-    
-    if 'Too slow!' in s.text:
-        print('Too slow!')
- 
-    else:
-        print(s.text)
-        break
-</code></pre><p>第11行那里用了 <code>(\S+)</code> 就会返回LWod6afkxEjJV8KZeLRO</p>
-<p>第二次POST过去的时候需要用session不然就会too slow</p>
-<hr>
-<h3 id="freelancer">FreeLancer</h3>
-<p>考点：sqli</p>
-<p>打开页面，有一个表单</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181111.png" alt="img"  /></p>
-<p>本来以为是XSS，但是无论怎么样提交都是500，后来看源码，发现了 <code>&lt;!-- &lt;a href=&quot;portfolio.php?id=3&quot;&gt;Portfolio 3&lt;/a&gt; --&gt;</code></p>
-<p>访问发现sql注入，Union一把梭可以发现：</p>
-<pre><code>表名：portfolio,safeadmin 
-safeadmin列名：id,username,password,created_at
-</code></pre><p>注出来用户 <code>safeamd</code> 密码 <code>$2y$10$s2ZCi/tHICnA97uf4MfbZuhmOZQXdCnrM9VM9LBMHPp68vAXNRf4K</code></p>
-<p>不过没什么用，因为我们目的是要getshell，其实也不用getshell，只要你用dirbuster爆破出这个文件 <code>/var/www/html/administrat/panel.php</code> 这个文件，直接读取他就好了</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-    <aside class="related-contents--wrapper">
-    
-    
-</aside>
-
-
-    
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "hugo-theme-stack" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2020 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>
