@@ -21,7 +21,7 @@ class.php
 &amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='phar' /><meta property='article:tag' content='compress.zlib' /><meta property='article:published_time' content='2020-09-27T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-09-27T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228104117.jpeg' />
 <meta name="twitter:title" content="2020“巅峰极客”">
 <meta name="twitter:description" content="babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
 Paper：https://paper.seebug.org/680/
@@ -29,7 +29,8 @@ Paper：https://paper.seebug.org/680/
 大概是有三个功能：文件上传、文件读取、SQL查询（登录框）
 phar反序列化 我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。
 class.php
-&amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.">
+&amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228104117.jpeg' />
     </head>
     <body class="">
     <script>
@@ -199,17 +200,43 @@ class.php
         </a>
     </div>
 
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228104117.jpeg" loading="lazy" alt="Featured image of post 2020“巅峰极客”" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/ctf_writeup/" style="background-color: #2a9d8f; color: #fff;">
+                CTF writeup
+            </a>
+        
+    </header>
     
 
     <h2 class="article-title">
         <a href="/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/">2020“巅峰极客”</a>
     </h2>
 
-    </div>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Sep 27, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
@@ -487,6 +514,14 @@ if __name__ == '__main__':
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/phar/">phar</a>
+        
+            <a href="/tags/compress.zlib/">compress.zlib</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -507,6 +542,91 @@ if __name__ == '__main__':
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/%E7%BA%B5%E6%A8%AA%E6%9D%AF-writeup-by-x1ct34m/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">纵横杯 Writeup by X1cT34m</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/whuctf2020/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170745.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170745.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WHUCTF2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/hgame-2021-writeup/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HGAME 2021 Writeup</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/starctf-2021-%E5%A4%8D%E7%8E%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100314.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100314.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">starCTF 2021 复现</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/roarctf-2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">RoarCTF 2020</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

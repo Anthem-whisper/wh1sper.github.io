@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>伪随机数 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/</link>
+    <description>Recent content in 伪随机数 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BUUOJ刷题记录(3)</title>
+      <link>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</guid>
+      <description>[FBCTF2019]RCEService 考点：%0a绕过正则匹配，绝对路径调用系统命令
+要求用json传入cmd参数RCE，但是只给了ls命令其他的都不给
+比赛的时候应该是给了源码：
+&amp;lt;?phpputenv(&#39;PATH=/home/rceservice/jail&#39;);if (isset($_REQUEST[&#39;cmd&#39;])) {$json = $_REQUEST[&#39;cmd&#39;];if (!is_string($json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} elseif (preg_match(&#39;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#39;, $json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} else {echo &#39;Attempting to run command:&amp;amp;lt;br/&amp;amp;gt;&#39;;$cmd = json_decode($json, true)[&#39;cmd&#39;];if ($cmd !== NULL) {system($cmd);} else {echo &#39;Invalid input&#39;;}echo &#39;&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;}}?&amp;gt;正则匹配的时候没有用m修饰符(换行匹配)，所以我们可以用%0a来绕过
+然后他设置了PATH=/home/rceservice/jail，这个目录下只有ls一个命令，想要调用其他系统命令我们还要传入绝对路径，比如/bin/cat。
+flag在PATH的上级目录。
+?cmd={%0A&amp;quot;cmd&amp;quot;:&amp;quot;/bin/cat /home/rceservice/flag&amp;quot;%0A}[GYCTF2020]FlaskApp 考点：flaskSSTI、pin码
+referer：https://blog.csdn.net/Alexhcf/article/details/108400293
+从base64解码发现SSTI 题目最开始给了两个页面，一个是base64加密、一个是base64解密
+在base64解密的页面如果解密出现错误的话，会开启debug
+而且在base64解密的页面发现了模板注入，传入{{config}}的base64编码会看到以下界面：</description>
+    </item>
+    
+    <item>
+      <title>GWCTF 2019 复现</title>
+      <link>https://anthem-whisper.github.io/p/gwctf-2019-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/gwctf-2019-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>之前广外CTF的时候才刚刚接触CTF，当时只做了一道随机数爆破，现在来复现
+ 你的名字 考点：flaskSSTI、绕过{{}}过滤、黑名单过滤逻辑错误
+很详细的SSTI&amp;raquo;：https://xz.aliyun.com/t/6885#toc-4
+SSTIbypass姿势&amp;raquo;https://p0sec.net/index.php/archives/120/
+参考：&amp;raquo;ggb0n
+打开题目，只有一个输入框，联想到注入，不过SQLi尝试之后发现并不行，于是就去尝试SSTI，不过网上的wp说可以通过抓包查看响应头来判断服务器使用的python的模板。
+尝试输入{{2*2}}，返回“Parse error: syntax error, unexpected T_STRING, expecting &amp;lsquo;{&amp;rsquo; in \var\WWW\html\test.php on line 13 ”
+不管怎么改，返回的结果都是一样的，说明可能{{}}被过滤了；
+但是可以通过 {%%} 类似的方式来进行注入，尝试 {%if 1%}1{% endif%} ，发现服务器直接给出500错误。。。判断可能有什么过滤
+直接输入if，返回结果是：
+hello !说明if被替换为空了，尝试双写iiff，但是还是被替换为空了，可能是用的循环匹配。
+参考了师傅写的wp，fuzz出来的过滤可能是这个样子：
+blacklist = [&#39;import&#39;, &#39;getattr&#39;, &#39;os&#39;, &#39;class&#39;, &#39;subclasses&#39;, &#39;mro&#39;, &#39;request&#39;, &#39;args&#39;, &#39;eval&#39;,&#39;if&#39;, &#39;for&#39;,&#39; subprocess&#39;, &#39;file&#39;, &#39;open&#39;, &#39;popen&#39;, &#39;builtins&#39;, &#39;compile&#39;,&#39;execfile&#39;, &#39;from_pyfile&#39;, &#39;local&#39;,&#39;self&#39;, &#39;item&#39;, &#39;getitem&#39;, &#39;getattribute&#39;, &#39;func_globals&#39;, &#39;config&#39;]for no in blacklist:while True:if no in s:s = s.</description>
+    </item>
+    
+  </channel>
+</rss>

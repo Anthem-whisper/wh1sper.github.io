@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>时间戳爆破 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/%E6%97%B6%E9%97%B4%E6%88%B3%E7%88%86%E7%A0%B4/</link>
+    <description>Recent content in 时间戳爆破 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 19 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/%E6%97%B6%E9%97%B4%E6%88%B3%E7%88%86%E7%A0%B4/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>starCTF 2021 复现</title>
+      <link>https://anthem-whisper.github.io/p/starctf-2021-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Tue, 19 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/starctf-2021-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>oh-my-note 考点：时间戳爆破
+题目分析 先给了源码：source.zip
+题目是一个留言板，发布留言的时候输入用户名可以选择为公开或者私有
+代码审计 打开源码，审计；
+在create_note()函数中，如果用户不存在，就会自动创建
+@app.route(&amp;#39;/create_note&amp;#39;, methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;]) def create_note(): try: form = CreateNoteForm() if request.method == &amp;#34;POST&amp;#34;: username = form.username.data title = form.title.data text = form.body.data prv = str(form.private.data) user = User.query.filter_by(username=username).first() if user: user_id = user.user_id else: timestamp = round(time.time(), 4) random.seed(timestamp) user_id = get_random_id() user = User(username=username, user_id=user_id) db.session.add(user) db.session.commit() session[&amp;#39;username&amp;#39;] = username timestamp = round(time.time(), 4) post_at = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc).strftime(&amp;#39;%Y-%m-%d%H:%M UTC&amp;#39;) #获取小数点后四位UNIX时间戳对应的Y-M-d H-M时间 random.</description>
+    </item>
+    
+  </channel>
+</rss>

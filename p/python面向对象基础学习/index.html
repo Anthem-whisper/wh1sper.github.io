@@ -1,74 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='说了暑假学开发，绝对不咕咕咕（0%）
- 面向过程 假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它
-可以看到过程非常的繁琐，你将面对所有的步骤
- 面向对象 假如你现在有个对象，她拥有两个技能：
-1.做饭 2.洗碗
-那么你只需要面向你的对象，然后你的对象去处理其他所有过程
-那如果你的对象再拥有两个对象：
-1.炒菜机 2.洗碗机
-那么她只需要每次都做三个动作，不必一次面向所有步骤
- 很妙！对不对？
-你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，你既看不到具体的过程，你也不需要知道具体的过程
-你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤
-这个就叫做封装。
-把搅拌、翻炒、监测火候封装成自动炒菜机 把倒洗洁精、刷碗、擦干水封装成自动洗碗机 再把剩下的封装成你的女朋友
- 两者的对比  面向对象本身是对面向过程的封装 面向过程什么最重要？  按步骤划分 把每个任务，分解成具体的每个步骤   面向对象什么最重要？  按功能就行划分 找到对象，确定对象的属性、行为   如何从面向过程思想转化为面向对象思想？  和面向过程一样，先找到所有步骤 试图分离功能代码块 将这些功能代码块，划分到某对象中 根据对象行为，抽象出 “类”   对象和类的关系  对象-&amp;gt;抽象-&amp;gt;类-&amp;gt;实例化-&amp;gt;对象     对象和类 对象和类里面有两个东西：
- 属性 方法  属性是静态的、用来描述这个类或者对象本身的变量
-比如，张三这个对象，他的属性有年龄、性别、身高、体重 人这个类属性也有年龄、性别、身高、体重
-张三能执行吃饭这个动作，这就是他的一个方法
-现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：
-# python3class Person:passzhangsan = Person()#实例化为对象zhangsan.'><title>python面向对象基础学习</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='重学面向对象'><title>python面向对象基础学习</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='python面向对象基础学习'>
-<meta property='og:description' content='说了暑假学开发，绝对不咕咕咕（0%）
- 面向过程 假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它
-可以看到过程非常的繁琐，你将面对所有的步骤
- 面向对象 假如你现在有个对象，她拥有两个技能：
-1.做饭 2.洗碗
-那么你只需要面向你的对象，然后你的对象去处理其他所有过程
-那如果你的对象再拥有两个对象：
-1.炒菜机 2.洗碗机
-那么她只需要每次都做三个动作，不必一次面向所有步骤
- 很妙！对不对？
-你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，你既看不到具体的过程，你也不需要知道具体的过程
-你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤
-这个就叫做封装。
-把搅拌、翻炒、监测火候封装成自动炒菜机 把倒洗洁精、刷碗、擦干水封装成自动洗碗机 再把剩下的封装成你的女朋友
- 两者的对比  面向对象本身是对面向过程的封装 面向过程什么最重要？  按步骤划分 把每个任务，分解成具体的每个步骤   面向对象什么最重要？  按功能就行划分 找到对象，确定对象的属性、行为   如何从面向过程思想转化为面向对象思想？  和面向过程一样，先找到所有步骤 试图分离功能代码块 将这些功能代码块，划分到某对象中 根据对象行为，抽象出 “类”   对象和类的关系  对象-&amp;gt;抽象-&amp;gt;类-&amp;gt;实例化-&amp;gt;对象     对象和类 对象和类里面有两个东西：
- 属性 方法  属性是静态的、用来描述这个类或者对象本身的变量
-比如，张三这个对象，他的属性有年龄、性别、身高、体重 人这个类属性也有年龄、性别、身高、体重
-张三能执行吃饭这个动作，这就是他的一个方法
-现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：
-# python3class Person:passzhangsan = Person()#实例化为对象zhangsan.'>
+<meta property='og:description' content='重学面向对象'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='开发' /><meta property='article:published_time' content='2020-07-09T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-07-09T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228095632.jpeg' />
 <meta name="twitter:title" content="python面向对象基础学习">
-<meta name="twitter:description" content="说了暑假学开发，绝对不咕咕咕（0%）
- 面向过程 假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它
-可以看到过程非常的繁琐，你将面对所有的步骤
- 面向对象 假如你现在有个对象，她拥有两个技能：
-1.做饭 2.洗碗
-那么你只需要面向你的对象，然后你的对象去处理其他所有过程
-那如果你的对象再拥有两个对象：
-1.炒菜机 2.洗碗机
-那么她只需要每次都做三个动作，不必一次面向所有步骤
- 很妙！对不对？
-你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，你既看不到具体的过程，你也不需要知道具体的过程
-你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤
-这个就叫做封装。
-把搅拌、翻炒、监测火候封装成自动炒菜机 把倒洗洁精、刷碗、擦干水封装成自动洗碗机 再把剩下的封装成你的女朋友
- 两者的对比  面向对象本身是对面向过程的封装 面向过程什么最重要？  按步骤划分 把每个任务，分解成具体的每个步骤   面向对象什么最重要？  按功能就行划分 找到对象，确定对象的属性、行为   如何从面向过程思想转化为面向对象思想？  和面向过程一样，先找到所有步骤 试图分离功能代码块 将这些功能代码块，划分到某对象中 根据对象行为，抽象出 “类”   对象和类的关系  对象-&amp;gt;抽象-&amp;gt;类-&amp;gt;实例化-&amp;gt;对象     对象和类 对象和类里面有两个东西：
- 属性 方法  属性是静态的、用来描述这个类或者对象本身的变量
-比如，张三这个对象，他的属性有年龄、性别、身高、体重 人这个类属性也有年龄、性别、身高、体重
-张三能执行吃饭这个动作，这就是他的一个方法
-现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：
-# python3class Person:passzhangsan = Person()#实例化为对象zhangsan.">
+<meta name="twitter:description" content="重学面向对象"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228095632.jpeg' />
     </head>
     <body class="">
     <script>
@@ -238,34 +182,64 @@
         </a>
     </div>
 
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228095632.jpeg" loading="lazy" alt="Featured image of post python面向对象基础学习" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/note/" style="background-color: #2a9d8f; color: #fff;">
+                note
+            </a>
+        
+    </header>
     
 
     <h2 class="article-title">
         <a href="/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">python面向对象基础学习</a>
     </h2>
 
-    </div>
+    
+    <h3 class="article-subtitle">
+        重学面向对象
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jul 09, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
     <p>说了暑假学开发，绝对不咕咕咕（0%）</p>
 <hr>
 <h3 id="面向过程">面向过程</h3>
-<p><!-- raw HTML omitted --></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171712.png" alt=""  /></p>
 <p>假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它</p>
 <p>可以看到过程非常的繁琐，你将面对所有的步骤</p>
 <hr>
 <h3 id="面向对象">面向对象</h3>
-<p><!-- raw HTML omitted --></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171728.png" alt="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171728.png"  /></p>
 <p>假如你现在有个对象，她拥有两个技能：</p>
 <p>1.做饭
 2.洗碗</p>
 <p>那么你只需要面向你的对象，然后你的对象去处理其他所有过程</p>
-<p><!-- raw HTML omitted --></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171745.png" alt=""  /></p>
 <p>那如果你的对象再拥有两个对象：</p>
 <p>1.炒菜机
 2.洗碗机</p>
@@ -441,6 +415,12 @@ print(a)
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%BC%80%E5%8F%91/">开发</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -461,6 +441,79 @@ print(a)
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Debian下PHP Xdebug调试环境搭建</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/cve-2020-7961-liferay-portal-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%A4%8D%E7%8E%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170944.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170944.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CVE-2020-7961 Liferay Portal 反序列化-复现</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">绕过4-5个字符限制getshell</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Padding Oracle Attack&amp;CBC字节翻转攻击</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%94%B1mrctf2020%E5%AD%A6%E4%B9%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96pop%E9%93%BE/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">由MRCTF2020学习反序列化POP链</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

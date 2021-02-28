@@ -1,92 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='转自：https://www.cnblogs.com/zery/p/3438845.html
-教程：https://www.runoob.com/regexp/regexp-tutorial.html
-一 、前言 　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。
-其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。
-0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。
-1.1 什么是正则表达式
-正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。
-1.2 常用的正则匹配工具
-在线匹配工具：
-　1 http://www.regexpal.com/
-2 http://rubular.com/
-二 、正则字符简单介绍 2.1 元字符介绍
-&amp;quot;^&amp;quot; ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。
-&amp;quot;$&amp;quot; ：$会匹配行或字符串的结尾
-如图
-​ 而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符
-&amp;quot;\b&amp;quot; :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&amp;quot;This is Regex&amp;quot;匹配单独的单词 &amp;ldquo;is&amp;rdquo; 正则就要写成 &amp;ldquo;\bis\b&amp;rdquo;
-　\b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界
-&amp;quot;\d&amp;quot;: 匹配数字，
-　例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123 正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&amp;quot;\d&amp;quot;字符，实际上有更好的写法会在 下面介绍。
-&amp;quot;\w&amp;quot;：匹配字母，数字，下划线.
-　例如我要匹配&amp;quot;a2345BCD__TTz&amp;quot; 正则：&amp;quot;\w&#43;&amp;quot; 这里的&amp;quot;&#43;&amp;ldquo;字符为一个量词指重复的次数，稍后会详细介绍。
-&amp;quot;\s&amp;rdquo;：匹配空格
-　例如字符 &amp;ldquo;a b c&amp;rdquo; 正则：&amp;quot;\w\s\w\s\w&amp;quot; 一个字符后跟一个空格，如有字符间有多个空格直接把&amp;quot;\s&amp;quot; 写成 &amp;ldquo;\s&#43;&amp;rdquo; 让空格重复
-&amp;quot;.&amp;quot;：匹配除了换行符以外的任何字符
-　这个算是&amp;quot;\w&amp;quot;的加强版了&amp;quot;\w&amp;quot;不能匹配 空格 如果把字符串加上空格用&amp;quot;\w&amp;quot;就受限了，看下用 &amp;ldquo;.'><title>正则表达式学习笔记</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='转载，自用'><title>正则表达式学习笔记</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='正则表达式学习笔记'>
-<meta property='og:description' content='转自：https://www.cnblogs.com/zery/p/3438845.html
-教程：https://www.runoob.com/regexp/regexp-tutorial.html
-一 、前言 　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。
-其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。
-0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。
-1.1 什么是正则表达式
-正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。
-1.2 常用的正则匹配工具
-在线匹配工具：
-　1 http://www.regexpal.com/
-2 http://rubular.com/
-二 、正则字符简单介绍 2.1 元字符介绍
-&amp;quot;^&amp;quot; ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。
-&amp;quot;$&amp;quot; ：$会匹配行或字符串的结尾
-如图
-​ 而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符
-&amp;quot;\b&amp;quot; :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&amp;quot;This is Regex&amp;quot;匹配单独的单词 &amp;ldquo;is&amp;rdquo; 正则就要写成 &amp;ldquo;\bis\b&amp;rdquo;
-　\b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界
-&amp;quot;\d&amp;quot;: 匹配数字，
-　例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123 正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&amp;quot;\d&amp;quot;字符，实际上有更好的写法会在 下面介绍。
-&amp;quot;\w&amp;quot;：匹配字母，数字，下划线.
-　例如我要匹配&amp;quot;a2345BCD__TTz&amp;quot; 正则：&amp;quot;\w&#43;&amp;quot; 这里的&amp;quot;&#43;&amp;ldquo;字符为一个量词指重复的次数，稍后会详细介绍。
-&amp;quot;\s&amp;rdquo;：匹配空格
-　例如字符 &amp;ldquo;a b c&amp;rdquo; 正则：&amp;quot;\w\s\w\s\w&amp;quot; 一个字符后跟一个空格，如有字符间有多个空格直接把&amp;quot;\s&amp;quot; 写成 &amp;ldquo;\s&#43;&amp;rdquo; 让空格重复
-&amp;quot;.&amp;quot;：匹配除了换行符以外的任何字符
-　这个算是&amp;quot;\w&amp;quot;的加强版了&amp;quot;\w&amp;quot;不能匹配 空格 如果把字符串加上空格用&amp;quot;\w&amp;quot;就受限了，看下用 &amp;ldquo;.'>
+<meta property='og:description' content='转载，自用'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='正则' /><meta property='article:published_time' content='2020-01-27T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-01-27T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="正则表达式学习笔记">
-<meta name="twitter:description" content="转自：https://www.cnblogs.com/zery/p/3438845.html
-教程：https://www.runoob.com/regexp/regexp-tutorial.html
-一 、前言 　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。
-其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。
-0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。
-1.1 什么是正则表达式
-正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。
-1.2 常用的正则匹配工具
-在线匹配工具：
-　1 http://www.regexpal.com/
-2 http://rubular.com/
-二 、正则字符简单介绍 2.1 元字符介绍
-&amp;quot;^&amp;quot; ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。
-&amp;quot;$&amp;quot; ：$会匹配行或字符串的结尾
-如图
-​ 而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符
-&amp;quot;\b&amp;quot; :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&amp;quot;This is Regex&amp;quot;匹配单独的单词 &amp;ldquo;is&amp;rdquo; 正则就要写成 &amp;ldquo;\bis\b&amp;rdquo;
-　\b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界
-&amp;quot;\d&amp;quot;: 匹配数字，
-　例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123 正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&amp;quot;\d&amp;quot;字符，实际上有更好的写法会在 下面介绍。
-&amp;quot;\w&amp;quot;：匹配字母，数字，下划线.
-　例如我要匹配&amp;quot;a2345BCD__TTz&amp;quot; 正则：&amp;quot;\w&#43;&amp;quot; 这里的&amp;quot;&#43;&amp;ldquo;字符为一个量词指重复的次数，稍后会详细介绍。
-&amp;quot;\s&amp;rdquo;：匹配空格
-　例如字符 &amp;ldquo;a b c&amp;rdquo; 正则：&amp;quot;\w\s\w\s\w&amp;quot; 一个字符后跟一个空格，如有字符间有多个空格直接把&amp;quot;\s&amp;quot; 写成 &amp;ldquo;\s&#43;&amp;rdquo; 让空格重复
-&amp;quot;.&amp;quot;：匹配除了换行符以外的任何字符
-　这个算是&amp;quot;\w&amp;quot;的加强版了&amp;quot;\w&amp;quot;不能匹配 空格 如果把字符串加上空格用&amp;quot;\w&amp;quot;就受限了，看下用 &amp;ldquo;.">
+<meta name="twitter:description" content="转载，自用">
     </head>
     <body class="">
     <script>
@@ -261,12 +186,34 @@
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/note/" style="background-color: #2a9d8f; color: #fff;">
+                note
+            </a>
+        
+    </header>
+    
 
     <h2 class="article-title">
         <a href="/p/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">正则表达式学习笔记</a>
     </h2>
 
-    </div>
+    
+    <h3 class="article-subtitle">
+        转载，自用
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jan 27, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
@@ -415,6 +362,12 @@ echo $content[0]; //输出:abcabbbcabbbbbc;</p>
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%AD%A3%E5%88%99/">正则</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -435,6 +388,85 @@ echo $content[0]; //输出:abcabbbcabbbbbc;</p>
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Debian下PHP Xdebug调试环境搭建</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228095632.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228095632.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">python面向对象基础学习</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/cve-2020-7961-liferay-portal-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%A4%8D%E7%8E%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170944.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170944.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">CVE-2020-7961 Liferay Portal 反序列化-复现</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">绕过4-5个字符限制getshell</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Padding Oracle Attack&amp;CBC字节翻转攻击</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

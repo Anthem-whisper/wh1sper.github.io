@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python反序列化 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</link>
+    <description>Recent content in python反序列化 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ByteCTF2020复现</title>
+      <link>https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/</guid>
+      <description>这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。
+ easy_scrapy 考点：MD5爆破、SSRF
+功能是添加一个http://或者https://开头的URL，并且要求输入验证码，可以利用以下脚本来爆破：
+import hashlibfor i in range(99999999):if hashlib.md5(str(i).encode(&#39;UTF-8&#39;)).hexdigest()[:6] == &#39;2c97b3&#39;:print(i)break十几秒能出结果，之后可以BP重放数据包来快速的添加。
+添加成功之后可以在MyUrlList里面看到添加记录，点进去可以看到爬取到的东西。
+监听端口接收到请求：
+GET / HTTP/1.1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8Accept-Language: enUser-Agent: scrapy_redisAccept-Encoding: gzip, deflate发现是scrapy_redis，初步猜测是SSRF打redis。
+既然他是爬虫，那么遇到类似于这种标签的话，他很有可能就会去请求，（后来放了HINT，叫去读这个页面的源码）尝试爬以下这道题的公网IP，发现他会把/list的源码一并爬下来，那么我们可以起一个页面来指向file:///etc/passwd
+比赛的时候我用的是302重定向好像不行（哭了），其实这里他遇到一个标签就会去请求：
+我们可以发现他请求到了我们想要的URL：
+把标签的href改成file协议果然可以造成任意文件读：
+这样的话我们可以逐一的读取他爬虫的源码，但是在这之前我们要先知道爬虫工作的绝对路径，可以通过读/proc/self/environ，得到绝对路径PWD=/code，这个知识点在本站[SWPU2019]Web3也提到过。
+在官方文档中找到了这个爬虫框架的结构：
+tutorial/scrapy.cfgtutorial/__init__.pyitems.pypipelines.pysettings.pyspiders/__init__.py...我们尝试去读取这些文件；
+scrapy.cfg:
+# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.</description>
+    </item>
+    
+    <item>
+      <title>SWPU2019 复现</title>
+      <link>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>Web2 考点：redis弱口令，python反序列化
+BUU上面的环境需要 Shadowsocks 代理才能访问，配置这个都搞了半天（tcl
+下载配置shadowsocks sudo apt-get install shadowsocks连接代理 sslocal -s node3.buuoj.cn -p 11111 -k 123456报错：AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup
+报错参考：https://www.jianshu.com/p/3f874d5aac54
+在Python2.7中的openssl文件中,下面这个函数没有定义,具体就是这个:
+EVP_CIPHER_CTX_cleanup更深层的是是由于在openssl1.1.0版本中，废弃了 EVP_CIPHER_CTX_cleanup 函数,要用这个函数 EVP_CIPHER_CTX_reset() 代替;
+直接 vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py 打开文件，全局搜索关键字替换即可；
+kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r/proxychains-ng.git # downloadcd proxychains-ng./configuresudo make sudo make installcp ./src/proxychains.conf /etc/proxychains.conf # config file用proxychains做正向代理 vim /etc/proxychains.conf添加一行：socks5 127.0.0.1 1080（具体取决于你的ss配置的端口）
+不过我这里需要注释掉原来的那一行 socks4 127.0.0.1 9050
+命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了</description>
+    </item>
+    
+    <item>
+      <title>BUUOJ刷题记录(2)</title>
+      <link>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%952/</link>
+      <pubDate>Tue, 14 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%952/</guid>
+      <description>[CISCN2019 华北赛区 Day1 Web2]ikun 考点：简单python脚本、逻辑漏洞、JWT破解与伪造、python反序列化
+页面源码里面提示脑洞比较大，给了提示，如上图
+目的是要买到LV6的东西，下面则是500页的商品，需要我们自行寻找。
+在源码里面看到，每个商品的图片就是lv?.png那么我们推测lv6.png一定存在于某一页。
+写一个脚本找找：
+#by wh1sperimport requestshost = &#39;http://7d1e7948-30d9-42b8-b6e6-f74e7fc4a5eb.node3.buuoj.cn/shop?page=&#39;for i in range(1,500):r = requests.get(url=host+str(i))if &#39;lv6.png&#39; in r.text:print(&#39;page = &#39;, i)break得到181，访问之：
+http://7d1e7948-30d9-42b8-b6e6-f74e7fc4a5eb.node3.buuoj.cn/shop?page=181不出预料的买不起。。。
+但是我们回头去看burp里面的数据包，发现请求体里面有一个键名为discount=0.8，改成discount=0.00000000001试试，果然可以，成功购买了lv6，页面重定向到 /b1g_m4mber 不过提示这个页面只能admin才能访问。于是我们又回过头去看请求头，发现cookie里面有一个东西叫做JWT（Json Web Token）
+JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndoMXNwZXIifQ.Z3wlMUbdDHNs4x4PiVx43YD-CGibsHUC5f3ApnYId58附上爆破工具GitHub地址：https://github.com/brendan-rius/c-jwt-cracker
+root@kali:~/tools/JWTcrake/c-jwt-cracker-master# ./jwtcrack eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndoMXNwZXIifQ.Z3wlMUbdDHNs4x4PiVx43YD-CGibsHUC5f3ApnYId58Secret is &amp;quot;1Kun&amp;quot;root@kali:~/tools/JWTcrake/c-jwt-cracker-master#在https://jwt.io/这个网站可以进行伪造，把身份改成admin。
+我们就可以愉快的进行伪造了，打开F12-&amp;gt;application-&amp;gt;cookie,将JWT值改成：
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIn0.40on__HQ8B2-wM1ZSwax3ivRK4j54jlaXv-1JjQynjo刷新之后我们就是admin啦~
+ctrl+U查看源码，提示了/static/asd1f654e683wq/www.zip网站源码，
+下载下来，发现是python的tornado框架编写的后端
+在/sshop/views/Admin.py里面发现了python反序列化漏洞：
+#by wh1sper#Admin.pyimport tornado.webfrom sshop.base import BaseHandlerimport pickleimport urllibclass AdminHandler(BaseHandler):@tornado.</description>
+    </item>
+    
+  </channel>
+</rss>

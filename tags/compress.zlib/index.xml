@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>compress.zlib on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/compress.zlib/</link>
+    <description>Recent content in compress.zlib on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 27 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/compress.zlib/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2020“巅峰极客”</title>
+      <link>https://anthem-whisper.github.io/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/</link>
+      <pubDate>Sun, 27 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/</guid>
+      <description>babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
+Paper：https://paper.seebug.org/680/
+题目一开始有www.zip给了源代码，下载过来审计;
+大概是有三个功能：文件上传、文件读取、SQL查询（登录框）
+phar反序列化 我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。
+class.php
+&amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.</description>
+    </item>
+    
+  </channel>
+</rss>

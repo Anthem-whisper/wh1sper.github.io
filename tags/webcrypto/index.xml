@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>WebCrypto on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/webcrypto/</link>
+    <description>Recent content in WebCrypto on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 21 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/webcrypto/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NPUCTF2020_wp</title>
+      <link>https://anthem-whisper.github.io/p/npuctf2020_wp/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/npuctf2020_wp/</guid>
+      <description>查源码 F12，ctrl+U，没啥好说的
+RealEzPHP 打开是个黑页，查看源码发现了 ./time.php?source 访问之：
+ &amp;lt;?php#error_reporting(0);class HelloPhp{public $a;public $b;public function __construct(){$this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;$this-&amp;gt;b = &amp;quot;date&amp;quot;;}public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}}$c = new HelloPhp;if(isset($_GET[&#39;source&#39;])){highlight_file(__FILE__);die(0);}@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);2020-04-21 07:53:29很简单的一个反序列化，
+&amp;lt;?php#error_reporting(0);class HelloPhp{public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息public $b = &#39;phpinfo&#39;;/*public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}*/}$pop = new HelloPhp;echo serialize($pop);直接 ?</description>
+    </item>
+    
+    <item>
+      <title>Padding Oracle Attack&amp;CBC字节翻转攻击</title>
+      <link>https://anthem-whisper.github.io/p/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/</link>
+      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/</guid>
+      <description>前言 在西工大举办的NPUCTF2020上面做到一道webcrypto的题，以前从来没接触过密码安全方向，这次正好学一下入个门
+正文 参考
+Padding Oracle Attack：
+《白帽子讲web安全》P239
+&amp;raquo;一叶飘零师傅
+CBC翻转攻击：
+&amp;raquo;某师傅
+&amp;raquo;某某师傅
+先来讲一讲CBC模式加密原理：
+ 首先将明文（Plaintext）分组(常见的以16或8字节为一组)，位数不足的使用特殊字符填充。 生成一个随机的初始化向量(IV)和一个密钥。 将IV和第一组明文异或（xor运算）。 用密钥对3中xor后产生的密文加密。 用4中产生的密文对第二组明文进行xor操作。 用密钥对5中产生的密文加密。 重复4-7，到最后一组明文。 将IV和加密后的密文拼接在一起，得到最终的密文  解密过程：
+ 先从密文中取出IV，然后对剩下的密文分组（16或8字节为一组） 使用秘钥解密第一组密文，将解密结果与IV做异或运算，得到明文1 然后使用秘钥解第二组密文，将解密的结果与上一组密文进行异或运算，得出明文2 重复2-3，直至所有密文解密完毕  以上就是CBC模式的加密解密过程，接下来讲两种手段：
+Padding Oracle Attack 直译为 “填充Oracle攻击” ，这里主要关注一下解密过程：
+密文cipher首先进行一系列处理，如图中的Block Cipher Decryption 我们将处理后的值称为 middle 中间值 然后 middle 与我们输入的iv进行异或操作 得到的即为明文 但这里有一个规则叫做Padding填充： 因为加密是按照16位一组分组进行的 而如果不足16位，就需要进行填充
+有几个空，就要填充几个“几”
+比如明文为admin，那么需要填充的就是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b （11个\x0b）
+如果我们输入一个错误的iv，依旧是可以解密的，但是 middle 和我们输入的iv经过异或后得到的填充值可能出现错误
+比如本来应该是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b 而我们错误的得到 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x3b\x2c
+这样解密程序往往会抛出异常(Padding Error)
+应用在web里的时候，往往是302或是500报错 而正常解密的时候是200 所以这时，我们可以根据服务器的反应来判断我们输入的iv
+看例子：
+我们假设middle中间值为：
+0x39 0x73 0x23 0x22 0x07 0x6a 0x26 0x3d正确的解密iv应该为</description>
+    </item>
+    
+  </channel>
+</rss>

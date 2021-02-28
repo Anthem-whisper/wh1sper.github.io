@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>内网渗透 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/</link>
+    <description>Recent content in 内网渗透 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 01 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2020 X1cT34m Web第一次考核</title>
+      <link>https://anthem-whisper.github.io/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/</link>
+      <pubDate>Wed, 01 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/2020-x1ct34m-web%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%80%83%E6%A0%B8/</guid>
+      <description>0x00前言 终于等到来的太突然的考核，感觉自己表现不是太好，本来入门时间也不短了，是因为不够努力才这么菜
+玩了一把内网渗透（不是），感觉有点意思。
+0x01第一题 考点：sqli
+ username中\转义&amp;rsquo;导致password语句逃逸单引号 union注入 绕过逗号过滤继续注入 无列名注入  打开题目，抓包，发现POST过去的数据是json形式，没想到其他，只想到了sqli，于是我用bp的intruder模块fuzz了一下：
+(这里本来有一个表，莫名其妙消失了)
+被过滤：单引号、|、，、or、空格
+没被过滤：select、union
+空格被过滤，用//代替，（可以使用word的替换功能）本文的空格都是//
+既然单引号被过滤了，那么就想到了CGCTF和之前的BJDCTF的注入，利用username输入反斜杠来转义单引号，直接看例子：
+原本语句：SELECT * from user WHERE username = &#39;admin&#39; and password = &#39;123&#39;转义语句：SELECT * from user WHERE username = &#39;admin\&#39; and password =&#39; or 1=1#&#39;我们可以看到，实际上第二句的username是&#39;admin\&#39; and password =&#39;后门接的or 1=1自然也就造成了注入。
+这道题正常输入的时候回显是username or password error如果使用这个playload的话回显是true
+union没有被过滤的话，那么就尝试union注入吧：
+查询列数：{&amp;quot;username&amp;quot;:&amp;quot;1\\&amp;quot;,&amp;quot;password&amp;quot;:&amp;quot;group/**/by/**/1#&amp;quot;}这里有点玄学的是，明明查的是三列，但是只能group by 1有回显，就很神奇。
+查询列数： {&amp;quot;username&amp;quot;:&amp;quot;1\\&amp;quot;,&amp;quot;password&amp;quot;:&amp;quot;union/**/select/**/1,2,3#&amp;quot;}回显是“WAF！！！”因为逗号被过滤了
+利用join绕过逗号过滤：
+union select * from ((select 1)A join (select 2)B join (select 3)C)#//union select * from ((select 1)A join (select 2)B join (select 3)C)#查询成功，列数为3，2和3分别为username和password的回显位置，就可以替换为子查询，但是最致命的是or被过滤了，造成了information_schema背锅，所以我们需要bypass information_schema</description>
+    </item>
+    
+  </channel>
+</rss>

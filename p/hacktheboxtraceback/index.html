@@ -10,11 +10,11 @@
 好吧其实这才是原版：
 ls -lasudo -lnano privesc.luasudo -u sysadmin /home/sysadmin/luvit privesc.lua rm privesc.lualogout大概就是通过 /home/sysadmin/luvit 这个东西来执行lua脚本，找了半天并没有找到privesc.lua，我们可以新建一个来执行，由于lua可以用sysadmin权限执行，我们得以读取/home/sysadmin/user.txt；
 查看webadmin的权限：
-(webadmin:/var/www/html) $ sudo -lMatching Defaults entries for webadmin on traceback:env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/binUser webadmin may run the following commands on traceback:(sysadmin) NOPASSWD: /home/sysadmin/luvit(webadmin:/var/www/html) $privesc.'><title>HackTheBoxTraceback</title>
+(webadmin:/var/www/html) $ sudo -lMatching Defaults entries for webadmin on traceback:env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/binUser webadmin may run the following commands on traceback:(sysadmin) NOPASSWD: /home/sysadmin/luvit(webadmin:/var/www/html) $privesc.'><title>HackTheBox::Traceback</title>
 
 <link rel='canonical' href='https://anthem-whisper.github.io/p/hacktheboxtraceback/'>
 
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HackTheBoxTraceback'>
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='HackTheBox::Traceback'>
 <meta property='og:description' content='打开是一个黑页
 看源码有一句hint：
 &amp;lt;!--Some of the best web shells that you might need ;)--&amp;gt;利用已有的webshell获得webadmin权限 扫目录，无果，尝试直接Google这句话，果然找到了作者的Github，在作者列出的一堆shell里面一个个尝试，最后找到了smevk.php，用户密码admin就进去了，然后直接上传文件getshell。
@@ -27,8 +27,8 @@ ls -lasudo -lnano privesc.luasudo -u sysadmin /home/sysadmin/luvit privesc.lu
 (webadmin:/var/www/html) $ sudo -lMatching Defaults entries for webadmin on traceback:env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/binUser webadmin may run the following commands on traceback:(sysadmin) NOPASSWD: /home/sysadmin/luvit(webadmin:/var/www/html) $privesc.'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/hacktheboxtraceback/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
-<meta name="twitter:title" content="HackTheBoxTraceback">
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='提权' /><meta property='article:published_time' content='2020-07-17T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-07-17T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180751.png' />
+<meta name="twitter:title" content="HackTheBox::Traceback">
 <meta name="twitter:description" content="打开是一个黑页
 看源码有一句hint：
 &amp;lt;!--Some of the best web shells that you might need ;)--&amp;gt;利用已有的webshell获得webadmin权限 扫目录，无果，尝试直接Google这句话，果然找到了作者的Github，在作者列出的一堆shell里面一个个尝试，最后找到了smevk.php，用户密码admin就进去了，然后直接上传文件getshell。
@@ -38,7 +38,8 @@ ls -lasudo -lnano privesc.luasudo -u sysadmin /home/sysadmin/luvit privesc.lu
 好吧其实这才是原版：
 ls -lasudo -lnano privesc.luasudo -u sysadmin /home/sysadmin/luvit privesc.lua rm privesc.lualogout大概就是通过 /home/sysadmin/luvit 这个东西来执行lua脚本，找了半天并没有找到privesc.lua，我们可以新建一个来执行，由于lua可以用sysadmin权限执行，我们得以读取/home/sysadmin/user.txt；
 查看webadmin的权限：
-(webadmin:/var/www/html) $ sudo -lMatching Defaults entries for webadmin on traceback:env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/binUser webadmin may run the following commands on traceback:(sysadmin) NOPASSWD: /home/sysadmin/luvit(webadmin:/var/www/html) $privesc.">
+(webadmin:/var/www/html) $ sudo -lMatching Defaults entries for webadmin on traceback:env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/binUser webadmin may run the following commands on traceback:(sysadmin) NOPASSWD: /home/sysadmin/luvit(webadmin:/var/www/html) $privesc."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180751.png' />
     </head>
     <body class="">
     <script>
@@ -208,22 +209,47 @@ ls -lasudo -lnano privesc.luasudo -u sysadmin /home/sysadmin/luvit privesc.lu
         </a>
     </div>
 
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/hacktheboxtraceback/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180751.png" loading="lazy" alt="Featured image of post HackTheBox::Traceback" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/%E6%B8%97%E9%80%8F/" >
+                渗透
+            </a>
+        
+    </header>
+    
 
     <h2 class="article-title">
-        <a href="/p/hacktheboxtraceback/">HackTheBoxTraceback</a>
+        <a href="/p/hacktheboxtraceback/">HackTheBox::Traceback</a>
     </h2>
 
-    </div>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Jul 17, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
-    <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180751.png" alt=""  /></p>
-<p>打开是一个黑页</p>
+    <p>打开是一个黑页</p>
 <p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180759.png" alt="img"  /></p>
 <p>看源码有一句hint：</p>
 <pre><code>&lt;!--Some of the best web shells that you might need ;)--&gt;
@@ -370,6 +396,12 @@ $
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%8F%90%E6%9D%83/">提权</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -390,6 +422,49 @@ $
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/hacktheboxtabby/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180858.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180858.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HackTheBox::Tabby</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/hacktheboxblunder/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180606.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180606.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HackTheBox::Blunder</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

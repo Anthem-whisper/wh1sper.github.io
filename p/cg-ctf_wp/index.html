@@ -25,7 +25,7 @@ php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时�
 &amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/cg-ctf_wp/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' />
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='PHP特性' /><meta property='article:published_time' content='2020-02-02T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-02-02T00:00:00&#43;00:00'/>
 <meta name="twitter:title" content="CG-CTF_wp">
 <meta name="twitter:description" content="cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
 \0x00 考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）
@@ -210,12 +210,30 @@ php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时�
 
     <div class="article-details">
     
+    <header class="article-category">
+        
+            <a href="/categories/ctf_writeup/" style="background-color: #2a9d8f; color: #fff;">
+                CTF writeup
+            </a>
+        
+    </header>
+    
 
     <h2 class="article-title">
         <a href="/p/cg-ctf_wp/">CG-CTF_wp</a>
     </h2>
 
-    </div>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Feb 02, 2020</time>
+    </footer></div>
 </header>
 
     <section class="article-content">
@@ -636,6 +654,12 @@ meizijiu
 
     <footer class="article-footer">
     
+    <section class="article-tags">
+        
+            <a href="/tags/php%E7%89%B9%E6%80%A7/">PHP特性</a>
+        
+    </section>
+
 
     
     <section class="article-copyright">
@@ -656,6 +680,91 @@ meizijiu
 
     <aside class="related-contents--wrapper">
     
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/hgame-2021-writeup/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228093852.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">HGAME 2021 Writeup</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/starctf-2021-%E5%A4%8D%E7%8E%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100314.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100314.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">starCTF 2021 复现</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/%E7%BA%B5%E6%A8%AA%E6%9D%AF-writeup-by-x1ct34m/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">纵横杯 Writeup by X1cT34m</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/roarctf-2020/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">RoarCTF 2020</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/0xgame2020%E5%87%BA%E9%A2%98%E7%AC%94%E8%AE%B0/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181429.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181429.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">0xGame2020出题笔记</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
     
 </aside>
 

