@@ -39,7 +39,7 @@ scrapy.cfg:
 # Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='SSRF' /><meta property='article:tag' content='Redis' /><meta property='article:tag' content='python反序列化' /><meta property='article:published_time' content='2020-10-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-10-28T00:00:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='SSRF' /><meta property='article:tag' content='Redis' /><meta property='article:tag' content='python反序列化' /><meta property='article:published_time' content='2020-10-28T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-10-28T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228105539.jpeg' />
 <meta name="twitter:title" content="ByteCTF2020复现">
 <meta name="twitter:description" content="这次ByteCTF2020的web题目非常顶，第一天比赛快结束的时候全场web才有了第一个解，后来解人数最多的XSS也就不过十个解，可惜一直在看爬虫的题，最后还是没做出。
  easy_scrapy 考点：MD5爆破、SSRF
@@ -56,7 +56,8 @@ GET / HTTP/1.1Accept: text/html,application/xhtml&#43;xml,application/xml;q=0.9
 在官方文档中找到了这个爬虫框架的结构：
 tutorial/scrapy.cfgtutorial/__init__.pyitems.pypipelines.pysettings.pyspiders/__init__.py...我们尝试去读取这些文件；
 scrapy.cfg:
-# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf.">
+# Automatically created by: scrapy startproject## For more information about the [deploy] section see:# https://scrapyd.readthedocs.io/en/latest/deploy.html[settings]default = bytectf."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228105539.jpeg' />
     </head>
     <body class="">
     <script>
@@ -226,8 +227,16 @@ scrapy.cfg:
         </a>
     </div>
 
-    <article class="main-article">
+    <article class="has-image main-article">
     <header class="article-header">
+        <div class="article-image">
+            <a href="/p/bytectf2020%E5%A4%8D%E7%8E%B0/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228105539.jpeg" loading="lazy" alt="Featured image of post ByteCTF2020复现" />
+                
+            </a>
+        </div>
+    
 
     <div class="article-details">
     
