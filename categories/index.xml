@@ -34,23 +34,5 @@
       <description></description>
     </item>
     
-    <item>
-      <title>ctf_writup</title>
-      <link>https://anthem-whisper.github.io/categories/ctf_writup/</link>
-      <pubDate>Sat, 04 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/categories/ctf_writup/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Test</title>
-      <link>https://anthem-whisper.github.io/categories/test/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/categories/test/</guid>
-      <description></description>
-    </item>
-    
   </channel>
 </rss>
