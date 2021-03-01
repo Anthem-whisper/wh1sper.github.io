@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-cn">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='因为和第五空间连着，然后昨天下午又去打了一场AWD，感觉身体掏空，就认真打了DASCTF（咕咕咕），剩下的题目等有机会再复现
  简单的计算器-1 考点：python eval()代码注入，命令执行结果外带
@@ -21,6 +21,8 @@
  简单的计算器-1 考点：python eval()代码注入，命令执行结果外带
 访问Source可以看到源码：
 #!/usr/bin/env python3# -*- coding: utf-8 -*-from flask import Flask, render_template, request,sessionfrom config import black_list,createimport osapp = Flask(__name__)app.config[&#39;SECRET_KEY&#39;] = os.urandom(24)## flag is in /flag try to get it@app.route(&#39;/&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])def index():def filter(string):#这里是下午暗改过的，本来只过滤了orfor black_word in black_list:if black_word in string:return &amp;quot;hack&amp;quot;return stringif request.method == &#39;POST&#39;:input = request.form[&#39;input&#39;]create_question = create()input_question = session.">
+    <link rel="shortcut icon" href="img/favicon.png" />
+
     </head>
     <body class="">
     <script>
@@ -71,7 +73,7 @@
             </figure>
         
         <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -130,6 +132,24 @@
 
                 
                 <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
             </a>
         </li>
         
@@ -573,6 +593,8 @@ function reduce($data)
     </section>
     
     <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
         Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>

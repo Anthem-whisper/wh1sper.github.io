@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-cn">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Web2 考点：redis弱口令，python反序列化
 BUU上面的环境需要 Shadowsocks 代理才能访问，配置这个都搞了半天（tcl
@@ -39,6 +39,8 @@ EVP_CIPHER_CTX_cleanup更深层的是是由于在openssl1.1.0版本中，废弃
 kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r/proxychains-ng.git # downloadcd proxychains-ng./configuresudo make sudo make installcp ./src/proxychains.conf /etc/proxychains.conf # config file用proxychains做正向代理 vim /etc/proxychains.conf添加一行：socks5 127.0.0.1 1080（具体取决于你的ss配置的端口）
 不过我这里需要注释掉原来的那一行 socks4 127.0.0.1 9050
 命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了">
+    <link rel="shortcut icon" href="img/favicon.png" />
+
     </head>
     <body class="">
     <script>
@@ -89,7 +91,7 @@ kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r
             </figure>
         
         <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -148,6 +150,24 @@ kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r
 
                 
                 <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
             </a>
         </li>
         
@@ -611,6 +631,8 @@ if __name__ == '__main__':
     </section>
     
     <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
         Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>

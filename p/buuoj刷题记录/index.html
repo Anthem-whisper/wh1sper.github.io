@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-cn">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='[SUCTF 2019]EasySQL 考点：堆叠注入、MySQL中sql_mode参数
 题目存在过滤，尝试之后发现可以通过0 || 1这样的语句进行bool盲注，但是此题似乎限制了输入信息的长度，所以这个盲注只能注出来库名CTF后面的东西就没办法搞，后来看了wp之后才知道存在堆叠注入，尝试之：
@@ -31,6 +31,8 @@ Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; ctf ) Array ( [0] =&amp;gt; ctft
 1;show tables;返回：
 Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; Flag )但是flag关键字被过滤了，"><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170627.png' />
+    <link rel="shortcut icon" href="img/favicon.png" />
+
     </head>
     <body class="">
     <script>
@@ -81,7 +83,7 @@ Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; Flag )但是flag关键字被过
             </figure>
         
         <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -140,6 +142,24 @@ Array ( [0] =&amp;gt; 1 ) Array ( [0] =&amp;gt; Flag )但是flag关键字被过
 
                 
                 <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
             </a>
         </li>
         
@@ -680,6 +700,8 @@ print(r.text)
     </section>
     
     <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
         Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>

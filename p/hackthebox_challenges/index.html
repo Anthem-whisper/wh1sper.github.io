@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-cn">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='Emdee five for life 考点：python正则，request模块
 打开页面，给你一个字符串，md5加密后提交，太慢或者错了就会Too slow：
@@ -22,6 +22,8 @@
 &amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;emdee five for life&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body style=&amp;quot;background-color:powderblue;&amp;quot;&amp;gt;&amp;lt;h1 align=&#39;center&#39;&amp;gt;MD5 encrypt this string&amp;lt;/h1&amp;gt;&amp;lt;h3 align=&#39;center&#39;&amp;gt;LWod6afkxEjJV8KZeLRO&amp;lt;/h3&amp;gt;&amp;lt;center&amp;gt;&amp;lt;form action=&amp;quot;&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;hash&amp;quot; placeholder=&amp;quot;MD5&amp;quot; align=&#39;center&#39;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/br&amp;gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/form&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;当然是脚本：
 #!/usr/bin/env python3import requestsimport reimport hashlibwhile 1:host = &amp;quot;http://docker.hackthebox.eu:32046/&amp;quot;req = requests.session()r = req.get(url=host)#print(r.text)pattern = re.compile(r&amp;quot;&amp;lt;h3 align=&#39;center&#39;&amp;gt;(\S&#43;)&amp;lt;/h3&amp;gt;&amp;quot;)h3 = pattern.findall(r.text)md5 = hashlib.md5(h3[0].encode(&#39;utf-8&#39;)).hexdigest()#print(h3[0],md5)data={&#39;hash&#39;:md5}s = req."><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181059.jpeg' />
+    <link rel="shortcut icon" href="img/favicon.png" />
+
     </head>
     <body class="">
     <script>
@@ -72,7 +74,7 @@
             </figure>
         
         <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -131,6 +133,24 @@
 
                 
                 <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
             </a>
         </li>
         
@@ -463,6 +483,8 @@ safeadmin列名：id,username,password,created_at
     </section>
     
     <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
         Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-cn">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='在网上看到一道CTF题目：https://ctf.show/challenges#web9
 打开后扫目录发现robots.txt，里面提示了index.phps，下载，审计，发现MD5哈希注入：
@@ -39,6 +39,8 @@ select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39
 将这个加密回去试试，看到确实是&#39;or&#39;的形式
 那么只要我们随意输入一个用户名，密码为 ffifdyop 那么这样我们的语句就变成了：
 select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39;6蒥欓!">
+    <link rel="shortcut icon" href="img/favicon.png" />
+
     </head>
     <body class="">
     <script>
@@ -89,7 +91,7 @@ select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39
             </figure>
         
         <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -148,6 +150,24 @@ select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39
 
                 
                 <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
             </a>
         </li>
         
@@ -470,6 +490,8 @@ while(1){
     </section>
     
     <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
         Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>

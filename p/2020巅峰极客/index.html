@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en-us">
+<html lang="zh-cn">
     <head><meta charset='utf-8'>
 <meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='babyphp2 考点：phar反序列化、pop链、compress.zlib://phar://绕过^phar
 Paper：https://paper.seebug.org/680/
@@ -31,6 +31,8 @@ phar反序列化 我们可以看到class.php里面有很多的类，可以想到
 class.php
 &amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127."><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228104117.jpeg' />
+    <link rel="shortcut icon" href="img/favicon.png" />
+
     </head>
     <body class="">
     <script>
@@ -81,7 +83,7 @@ class.php
             </figure>
         
         <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
-        <h2 class="site-description">专注Web安全和代码审计</h2>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
     </header>
 
     <ol class="menu" id="main-menu">
@@ -140,6 +142,24 @@ class.php
 
                 
                 <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
             </a>
         </li>
         
@@ -687,6 +707,8 @@ if __name__ == '__main__':
     </section>
     
     <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
         Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
         Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
     </section>
