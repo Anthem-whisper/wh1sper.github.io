@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>代码审计 on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</link>
+    <description>Recent content in 代码审计 on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 19 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Debian下PHP Xdebug调试环境搭建</title>
+      <link>https://anthem-whisper.github.io/p/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Fri, 19 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>Debian下PHP Xdebug调试环境搭建  本文永久链接：http://wh1sper.com/debian%e4%b8%8bphp-xdebug%e8%b0%83%e8%af%95%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba/
+ 前言 Xdebug是PHP的扩展，用于协助调试和开发。
+ 它包含一个用于IDE的调试器 它升级了PHP的var_dump()函数 它为通知，警告，错误和异常添加了堆栈跟踪 它具有记录每个函数调用和磁盘变量赋值的功能 它包含一个分析器 它提供了与PHPUnit一起使用的代码覆盖功能。  本地跟代码必备的工具。 但不推荐在生产环境中使用xdebug，因为他太重了。
+预置环境   OS: Kali GNU/Linux Rolling x86_64
+  Kernel: 5.7.0-kali1-amd64
+  PHP version: 7.4.14
+  Server API: FPM/FastCGI
+  nginx version: nginx/1.18.0
+  PhpStorm version: 2020.3
+  下载安装Xdebug 访问https://xdebug.org/wizard
+在web服务器中放入phpinfo，（注意最好是使用web服务，如果是本地php脚本的话php.ini可能会不一样）
+访问之后将整个页面源码Ctrl+A Ctrl+C复制到框里面： 分析之后会自动给你最合适的版本，并且告诉你后续安装步骤。
+下载给出的.tar.tgz文件
+1.安装PHP拓展
+apt-get install php-dev autoconf automake2.解压
+tar -xvzf xdebug-3.0.2.tgzcd xdebug-3.0.23.</description>
+    </item>
+    
+  </channel>
+</rss>
