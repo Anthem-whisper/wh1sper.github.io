@@ -6,22 +6,22 @@
     <description>Recent content in Categories on wh1sper</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 12 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 04 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CTF writeup</title>
+      <link>https://anthem-whisper.github.io/categories/ctf_writeup/</link>
+      <pubDate>Sun, 04 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/categories/ctf_writeup/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>note</title>
       <link>https://anthem-whisper.github.io/categories/note/</link>
       <pubDate>Fri, 12 Mar 2021 00:00:00 +0000</pubDate>
       
       <guid>https://anthem-whisper.github.io/categories/note/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>CTF writeup</title>
-      <link>https://anthem-whisper.github.io/categories/ctf_writeup/</link>
-      <pubDate>Sat, 20 Feb 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://anthem-whisper.github.io/categories/ctf_writeup/</guid>
       <description></description>
     </item>
     

