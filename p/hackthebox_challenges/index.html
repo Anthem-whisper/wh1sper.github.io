@@ -22,7 +22,7 @@
 &amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;title&amp;gt;emdee five for life&amp;lt;/title&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body style=&amp;quot;background-color:powderblue;&amp;quot;&amp;gt;&amp;lt;h1 align=&#39;center&#39;&amp;gt;MD5 encrypt this string&amp;lt;/h1&amp;gt;&amp;lt;h3 align=&#39;center&#39;&amp;gt;LWod6afkxEjJV8KZeLRO&amp;lt;/h3&amp;gt;&amp;lt;center&amp;gt;&amp;lt;form action=&amp;quot;&amp;quot; method=&amp;quot;post&amp;quot;&amp;gt;&amp;lt;input type=&amp;quot;text&amp;quot; name=&amp;quot;hash&amp;quot; placeholder=&amp;quot;MD5&amp;quot; align=&#39;center&#39;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/br&amp;gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Submit&amp;quot;&amp;gt;&amp;lt;/input&amp;gt;&amp;lt;/form&amp;gt;&amp;lt;/center&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;当然是脚本：
 #!/usr/bin/env python3import requestsimport reimport hashlibwhile 1:host = &amp;quot;http://docker.hackthebox.eu:32046/&amp;quot;req = requests.session()r = req.get(url=host)#print(r.text)pattern = re.compile(r&amp;quot;&amp;lt;h3 align=&#39;center&#39;&amp;gt;(\S&#43;)&amp;lt;/h3&amp;gt;&amp;quot;)h3 = pattern.findall(r.text)md5 = hashlib.md5(h3[0].encode(&#39;utf-8&#39;)).hexdigest()#print(h3[0],md5)data={&#39;hash&#39;:md5}s = req."><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120181059.jpeg' />
-    <link rel="shortcut icon" href="img/favicon.png" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
     </head>
     <body class="">
@@ -573,7 +573,7 @@ safeadmin列名：id,username,password,created_at
                     <a href="/archives/#2020">
                         
                             <span class="year">2020</span>
-                            <span class="count">35</span>
+                            <span class="count">36</span>
                         
                     </a> 
                 </div>
@@ -632,6 +632,10 @@ safeadmin列名：id,username,password,created_at
                 HackTheBox
             </a>
         
+            <a href="/tags/nodejs/" class="font_size_3">
+                NodeJS
+            </a>
+        
             <a href="/tags/phar/" class="font_size_3">
                 phar
             </a>
@@ -644,6 +648,10 @@ safeadmin列名：id,username,password,created_at
                 Redis
             </a>
         
+            <a href="/tags/webcrypto/" class="font_size_3">
+                WebCrypto
+            </a>
+        
             <a href="/tags/xxe/" class="font_size_3">
                 XXE
             </a>
@@ -652,20 +660,12 @@ safeadmin列名：id,username,password,created_at
                 flask
             </a>
         
-            <a href="/tags/nodejs/" class="font_size_2">
-                NodeJS
-            </a>
-        
             <a href="/tags/session.upload_progress/" class="font_size_2">
                 session.upload_progress
             </a>
         
             <a href="/tags/ssti/" class="font_size_2">
                 SSTI
-            </a>
-        
-            <a href="/tags/webcrypto/" class="font_size_2">
-                WebCrypto
             </a>
         
             <a href="/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="font_size_2">

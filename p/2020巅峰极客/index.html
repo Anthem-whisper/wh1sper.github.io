@@ -31,7 +31,7 @@ phar反序列化 我们可以看到class.php里面有很多的类，可以想到
 class.php
 &amp;lt;?phperror_reporting(0);session_start();class User{public $id;public $age=null;public $nickname=null;public $backup;public function login() {if(isset($_POST[&#39;username&#39;])&amp;amp;&amp;amp;isset($_POST[&#39;password&#39;])){$mysqli=new dbCtrl();$this-&amp;gt;id=$mysqli-&amp;gt;login();if($this-&amp;gt;id){$_SESSION[&#39;id&#39;]=$this-&amp;gt;id;$_SESSION[&#39;login&#39;]=1;echo &amp;quot;你的ID是&amp;quot;.$_SESSION[&#39;id&#39;];echo &amp;quot;你好！&amp;quot;.$_SESSION[&#39;token&#39;];echo &amp;quot;&amp;lt;script&amp;gt;window.location.href=&#39;upload.php&#39;&amp;lt;/script&amp;gt;&amp;quot;;}}}public function upload(){$uploader=new Upload();$uploader-&amp;gt;upload();}public function read(){$reader=new reader();$reader-&amp;gt;read($_POST[&#39;filename&#39;]);}public function __toString(){$this-&amp;gt;nickname-&amp;gt;backup=$this-&amp;gt;backup;$user = new User();$user-&amp;gt;id = $_SESSION[&#39;id&#39;];$user-&amp;gt;nickname = $_SESSION[&#39;token&#39;];return serialize($user);}}class dbCtrl{public $hostname=&amp;quot;127."><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228104117.jpeg' />
-    <link rel="shortcut icon" href="img/favicon.png" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
     </head>
     <body class="">
@@ -779,7 +779,7 @@ if __name__ == '__main__':
                     <a href="/archives/#2020">
                         
                             <span class="year">2020</span>
-                            <span class="count">35</span>
+                            <span class="count">36</span>
                         
                     </a> 
                 </div>
@@ -838,6 +838,10 @@ if __name__ == '__main__':
                 HackTheBox
             </a>
         
+            <a href="/tags/nodejs/" class="font_size_3">
+                NodeJS
+            </a>
+        
             <a href="/tags/phar/" class="font_size_3">
                 phar
             </a>
@@ -850,6 +854,10 @@ if __name__ == '__main__':
                 Redis
             </a>
         
+            <a href="/tags/webcrypto/" class="font_size_3">
+                WebCrypto
+            </a>
+        
             <a href="/tags/xxe/" class="font_size_3">
                 XXE
             </a>
@@ -858,20 +866,12 @@ if __name__ == '__main__':
                 flask
             </a>
         
-            <a href="/tags/nodejs/" class="font_size_2">
-                NodeJS
-            </a>
-        
             <a href="/tags/session.upload_progress/" class="font_size_2">
                 session.upload_progress
             </a>
         
             <a href="/tags/ssti/" class="font_size_2">
                 SSTI
-            </a>
-        
-            <a href="/tags/webcrypto/" class="font_size_2">
-                WebCrypto
             </a>
         
             <a href="/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="font_size_2">

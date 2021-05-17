@@ -40,7 +40,7 @@ Bludit 3.9.2版本中的 bl-kernel/security.class.php 一些代码将检查主�
 cewl -w wordlist.txt -d 10 -m 1 http://10.10.10.191/然后我们利用改装过后的CVE-2019-17240的poc来打：
 #!/usr/bin/env python3import reimport requestsdef open_ressources(file_path):return [item.replace(&amp;quot;\n&amp;quot;, &amp;quot;&amp;quot;) for item in open(file_path).readlines()]host = &#39;http://10.10.10.191&#39;login_url = host &#43; &#39;/admin/login&#39;username = &#39;fergus&#39;wordlist = open_ressources(&#39;wordlist."><meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120180606.png' />
-    <link rel="shortcut icon" href="img/favicon.png" />
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
     </head>
     <body class="">
@@ -740,7 +740,7 @@ root@blunder:/var/www/bludit-3.9.2#
                     <a href="/archives/#2020">
                         
                             <span class="year">2020</span>
-                            <span class="count">35</span>
+                            <span class="count">36</span>
                         
                     </a> 
                 </div>
@@ -799,6 +799,10 @@ root@blunder:/var/www/bludit-3.9.2#
                 HackTheBox
             </a>
         
+            <a href="/tags/nodejs/" class="font_size_3">
+                NodeJS
+            </a>
+        
             <a href="/tags/phar/" class="font_size_3">
                 phar
             </a>
@@ -811,6 +815,10 @@ root@blunder:/var/www/bludit-3.9.2#
                 Redis
             </a>
         
+            <a href="/tags/webcrypto/" class="font_size_3">
+                WebCrypto
+            </a>
+        
             <a href="/tags/xxe/" class="font_size_3">
                 XXE
             </a>
@@ -819,20 +827,12 @@ root@blunder:/var/www/bludit-3.9.2#
                 flask
             </a>
         
-            <a href="/tags/nodejs/" class="font_size_2">
-                NodeJS
-            </a>
-        
             <a href="/tags/session.upload_progress/" class="font_size_2">
                 session.upload_progress
             </a>
         
             <a href="/tags/ssti/" class="font_size_2">
                 SSTI
-            </a>
-        
-            <a href="/tags/webcrypto/" class="font_size_2">
-                WebCrypto
             </a>
         
             <a href="/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="font_size_2">

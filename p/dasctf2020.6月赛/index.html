@@ -15,13 +15,14 @@
 #!/usr/bin/env python3# -*- coding: utf-8 -*-from flask import Flask, render_template, request,sessionfrom config import black_list,createimport osapp = Flask(__name__)app.config[&#39;SECRET_KEY&#39;] = os.urandom(24)## flag is in /flag try to get it@app.route(&#39;/&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])def index():def filter(string):#这里是下午暗改过的，本来只过滤了orfor black_word in black_list:if black_word in string:return &amp;quot;hack&amp;quot;return stringif request.method == &#39;POST&#39;:input = request.form[&#39;input&#39;]create_question = create()input_question = session.'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/dasctf2020.6%E6%9C%88%E8%B5%9B/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='命令注入' /><meta property='article:tag' content='PHP反序列化' /><meta property='article:published_time' content='2020-06-27T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-06-27T00:00:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='命令注入' /><meta property='article:tag' content='PHP反序列化' /><meta property='article:published_time' content='2020-06-27T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-06-27T00:00:00&#43;00:00'/><meta property='og:image' content='https://anthem-whisper.github.io/img/tags_default.jpg' />
 <meta name="twitter:title" content="DASCTF2020.6月赛">
 <meta name="twitter:description" content="因为和第五空间连着，然后昨天下午又去打了一场AWD，感觉身体掏空，就认真打了DASCTF（咕咕咕），剩下的题目等有机会再复现
  简单的计算器-1 考点：python eval()代码注入，命令执行结果外带
 访问Source可以看到源码：
-#!/usr/bin/env python3# -*- coding: utf-8 -*-from flask import Flask, render_template, request,sessionfrom config import black_list,createimport osapp = Flask(__name__)app.config[&#39;SECRET_KEY&#39;] = os.urandom(24)## flag is in /flag try to get it@app.route(&#39;/&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])def index():def filter(string):#这里是下午暗改过的，本来只过滤了orfor black_word in black_list:if black_word in string:return &amp;quot;hack&amp;quot;return stringif request.method == &#39;POST&#39;:input = request.form[&#39;input&#39;]create_question = create()input_question = session.">
-    <link rel="shortcut icon" href="img/favicon.png" />
+#!/usr/bin/env python3# -*- coding: utf-8 -*-from flask import Flask, render_template, request,sessionfrom config import black_list,createimport osapp = Flask(__name__)app.config[&#39;SECRET_KEY&#39;] = os.urandom(24)## flag is in /flag try to get it@app.route(&#39;/&#39;, methods=[&#39;GET&#39;, &#39;POST&#39;])def index():def filter(string):#这里是下午暗改过的，本来只过滤了orfor black_word in black_list:if black_word in string:return &amp;quot;hack&amp;quot;return stringif request.method == &#39;POST&#39;:input = request.form[&#39;input&#39;]create_question = create()input_question = session."><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://anthem-whisper.github.io/img/tags_default.jpg' />
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
     </head>
     <body class="">
@@ -677,7 +678,7 @@ function reduce($data)
                     <a href="/archives/#2020">
                         
                             <span class="year">2020</span>
-                            <span class="count">35</span>
+                            <span class="count">36</span>
                         
                     </a> 
                 </div>
@@ -736,6 +737,10 @@ function reduce($data)
                 HackTheBox
             </a>
         
+            <a href="/tags/nodejs/" class="font_size_3">
+                NodeJS
+            </a>
+        
             <a href="/tags/phar/" class="font_size_3">
                 phar
             </a>
@@ -748,6 +753,10 @@ function reduce($data)
                 Redis
             </a>
         
+            <a href="/tags/webcrypto/" class="font_size_3">
+                WebCrypto
+            </a>
+        
             <a href="/tags/xxe/" class="font_size_3">
                 XXE
             </a>
@@ -756,20 +765,12 @@ function reduce($data)
                 flask
             </a>
         
-            <a href="/tags/nodejs/" class="font_size_2">
-                NodeJS
-            </a>
-        
             <a href="/tags/session.upload_progress/" class="font_size_2">
                 session.upload_progress
             </a>
         
             <a href="/tags/ssti/" class="font_size_2">
                 SSTI
-            </a>
-        
-            <a href="/tags/webcrypto/" class="font_size_2">
-                WebCrypto
             </a>
         
             <a href="/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="font_size_2">

@@ -27,7 +27,7 @@ kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r
 命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/swpu2019-%E5%A4%8D%E7%8E%B0/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='python反序列化' /><meta property='article:tag' content='Redis' /><meta property='article:tag' content='堆叠注入' /><meta property='article:tag' content='flask' /><meta property='article:published_time' content='2020-05-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-05-18T00:00:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='python反序列化' /><meta property='article:tag' content='Redis' /><meta property='article:tag' content='堆叠注入' /><meta property='article:tag' content='flask' /><meta property='article:published_time' content='2020-05-18T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-05-18T00:00:00&#43;00:00'/><meta property='og:image' content='https://anthem-whisper.github.io/img/tags_default.jpg' />
 <meta name="twitter:title" content="SWPU2019 复现">
 <meta name="twitter:description" content="Web2 考点：redis弱口令，python反序列化
 BUU上面的环境需要 Shadowsocks 代理才能访问，配置这个都搞了半天（tcl
@@ -38,8 +38,9 @@ EVP_CIPHER_CTX_cleanup更深层的是是由于在openssl1.1.0版本中，废弃
 直接 vim /usr/local/lib/python2.7/dist-packages/shadowsocks/crypto/openssl.py 打开文件，全局搜索关键字替换即可；
 kali下编译安装proxychains4 编译安装 git clone https://github.com/rofl0r/proxychains-ng.git # downloadcd proxychains-ng./configuresudo make sudo make installcp ./src/proxychains.conf /etc/proxychains.conf # config file用proxychains做正向代理 vim /etc/proxychains.conf添加一行：socks5 127.0.0.1 1080（具体取决于你的ss配置的端口）
 不过我这里需要注释掉原来的那一行 socks4 127.0.0.1 9050
-命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了">
-    <link rel="shortcut icon" href="img/favicon.png" />
+命令行访问内网 proxychains4 ping web 只需在前面加 proxychains4 就行了"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://anthem-whisper.github.io/img/tags_default.jpg' />
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
     </head>
     <body class="">
@@ -759,7 +760,7 @@ if __name__ == '__main__':
                     <a href="/archives/#2020">
                         
                             <span class="year">2020</span>
-                            <span class="count">35</span>
+                            <span class="count">36</span>
                         
                     </a> 
                 </div>
@@ -818,6 +819,10 @@ if __name__ == '__main__':
                 HackTheBox
             </a>
         
+            <a href="/tags/nodejs/" class="font_size_3">
+                NodeJS
+            </a>
+        
             <a href="/tags/phar/" class="font_size_3">
                 phar
             </a>
@@ -830,6 +835,10 @@ if __name__ == '__main__':
                 Redis
             </a>
         
+            <a href="/tags/webcrypto/" class="font_size_3">
+                WebCrypto
+            </a>
+        
             <a href="/tags/xxe/" class="font_size_3">
                 XXE
             </a>
@@ -838,20 +847,12 @@ if __name__ == '__main__':
                 flask
             </a>
         
-            <a href="/tags/nodejs/" class="font_size_2">
-                NodeJS
-            </a>
-        
             <a href="/tags/session.upload_progress/" class="font_size_2">
                 session.upload_progress
             </a>
         
             <a href="/tags/ssti/" class="font_size_2">
                 SSTI
-            </a>
-        
-            <a href="/tags/webcrypto/" class="font_size_2">
-                WebCrypto
             </a>
         
             <a href="/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="font_size_2">

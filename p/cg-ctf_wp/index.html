@@ -25,7 +25,7 @@ php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时�
 &amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!'>
 <meta property='og:url' content='https://anthem-whisper.github.io/p/cg-ctf_wp/'>
 <meta property='og:site_name' content='wh1sper'>
-<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='PHP特性' /><meta property='article:published_time' content='2020-02-02T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-02-02T00:00:00&#43;00:00'/>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='PHP特性' /><meta property='article:published_time' content='2020-02-02T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2020-02-02T00:00:00&#43;00:00'/><meta property='og:image' content='https://anthem-whisper.github.io/img/tags_default.jpg' />
 <meta name="twitter:title" content="CG-CTF_wp">
 <meta name="twitter:description" content="cgctf不得不说是一个很棒的学习平台，这里有我写的部分wp：
 \0x00 考点：%00截断（ereg函数的截断漏洞）、数组绕过（ereg函数的另一个漏洞）
@@ -35,8 +35,9 @@ view-source:if (isset ($_GET[&#39;nctf&#39;])) {if (@ereg (&amp;quot;^[1-9]&#4
 法一：数组绕过index.php?nctf[]=#biubiubiu法二：\x00截断index.php?nctf=1%00%23biubiubiunctf{use_00_to_jieduan}
 php 反序列化(暂时无法做) 考点：对象包含的引用在序列化时也会被存储
 题目源码：
-&amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!">
-    <link rel="shortcut icon" href="img/favicon.png" />
+&amp;lt;?phpclass just4fun {var $enter;var $secret;}if (isset($_GET[&#39;pass&#39;])) {$pass = $_GET[&#39;pass&#39;];if(get_magic_quotes_gpc()){$pass=stripslashes($pass);}$o = unserialize($pass);if ($o) {$o-&amp;gt;secret = &amp;quot;*&amp;quot;;if ($o-&amp;gt;secret === $o-&amp;gt;enter)echo &amp;quot;Congratulation!"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://anthem-whisper.github.io/img/tags_default.jpg' />
+    <link rel="shortcut icon" href="img/favicon.ico" />
 
     </head>
     <body class="">
@@ -876,7 +877,7 @@ meizijiu
                     <a href="/archives/#2020">
                         
                             <span class="year">2020</span>
-                            <span class="count">35</span>
+                            <span class="count">36</span>
                         
                     </a> 
                 </div>
@@ -935,6 +936,10 @@ meizijiu
                 HackTheBox
             </a>
         
+            <a href="/tags/nodejs/" class="font_size_3">
+                NodeJS
+            </a>
+        
             <a href="/tags/phar/" class="font_size_3">
                 phar
             </a>
@@ -947,6 +952,10 @@ meizijiu
                 Redis
             </a>
         
+            <a href="/tags/webcrypto/" class="font_size_3">
+                WebCrypto
+            </a>
+        
             <a href="/tags/xxe/" class="font_size_3">
                 XXE
             </a>
@@ -955,20 +964,12 @@ meizijiu
                 flask
             </a>
         
-            <a href="/tags/nodejs/" class="font_size_2">
-                NodeJS
-            </a>
-        
             <a href="/tags/session.upload_progress/" class="font_size_2">
                 session.upload_progress
             </a>
         
             <a href="/tags/ssti/" class="font_size_2">
                 SSTI
-            </a>
-        
-            <a href="/tags/webcrypto/" class="font_size_2">
-                WebCrypto
             </a>
         
             <a href="/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="font_size_2">

